@@ -1,0 +1,19 @@
+<!-- GUI of this Delete Script -->
+<?!= include('css'); ?>
+<div id='loading' hidden='true'>
+  <img id='loader' src='https://6d435c32-a-9809a6ee-s-sites.googlegroups.com/a/domovpromne.cz/rozpisy/loading.gif?attachauth=ANoY7cqOg-5ThZpQYtGVK7N_QZapE3DyACsAQx58jBl_bZSrBiA9Ci-Vro0L6VcqbkEekR4TlTzCkbRFiXISMrGfi50p-WaIjynbNTSTBI4KMuP9Y45rg0uq2fcLtrkRHRgxeUELIzYc-8XFm4cceRBZkcqSTbXEfAXbBVMNDI-Z21zrGYUL_I9x-UDS0B0LGyOn5YyYm_PsQDYCZPO8opla7xLHRWiUNQ%3D%3D&attredirects=0'
+  />
+</div>
+<div id='main-content'>
+  <p id='errorDiv' hidden='true'>
+    <label id='err' class='error'></label>
+  </p>
+  <div id='bottomDiv'>
+    <p>
+      <label id='message'><?!= getResource('deleteMessage');?></label>  
+    </p>
+    <pre id='finalMessage'></pre>
+    <button id='submitButton' type='button'><?!= getResource('deleteButton');?></button>    
+  </div>
+</div> 
+<?!= include('javascript'); ?>
