@@ -1,0 +1,19 @@
+<!-- Form insides, which are going to be inserted into main.html -->
+<p>
+  <label for='nameBox'>Název</label>
+  <br>
+  <input id='nameBox' type='text' name='nameBox' required='true' placeholder='Název cenového pásma'>
+  <label id='nameErr' class='error' for='nameBox' hidden='true'></label>
+</p>
+<p>
+  <label for='shortcutBox'>Zkratka</label>
+  <br>
+  <input id='shortcutBox' type='text' name='shortcutBox' required='true' maxlength='2' placeholder='Zkratka cenového pásma'>
+  <label id='shortcutErr' class='error' for='shortcutBox' hidden='true'></label>
+</p>
+<p>
+  <label for='priceBox'>Cena: Kč/hod</label>
+  <br>
+  <input id='priceBox' name='priceBox' required='true' type='number' min='0' step='1' placeholder='Cena cenového pásma'>
+  <label id='priceErr' class='error' for='priceBox' hidden='true'></label>
+</p>

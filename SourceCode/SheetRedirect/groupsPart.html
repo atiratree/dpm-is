@@ -1,0 +1,30 @@
+<!-- Template part for showing buttons with links for groups and part of active user. User property sheetsRedirectPart has to be set before evaluating this template  -->
+<?if(getResource('includeBool')){ ?>  
+<?   var files =  Utils.getUserObjProp('sheetsRedirectFiles');?>
+<?   var groups = getResource('getGroups'); ?>
+<?   var i = 0; ?>
+     <p>
+       <label><?!= getResource('name')?></label>
+     </p>    
+<?   for (var i = 0; i < groups.length; i++) { 
+        var group = groups[i];  
+        if(i % 4 == 0){ ?>
+           <div class='clearDiv'>
+<?      } ?>
+         <table style='float: left;'>
+           <tr>
+             <th><label>Skupina <?!= group ?></label></th>
+           </tr>
+<?            var links = getResource('links',{files:files,group:group});
+              for (var j = 0; j < links.length; j++) {?>
+                <tr><td><a class='button' onclick='resolveTriggers("<?!= links[j].id ?>")' href='<?!= links[j].url; ?>'><?!= (links[j].owner ? links[j].owner + ' ': '' ) + links[j].type; ?></a><td></tr>
+<?            } ?>
+        </table>
+<?        if(i % 4 == 3){?>
+            </div>
+<?        }
+      } 
+      if(groups.length != 0 && i % 4 != 3){ ?>
+            </div>
+<?    } ?>
+<? } ?>

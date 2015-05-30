@@ -1,0 +1,23 @@
+<!-- Form insides, which are going to be inserted into main.html -->
+<p>
+  <label for='nameBox'>Jméno</label>
+  <br>
+  <input id='nameBox' type='text' name='nameBox' required='true' placeholder='Jméno klienta'>
+  <label id='nameErr' class='error' for='nameBox' hidden='true'></label>
+</p>
+<p>
+  <label for='emailBox'>Email</label>
+  <br>
+  <input id='emailBox' type='email' name='emailBox' placeholder='Email klienta'>
+  <label id='emailErr' class='error' for='emailBox' hidden='true'></label>
+</p>
+<div id='groups'>
+  <div id='isInGroups'>
+    <p class='clearDiv'>
+      <br>
+      <label for='isInGroupsBox'>Náleží do skupin</label>
+      <label id='isInGroupsErr' class='error' for='isInGroupsBox' hidden='true'></label>
+    </p>
+    <div id='isInGroupsOptions'></div>
+  </div>
+</div>

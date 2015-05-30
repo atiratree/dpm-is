@@ -1,0 +1,62 @@
+<!-- Javascript which is served with main.html. It's purpose is to send forms to our GAS, resolve errors and resolve special alerts for creating users and groups -->
+<script src='//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js'></script>
+<script type='text/javascript'>
+$(document).ready(function() {
+  $('#create-form').submit(function() {
+    $('#submit').hide();
+    $('#loader').show();
+    google.script.run.withSuccessHandler(function(obj) {
+      $('#loader').hide();
+      $('#submit').show();
+      resolveDefault(obj);
+    }).processForm(this);
+
+    $('#again').click(function() {
+      $('#confirmation-content').hide();
+      $('#submit').show();
+      $('#create-form')[0].reset();
+      $('#create-form').show();
+      $('.error').hide();
+    });
+
+    return false;
+  });
+});
+
+function resolveDefault(obj) {
+  if (obj.fail) {
+    $('#confirmation').text('Chyba na serveru (' + obj.message + ') : zkuste znovu');
+    $('#confirmation-content').show();
+    $('#create-form').slideUp();
+  } else if (obj.success) {
+    resolveAlert(obj.permission);
+    $('#confirmation').text(obj.success);
+    $('#confirmation-content').show('slow');
+    $('#create-form').slideUp();
+  } else {
+    for (var prop in obj) {
+      if (obj[prop] === '') {
+        $('#' + prop).hide();
+      } else {
+        $('#' + prop).show();
+        $('#' + prop).text(obj[prop]);
+      }
+    }
+    $('#submit').removeAttr('disabled');
+  }
+}
+
+function resolveAlert(permission) {
+  switch (parseInt(permission, 10)) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+      alert('K nabytí práv dojde nejzpoději do 2 hodin.\nV akutním případě kontaktujte super admina.');
+      break;
+    case 505:
+      alert('K vytvoření rozpisů této skupiny může dojít nejpozději za 6 hodin!\nV akutním případě kontaktujte super admina.');
+      break;
+  }
+}
+</script>

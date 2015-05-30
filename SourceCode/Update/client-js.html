@@ -1,0 +1,53 @@
+<!-- Javascript which is going to be inserted into main.html,.
+     This code serves for loading form with data and binding some actions (behaviour like selecting, changing visible parts of the form and restarting it) to it. -->
+<script>
+$('#submit').hide();
+$('#loader').show();
+
+$('#again').click(function() {
+  $('#groups').show();
+  $('#isInGroups').show();
+
+  $('div').filter(function() {
+    return this.id.match(/^isInGroup.*/);
+  }).prop('checked', false);
+});
+
+
+groups();
+
+function groups() {
+  google.script.run.withSuccessHandler(function(obj) {
+    $.each(obj, function() {
+      $('#isInGroupsOptions').append(getCheckboxDiv(this, 'isInGroup'));
+    });
+
+    $('#loader').hide();
+    $('#submit').show();
+    $('#submit').removeAttr('disabled');
+
+  }).findAllGroups();
+}
+
+
+function getCheckboxDiv(group, name) {
+  var div = $("<div class='checkboxDiv'/>");
+  var checkbox = $("<input type='checkbox'/>").val(name + group.group);
+  var checked = group.isInGroup;
+
+  if (checked) {
+    checkbox.prop('checked', true);
+  }
+
+  if (!group.editable) {
+    checkbox.attr('onclick', 'return false');
+  }
+
+  checkbox.attr('id', name + group.group);
+  div.append($('<label/>').text(group.group));
+  div.append(checkbox);
+  div.append($('<label/>').text('|'));
+
+  return div;
+}
+</script>

@@ -1,0 +1,24 @@
+<!-- Form insides, which are going to be inserted into main.html -->
+<? var client = getData('updateObj') ?>
+<p>
+  <label for='nameBox'>Jméno</label>
+  <br>
+  <input id='nameBox' type='text' name='nameBox' value='<?!= client.name ?>' required='true'  placeholder='Jméno klienta' readonly>
+  <label id='nameErr' class='error' for='nameBox' hidden='true'></label>
+</p>
+<p>
+  <label for='emailBox'>Email</label>
+  <br>
+  <input id='emailBox' type='email' name='emailBox' value='<?!= client.email ?>' placeholder='Email klienta'>
+  <label id='emailErr' class='error' for='emailBox' hidden='true'></label> 
+</p>
+<div id='groups'>
+  <div id='isInGroups'>
+    <p class='clearDiv'>
+      <br>
+      <label for='isInGroupsBox'>Náleží do skupin</label>
+      <label id='isInGroupsErr' class='error' for='isInGroupsBox'  hidden='true'></label>
+    </p>
+    <div id='isInGroupsOptions'></div>
+  </div>
+</div>
