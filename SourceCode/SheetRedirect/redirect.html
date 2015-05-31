@@ -2,18 +2,18 @@
 <?!= include('css');?>
 <div id='mainDiv'>
   <p>
-    <label>Týden <?!= getWeek(); ?> (<?!= getYear(); ?>)</label>
+    <label>Týden <?!= getProp('week'); ?> (<?!= getProp('year') ?>)</label>
   </p>
-  <? Utils.setUserProp('sheetsRedirectPart','isInGroups'); ?>
-  <? Utils.setUserObjProp('sheetsRedirectFiles',Utils.findFiles(['url','id','group','type','owner'],{year:getYear(),week:getWeek()})); ?>
+  <? setProp('sheetsRedirectPart','isInGroups'); ?>
+  <? saveData('sheetsRedirectFiles',Utils.findFiles(['url','id','group','type','owner'],{year: getProp('year'),week: getProp('week')})); ?>
   <div class='partDiv'>
     <?!= includeAndEvaluate('groupsPart'); ?>
   </div>
-  <? Utils.setUserProp('sheetsRedirectPart','leadsGroups'); ?>
+  <? setProp('sheetsRedirectPart','leadsGroups'); ?>
   <div class='partDiv'>
     <?!= includeAndEvaluate('groupsPart'); ?>
   </div>
-  <? Utils.setUserProp('sheetsRedirectPart','admin'); ?>
+  <? setProp('sheetsRedirectPart','admin'); ?>
   <div class='partDiv'>
     <?!= includeAndEvaluate('groupsPart'); ?>
   </div>

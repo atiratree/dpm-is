@@ -5,10 +5,10 @@
  */
 function refreshAssistantsSheets(spreadSheet) {
   spreadSheet = spreadSheet ? spreadSheet : SpreadsheetApp.getActiveSpreadsheet();
-  var actors = getData(spreadSheet, 'actors');
+  var actors = getData('actors', spreadSheet);
   var mainSheet = spreadSheet.getSheetByName('Rozpis');
-  var clientsNames = getData(spreadSheet, 'clientsNames');
-  var clientsSpecial = getData(spreadSheet, 'clientsSpecial');
+  var clientsNames = getData('clientsNames', spreadSheet);
+  var clientsSpecial = getData('clientsSpecial', spreadSheet);
   var data = [];
 
   for (var i = 1; i < 8; i++) {

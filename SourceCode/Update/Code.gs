@@ -6,12 +6,8 @@
  */
 function doGet(e) {
   try {
-    PropertiesService.getUserProperties().deleteAllProperties();
-    Utils.deleteProp('userPermission');
-    for (var prop in e.parameter) {
-      Utils.setUserProp(prop, e.parameter[prop]);
-    }
-
+    setRuntimeProperties(e.parameter);
+    
     switch (getProp('instance')) {
       case 'user':
         saveData('updateObj', Utils.findEmployees([], {
@@ -29,15 +25,15 @@ function doGet(e) {
         })[0]);
         break;
       default:
-        return null;
+        return createPresentableHTML('<p>Authorizace...OK</p>', 'string');
+        break;
     }
 
-    var html = createPresentableHTML('main', 'file', 'Editace');
+    return createPresentableHTML('main', 'file', 'Editace');
   } catch (error) {
+    return createPresentableHTML('<p>SERVER_ERROR</p>', 'string');
     Utils.logError(error);
-    throw error;
   }
-  return html;
 }
 
 /**

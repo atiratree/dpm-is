@@ -81,19 +81,46 @@ function createPresentableHTML(content, sourceType, title) {
  * Wrapper function. 
  */
 function saveData(fieldName, obj) {
-  Utils.setUserObjProp(fieldName, obj);
+  Utils.setUserObjProp(fieldName  + sessionId, obj);
 }
 
 /**
  * Wrapper function.
  */
 function getData(fieldName) {
-  return Utils.getUserObjProp(fieldName);
+  return Utils.getUserObjProp(fieldName  + sessionId);
 }
 
 /**
  * Wrapper function.
  */
 function getProp(name) {
-  return Utils.getUserProp(name);
+  return Utils.getUserProp(name  + sessionId);
 }
+
+/**
+ * Wrapper function.
+ */
+function setProp(prop, value) {
+  Utils.setUserProp(prop + sessionId, value);
+}
+
+/**
+ * Sets runtime properties
+ *
+ * @param params object with properties to set
+ */
+function setRuntimeProperties(params){
+  var renewProps = {};
+  
+  propItems.forEach(function(prop){
+     var value = (params && params[prop] != null) ? params[prop] : '';     
+     renewProps[prop + sessionId] = value;
+     
+  });
+  Utils.setUserProps(renewProps);
+}
+ 
+/* props settings variables*/
+var propItems = ['instance', 'updateObj', 'email', 'name', 'shortcut'];
+var sessionId = 'update';  

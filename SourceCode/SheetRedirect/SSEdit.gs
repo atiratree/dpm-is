@@ -1,18 +1,4 @@
 /**
- * Wrapper function for saving data associated it with this spreadsheet 
- */
-function saveData(ss, fieldName, obj) {
-  Utils.setUserObjProp(ss.getId() + fieldName, obj);
-}
-
-/**
- * Wrapper function for getting data associated it with this spreadsheet 
- */
-function getData(ss, fieldName) {
-  return Utils.getUserObjProp(ss.getId() + fieldName);
-}
-
-/**
  * Function which processes behaviour when spreadsheet is edited
  *
  * @param e event send from spreadsheet
@@ -94,9 +80,9 @@ function employeeChanged(e, sheet, col, row) {
   var background = '#ffffff';
   var tariff = sheet.getRange(row, col + 1, 1, 1).getValue();
   if (e.value) {
-    colors = colors ? colors : getData(e.source, 'colors');
-    index = index ? index : getData(e.source, 'nicks').indexOf(e.value);
-    defaultTariff = defaultTariff ? defaultTariff : getData(e.source, 'defaultTariff');
+    colors = colors ? colors : getData('colors', e.source);
+    index = index ? index : getData('nicks', e.source).indexOf(e.value);
+    defaultTariff = defaultTariff ? defaultTariff : getData('defaultTariff', e.source);
     var mainEventRange = sheet.getRange(row, col - 1, 1, 1);
 
     if (index > -1 && colors[index]) {
@@ -124,10 +110,10 @@ function employeeChanged(e, sheet, col, row) {
  * @return true if selected event is not a client
  */
 function isSelectedMainEventSpecial(spreadSheet, value) {
-  clientsNames = clientsNames ? clientsNames : getData(spreadSheet, 'clientsNames');
+  clientsNames = clientsNames ? clientsNames : getData('clientsNames', spreadSheet);
 
   var index = clientsNames.indexOf(value);
-  clientsSpecial = clientsSpecial ? clientsSpecial : getData(spreadSheet, 'clientsSpecial');
+  clientsSpecial = clientsSpecial ? clientsSpecial : getData('clientsSpecial', spreadSheet);
 
   return (index > -1 && clientsSpecial[index] && clientsSpecial[index] == 1);
 }

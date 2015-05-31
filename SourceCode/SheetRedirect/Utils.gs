@@ -6,7 +6,7 @@
  * @return requested resource or null if resource not found
  */
 function getResource(resource, param) {
-  switch (Utils.getUserProp('sheetsRedirectPart')) {
+  switch (getProp('sheetsRedirectPart')) {
     case 'isInGroups':
       switch (resource) {
         case 'includeBool':
@@ -18,7 +18,7 @@ function getResource(resource, param) {
         case 'name':
           return 'Náležíte do těchto skupin : ';
         case 'getGroups':
-          return Utils.getUserObjProp('shRFRes');
+          return getData('shRFRes');
         case 'links':
           return getLinks(param.files, param.group, Utils.getUserEmail());
         default:
@@ -35,7 +35,7 @@ function getResource(resource, param) {
         case 'name':
           return 'Vedete tyto skupiny : ';
         case 'getGroups':
-          return Utils.getUserObjProp('shRFRes2');
+          return getData('shRFRes2');
         case 'links':
           return getLinks(param.files, param.group);
         default:
@@ -72,7 +72,7 @@ function setAndLook(email, array, prop) {
   var emails = Utils.convertObjectsToArrayByProperty(array, 'employeeEmail');
   var groups = Utils.convertObjectsToArrayByProperty(array, 'group');
 
-  Utils.setUserObjProp(prop, groups);
+  saveData(prop, groups);
 
   return emails.indexOf(email) > -1;
 }
@@ -95,3 +95,53 @@ function getLinks(files, group, owner) {
   }
   return result;
 }
+
+/**
+ * Wrapper function for saving data associated it with this spreadsheet 
+ */
+function saveData(fieldName, obj, ss) {
+  var token = ss == null ? '' : ss.getId();
+  Utils.setUserObjProp(token + fieldName + sessionId, obj);
+}
+
+/**
+ * Wrapper function for getting data associated it with this spreadsheet 
+ */
+function getData(fieldName, ss) {
+  var token = ss == null ? '' : ss.getId();
+  return Utils.getUserObjProp(token + fieldName + sessionId);
+}
+
+/**
+ * Wrapper function.
+ */
+function getProp(prop) {
+  return Utils.getUserProp(prop  + sessionId);
+}
+
+/**
+ * Wrapper function.
+ */
+function setProp(prop, value) {
+  Utils.setUserProp(prop + sessionId, value);
+}
+
+/**
+ * Sets runtime properties
+ *
+ * @param params object with properties to set
+ */
+function setRuntimeProperties(params){
+  var renewProps = {};
+  
+  propItems.forEach(function(prop){
+     var value = (params && params[prop] != null) ? params[prop] : '';
+     renewProps[prop] = value;
+  });
+  Utils.setUserProps(renewProps);
+}
+ 
+/* props settings variables*/
+var propItems = ['year', 'week', 'sheetsRedirectPart', 'colors', 'nicks', 'actors', 'clientsNames', 'clientsSpecial', 'defaultTariff', 'sheetsRedirectFiles', 'shRFRes', 'shRFRes2'];
+var sessionId = 'sheetsRedirect';  
+

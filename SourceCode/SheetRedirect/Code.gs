@@ -7,34 +7,18 @@
 function doGet(e) {
   var html;
   try {
-    PropertiesService.getUserProperties().deleteAllProperties();
-    for (var prop in e.parameter) {
-      Utils.setUserProp(prop, e.parameter[prop]);
-    }
+    setRuntimeProperties(e.parameter);  
+    
     if (e.parameter.year && e.parameter.week) {
       html = createPresentableHTML('redirect', 'file', 'Výběr rozpisu');
     } else {
       html = createPresentableHTML('<p>Authorizace...OK</p>', 'string');
     }
   } catch (error) {
-    html = createPresentableHTML('<p>Nelze zobrazit rozpisy, pravděpodobně nenáležíte do žádné skupiny</p>', 'string');
+    html = createPresentableHTML('<p>Nelze zobrazit rozpisy. 1) Server může být zaneprázdněn, zkuste znovu. 2) Nebo nenáležíte do žádné skupiny</p>', 'string');
     Utils.log(error);
   }
   return html;
-}
-
-/**
- * @return week, which was set in doGet
- */
-function getWeek() {
-  return Utils.getUserProp('week');
-}
-
-/**
- * @return year, which was set in doGet
- */
-function getYear() {
-  return Utils.getUserProp('year');
 }
 
 /**

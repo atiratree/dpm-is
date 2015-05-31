@@ -5,12 +5,15 @@
  * @return HTML page with javascript
  */
 function doGet(e) {
+  var html;
   try {
-    PropertiesService.getUserProperties().deleteAllProperties();
-    for (var prop in e.parameter) {
-      Utils.setUserProp(prop, e.parameter[prop]);
-    }
-    var html = createPresentableHTML('main', 'file', 'Smazání');
+    setRuntimeProperties(e.parameter);
+    
+    if (e.parameter.instance) {
+      html = createPresentableHTML('main', 'file', 'Smazání');
+    }else{
+      html = createPresentableHTML('<p>Authorizace...OK</p>', 'string');
+    }   
   } catch (error) {
     html = createPresentableHTML('<p>SERVER_ERROR</p>', 'string');
     Utils.logError(error);

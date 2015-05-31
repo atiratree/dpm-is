@@ -75,10 +75,6 @@ function roundToTwo(num) {
   return (+(Math.round(num + 'e+2') + 'e-2')).toFixed(2);
 }
 
-function getProp(name) {
-  return Utils.getUserProp(name);
-}
-
 /**
  * Generates HMTL from a file. *just shortcut a for a long command
  *
@@ -116,3 +112,39 @@ function createPresentableHTML(content, sourceType, title) {
 
   return HtmlService.createTemplateFromFile(content).evaluate().setSandboxMode(HtmlService.SandboxMode.IFRAME).setTitle(title);
 }
+
+
+/**
+ * Wrapper function.
+ */
+function getProp(name) {
+  return Utils.getUserProp(name  + sessionId);
+}
+
+/**
+ * Wrapper function.
+ */
+function setProp(prop, value) {
+  Utils.setUserProp(prop + sessionId, value);
+}
+
+/**
+ * Sets runtime properties
+ *
+ * @param params object with properties to set
+ */
+function setRuntimeProperties(params){
+  var renewProps = {};
+  
+  propItems.forEach(function(prop){
+     var value = (params && params[prop] != null) ? params[prop] : '';     
+     renewProps[prop + sessionId] = value;
+     
+  });
+  Utils.setUserProps(renewProps);
+}
+ 
+/* props settings variables*/
+var propItems = ['instance'];
+var sessionId = 'statsBill';  
+

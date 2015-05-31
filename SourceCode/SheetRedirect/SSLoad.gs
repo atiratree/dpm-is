@@ -19,12 +19,12 @@ function loadDataAndSave(spreadSheet) {
     nicksArray = Utils.convertObjectsToArrayByProperty(actors, 'nick');
     clientsArray = Utils.convertObjectsToArrayByProperty(clients, 'name');
 
-    saveData(spreadSheet, 'nicks', nicksArray);
-    saveData(spreadSheet, 'colors', Utils.convertObjectsToArrayByProperty(actors, 'color'));
-    saveData(spreadSheet, 'actors', actors);
-    saveData(spreadSheet, 'clientsNames', clientsArray);
-    saveData(spreadSheet, 'clientsSpecial', Utils.convertObjectsToArrayByProperty(clients, 'special'));
-    saveData(spreadSheet, 'defaultTariff', getDefaultTariff(tariffs));
+    saveData('nicks', nicksArray, spreadSheet);
+    saveData('colors', Utils.convertObjectsToArrayByProperty(actors, 'color'), spreadSheet);
+    saveData('actors', actors, spreadSheet);
+    saveData('clientsNames', clientsArray, spreadSheet);
+    saveData('clientsSpecial', Utils.convertObjectsToArrayByProperty(clients, 'special'), spreadSheet);
+    saveData('defaultTariff', getDefaultTariff(tariffs), spreadSheet);
   } catch (e) {
     Utils.logError(e);
   }

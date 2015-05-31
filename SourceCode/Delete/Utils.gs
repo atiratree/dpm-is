@@ -83,13 +83,6 @@ function include(filename) {
   return HtmlService.createHtmlOutputFromFile(filename).getContent();
 }
 
-/**
- * Wrapper function. 
- */
-function getProp(name) {
-  return Utils.getUserProp(name);
-}
-
 /*
  * Creates presentable HTML for a browser
  * *cannot be run from library, becaouse of filename
@@ -118,3 +111,38 @@ function createPresentableHTML(content, sourceType, title) {
 function hasSitesPermission() {
   return getProp('instance') === 'user';
 }
+
+
+/**
+ * Wrapper function.
+ */
+function getProp(name) {
+  return Utils.getUserProp(name  + sessionId);
+}
+
+/**
+ * Wrapper function.
+ */
+function setProp(prop, value) {
+  Utils.setUserProp(prop + sessionId, value);
+}
+
+/**
+ * Sets runtime properties
+ *
+ * @param params object with properties to set
+ */
+function setRuntimeProperties(params){
+  var renewProps = {};
+  
+  propItems.forEach(function(prop){
+     var value = (params && params[prop] != null) ? params[prop] : '';     
+     renewProps[prop + sessionId] = value;
+     
+  });
+  Utils.setUserProps(renewProps);
+}
+ 
+/* props settings variables*/
+var propItems = ['instance', 'email', 'name', 'shortcut', 'nick'];
+var sessionId = 'delete';  

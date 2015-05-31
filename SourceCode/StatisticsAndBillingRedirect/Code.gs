@@ -8,13 +8,11 @@ function doGet(e) {
   var html;
 
   try {
-    PropertiesService.getUserProperties().deleteAllProperties();
-
-    for (var prop in e.parameter) {
-      Utils.setUserProp(prop, e.parameter[prop]);
-    }
-
-    if (Utils.getUserPermission() == 0 || Utils.getUserPermission() == 1 || Utils.getUserPermission() == 2) {
+    setRuntimeProperties(e.parameter);  
+    
+    if (!e.parameter.instance) {
+      html = createPresentableHTML('<p>Authorizace...OK</p>', 'string');
+    } else if (Utils.getUserPermission() == 0 || Utils.getUserPermission() == 1 || Utils.getUserPermission() == 2) {
       html = createPresentableHTML('main', 'file', getProp('instance') == 'statistics' ? 'Generování statistiky' : 'Generování fakturace');
     } else {
       html = createPresentableHTML('<p>NO_PERMISSION</p>', 'string');
