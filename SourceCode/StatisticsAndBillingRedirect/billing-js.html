@@ -1,9 +1,0 @@
-<!-- Javascript for billing which fills form with clients-->
-<script>
-google.script.run.withSuccessHandler(function(obj) {
-  var options = $('#selectBox');
-  $.each(obj, function() {
-    options.append($('<option />').val(this).text(this));
-  });
-}).getClients();
-</script>
