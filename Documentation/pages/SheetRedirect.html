@@ -1,0 +1,672 @@
+<!-- saved from url=(0100)https://script.google.com/a/macros/domovpromne.cz/library/d/MHS6b57GmOFR6Bc5u4LvwqJI83Ch5vERZ/GS:web -->
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Library Documentation</title>
+  <link rel="stylesheet" type="text/css" href="../css/screen-docs.css">
+  <link href="../css/css" rel="stylesheet" type="text/css">
+  <style type="text/css">
+  /* This is not a zero-length file! */
+  </style>
+  <style type="text/css">
+  /* This is not a zero-length file! */
+  </style>
+</head>
+
+<body class="two-column docs">
+  <div id="gc-wrapper">
+    <div id="gc-main" class="main">
+      <div id="gc-content" style="margin-left:0">
+      <a href="../index.html">
+          <font class="link">
+            <b>Home</b>
+          </font>
+        </a>
+        <h1 class="page_title">SheetsRedirect</h1>
+        <p>web app meta-version</p>
+        <h2>setAndLook(Object email, Object array, Object prop)</h2>
+        <p>Function for telling if the user can see this part of html, it is called from scriptlet. Sets array to user properties.</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>email</td>
+              <td><code>Object</code></td>
+              <td>email of active user</td>
+            </tr>
+            <tr>
+              <td>array</td>
+              <td><code>Object</code></td>
+              <td>array of groups this user belongs to</td>
+            </tr>
+            <tr>
+              <td>prop</td>
+              <td><code>Object</code></td>
+              <td>id for setting user properties, should be unique</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>editMainSheet(Object e)</h2>
+        <p>Function which processes behaviour when spreadsheet is edited</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>e</td>
+              <td><code>Object</code></td>
+              <td>event send from spreadsheet</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>resolveTriggers(Object id)</h2>
+        <p>Resolves triggers of a spreadsheet and generates assistants sheets from data in 'Rozpis' sheet</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>id</td>
+              <td><code>Object</code></td>
+              <td>id of spreadsheet</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>isSelectedMainEventSpecial(Object spreadSheet, Object value)</h2>
+        <p>Checks if main event is special</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>spreadSheet</td>
+              <td><code>Object</code></td>
+              <td>spreadSheet</td>
+            </tr>
+            <tr>
+              <td>value</td>
+              <td><code>Object</code></td>
+              <td>value of selected field</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>getLinks(Object files, Object group, Object owner)</h2>
+        <p>Gets links for group in format for scriptlets to assemble the page sets array to user properties</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>files</td>
+              <td><code>Object</code></td>
+              <td>all files this function searches in</td>
+            </tr>
+            <tr>
+              <td>group</td>
+              <td><code>Object</code></td>
+              <td>group we want to have links of</td>
+            </tr>
+            <tr>
+              <td>owner</td>
+              <td><code>Object</code></td>
+              <td>it takes all files without owner, if this parameter set, takes files with this owner too</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>dateChanged(Object e, Object sheet, Object col, Object row)</h2>
+        <p>Validates values of changed date</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>e</td>
+              <td><code>Object</code></td>
+              <td>event send from spreadsheet</td>
+            </tr>
+            <tr>
+              <td>sheet</td>
+              <td><code>Object</code></td>
+              <td>sheet of event</td>
+            </tr>
+            <tr>
+              <td>col</td>
+              <td><code>Object</code></td>
+              <td>col of event</td>
+            </tr>
+            <tr>
+              <td>row</td>
+              <td><code>Object</code></td>
+              <td>row of event</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>getDefaultTariff(Object tariffs)</h2>
+        <p></p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>tariffs</td>
+              <td><code>Object</code></td>
+              <td>all tariffs with its attributes</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>createPresentableHTML(Object content, Object sourceType, Object title)</h2>
+        <p>Creates presentable HTML for a browser *cannot be run from library, becaouse of filename</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>content</td>
+              <td><code>Object</code></td>
+              <td>depends on a sourceType, if sourceType isn't string, it includes file with name == content</td>
+            </tr>
+            <tr>
+              <td>sourceType</td>
+              <td><code>Object</code></td>
+              <td>is string indicating values 'string'/'file' for source type, takes file as default for any other value</td>
+            </tr>
+            <tr>
+              <td>title</td>
+              <td><code>Object</code></td>
+              <td>title of a window</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>updateMainSheet(Object spreadSheet, Object clientsArray, Object nicksArray, Object tariffs)</h2>
+        <p>Reloads and prepares spreadsheet for a user.</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>spreadSheet</td>
+              <td><code>Object</code></td>
+              <td>object of a spreadSheet to update</td>
+            </tr>
+            <tr>
+              <td>clientsArray</td>
+              <td><code>Object</code></td>
+              <td>array with clients of this spreadSheet's group</td>
+            </tr>
+            <tr>
+              <td>nicksArray</td>
+              <td><code>Object</code></td>
+              <td>array with nicks of this spreadSheet's group</td>
+            </tr>
+            <tr>
+              <td>tariffs</td>
+              <td><code>Object</code></td>
+              <td>array with tariffs of this spreadSheet's group</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>copyDayRange(Object mainSheet, Object sheet, Object row, Object column, Object numberOfRows, Object width, Object data)</h2>
+        <p>Copies data for one day between two sheets</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>mainSheet</td>
+              <td><code>Object</code></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>sheet</td>
+              <td><code>Object</code></td>
+              <td>spreadsheet to be coppied into</td>
+            </tr>
+            <tr>
+              <td>row</td>
+              <td><code>Object</code></td>
+              <td>row of sheet to start writing data</td>
+            </tr>
+            <tr>
+              <td>column</td>
+              <td><code>Object</code></td>
+              <td>column of sheet to start writing data</td>
+            </tr>
+            <tr>
+              <td>numberOfRows</td>
+              <td><code>Object</code></td>
+              <td>numberOfRows of one day</td>
+            </tr>
+            <tr>
+              <td>width</td>
+              <td><code>Object</code></td>
+              <td>width of one day</td>
+            </tr>
+            <tr>
+              <td>data</td>
+              <td><code>Object</code></td>
+              <td>data to be written in sheet</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>include(Object filename)</h2>
+        <p>Includes HMTL from a file. *just shortcut a for a long command</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>filename</td>
+              <td><code>Object</code></td>
+              <td>name of file to be included</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>deleteLowestTrigger()</h2>
+        <p>Tries to delete lowest trigger of active user</p>
+        <h2>resolveOnEdit(Object ss)</h2>
+        <p>If spreadsheet doesn't have any triggers assigned, this function assigns trigger to active user. If trigger capacity reaches maximum, it tries to delete
+          oldest trigger this function assigned.</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>ss</td>
+              <td><code>Object</code></td>
+              <td>spreadsheet for setting triggers</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>employeeChanged(Object e, Object sheet, Object col, Object row)</h2>
+        <p>Resolves colours and default tariff if employee selected</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>e</td>
+              <td><code>Object</code></td>
+              <td>event send from spreadsheet</td>
+            </tr>
+            <tr>
+              <td>sheet</td>
+              <td><code>Object</code></td>
+              <td>sheet of event</td>
+            </tr>
+            <tr>
+              <td>col</td>
+              <td><code>Object</code></td>
+              <td>col of event</td>
+            </tr>
+            <tr>
+              <td>row</td>
+              <td><code>Object</code></td>
+              <td>row of event</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>makeRules(Object arrays)</h2>
+        <p>Makes rules for data validation</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>arrays</td>
+              <td><code>Object</code></td>
+              <td>array of arrays, fields of each array are values used for each rule (i.e. only these values are valid)</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>getActors(Object group)</h2>
+        <p>gets employees associated with this group</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>group</td>
+              <td><code>Object</code></td>
+              <td>group</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>updateDayRange(Object sheet, Object row, Object column, Object numberOfRows, Object rules, Object width)</h2>
+        <p>Updates one day in a spreadsheet</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>sheet</td>
+              <td><code>Object</code></td>
+              <td>sheet to update</td>
+            </tr>
+            <tr>
+              <td>row</td>
+              <td><code>Object</code></td>
+              <td>row where to start updating</td>
+            </tr>
+            <tr>
+              <td>column</td>
+              <td><code>Object</code></td>
+              <td>column where to start updating</td>
+            </tr>
+            <tr>
+              <td>numberOfRows</td>
+              <td><code>Object</code></td>
+              <td>numberOfRows to update</td>
+            </tr>
+            <tr>
+              <td>rules</td>
+              <td><code>Object</code></td>
+              <td>rules to set for associated drop down lists</td>
+            </tr>
+            <tr>
+              <td>width</td>
+              <td><code>Object</code></td>
+              <td>width of one day(for now should be 6 only)</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>includeAndEvaluate(Object filename)</h2>
+        <p>Evaluates GAS scriptlets and includes HMTL from a file. *just shortcut a for a long command</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>filename</td>
+              <td><code>Object</code></td>
+              <td>name of file to be included</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>mainEventChanged(Object e, Object sheet, Object col, Object row)</h2>
+        <p>Manipulates row if selected value is event or client</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>e</td>
+              <td><code>Object</code></td>
+              <td>event send from spreadsheet</td>
+            </tr>
+            <tr>
+              <td>sheet</td>
+              <td><code>Object</code></td>
+              <td>sheet of event</td>
+            </tr>
+            <tr>
+              <td>col</td>
+              <td><code>Object</code></td>
+              <td>col of event</td>
+            </tr>
+            <tr>
+              <td>row</td>
+              <td><code>Object</code></td>
+              <td>row of event</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>loadDataAndSave(Object spreadSheet)</h2>
+        <p>Reloads data for spreadsheet to use, to user properties.</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>spreadSheet</td>
+              <td><code>Object</code></td>
+              <td>spreadSheet object to reload</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>refreshAssistantsSheets(Object spreadSheet)</h2>
+        <p>Sorts data from sheet rozpis and creates sheets for all group actors and assigns appropriate data</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>spreadSheet</td>
+              <td><code>Object</code></td>
+              <td>spreadsheet for refreshing</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>getYear()</h2>
+        <p></p>
+        <h2>getData(Object ss, Object fieldName)</h2>
+        <p>Wrapper function for getting data associated it with this spreadsheet</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>ss</td>
+              <td><code>Object</code></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>fieldName</td>
+              <td><code>Object</code></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>doGet(Object e)</h2>
+        <p>Serves HTML</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>e</td>
+              <td><code>Object</code></td>
+              <td>url parameters setting this webapp's beahviour</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>copyDataBetweenSheets(Object main, Object secondary, Object data, Object clientsNames, Object clientsSpecial)</h2>
+        <p>Copies data between two sheets, only sorted out data will be in secondary sheet</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>main</td>
+              <td><code>Object</code></td>
+              <td>main spreadsheet</td>
+            </tr>
+            <tr>
+              <td>secondary</td>
+              <td><code>Object</code></td>
+              <td>spreadsheet to be coppied into</td>
+            </tr>
+            <tr>
+              <td>data</td>
+              <td><code>Object</code></td>
+              <td>data from main spreadsheet</td>
+            </tr>
+            <tr>
+              <td>clientsNames</td>
+              <td><code>Object</code></td>
+              <td>array with clients names</td>
+            </tr>
+            <tr>
+              <td>clientsSpecial</td>
+              <td><code>Object</code></td>
+              <td>array with special attributes</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>getResource(Object resource, Object param)</h2>
+        <p>Helper function to create main HTML. It can return html, string or arrays of objects we need to include in our page.</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>resource</td>
+              <td><code>Object</code></td>
+              <td>string describing wanted resource</td>
+            </tr>
+            <tr>
+              <td>param</td>
+              <td><code>Object</code></td>
+              <td>object as {files: [..], group: [..]} with objects for faster execution</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>getClientAndEvents(Object group)</h2>
+        <p>Gets all clients and events associated with this group</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>group</td>
+              <td><code>Object</code></td>
+              <td>group identificator for events and clients</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>getWeek()</h2>
+        <p></p>
+        <h2>saveData(Object ss, Object fieldName, Object obj)</h2>
+        <p>Wrapper function for saving data associated it with this spreadsheet</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>ss</td>
+              <td><code>Object</code></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>fieldName</td>
+              <td><code>Object</code></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>obj</td>
+              <td><code>Object</code></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

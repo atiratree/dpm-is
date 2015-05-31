@@ -1,0 +1,205 @@
+<!-- saved from url=(0124)https://script.google.com/a/macros/domovpromne.cz/library/d/1tcSslMYASRFgN5q2J8oN_qmn_P1UOQmnHrzoQNOxb4gyweX9HlUg0k5r/GS:web -->
+<html>
+
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Library Documentation</title>
+  <link rel="stylesheet" type="text/css" href="../css/screen-docs.css">
+  <link href="../css/css" rel="stylesheet" type="text/css">
+  <style type="text/css">
+  /* This is not a zero-length file! */
+  </style>
+  <style type="text/css">
+  /* This is not a zero-length file! */
+  </style>
+</head>
+
+<body class="two-column docs">
+  <div id="gc-wrapper">
+    <div id="gc-main" class="main">
+      <div id="gc-content" style="margin-left:0">
+      <a href="../index.html">
+          <font class="link">
+            <b>Home</b>
+          </font>
+        </a>
+        <h1 class="page_title">CalendarAndFilesScheduler</h1>
+        <p>web app meta-version</p>
+        <h2>correctDbProtections(Object employees)</h2>
+        <p>Corrects database permissions for all empoyees</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>employees</td>
+              <td><code>Object</code></td>
+              <td>object of all employees</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>correctProtections()</h2>
+        <p>Corrects permission for all Schedule spreadsheets and sheet 'Rozpis'</p>
+        <h2>refreshSpreadSheet(Object day, Object week, Object data)</h2>
+        <p>Creates all spreadsheets not existing in this week</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>day</td>
+              <td><code>Object</code></td>
+              <td>monday of week to be set</td>
+            </tr>
+            <tr>
+              <td>week</td>
+              <td><code>Object</code></td>
+              <td>week to be refreshed</td>
+            </tr>
+            <tr>
+              <td>data</td>
+              <td><code>Object</code></td>
+              <td>object with data</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>runOnceAWeek()</h2>
+        <p>automatic script which reloads calendar and creates missing Schedule Sheets</p>
+        <h2>runEveryTwoHours()</h2>
+        <p>automatic script which refreshes rights for Sheets and Sites</p>
+        <h2>correctSitesRights(Object employees)</h2>
+        <p>Corrects database permissions for all empoyees</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>employees</td>
+              <td><code>Object</code></td>
+              <td>object of all employees</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>refreshCalendar(Object day, Object till, Object week)</h2>
+        <p>refreshes calendar events</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>day</td>
+              <td><code>Object</code></td>
+              <td>monday of week to be set in calendar</td>
+            </tr>
+            <tr>
+              <td>till</td>
+              <td><code>Object</code></td>
+              <td>end of week to be set in calendar</td>
+            </tr>
+            <tr>
+              <td>week</td>
+              <td><code>Object</code></td>
+              <td>week number to be set in calendar</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>refreshAll()</h2>
+        <p>not automatic</p>
+        <h2>runEverySixHours()</h2>
+        <p>automatic script which creates missing Schedule Sheets</p>
+        <h2>createPresentableHTML(Object content, Object sourceType, Object title)</h2>
+        <p>Creates presentable HTML for a browser *cannot be run from library, becaouse of filename</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>content</td>
+              <td><code>Object</code></td>
+              <td>depends on a sourceType, if sourceType isn't string, it includes file with name == content</td>
+            </tr>
+            <tr>
+              <td>sourceType</td>
+              <td><code>Object</code></td>
+              <td>is string indicating values 'string'/'file' for source type, takes file as default for any other value</td>
+            </tr>
+            <tr>
+              <td>title</td>
+              <td><code>Object</code></td>
+              <td>title of a window</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>appplyProtections(Object protection, Object emails)</h2>
+        <p>Refreshes protections. Deletes protections not existing in emails and sets all permissions in emails.</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>protection</td>
+              <td><code>Object</code></td>
+              <td>protection object to be changed</td>
+            </tr>
+            <tr>
+              <td>emails</td>
+              <td><code>Object</code></td>
+              <td>emails of desired editors</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>doGet()</h2>
+        <p>Serves HTML of refresh button for super admin only, this script can run only as super admin</p>
+        <h2>isFileInDB(Object files, Object obj)</h2>
+        <p>Checks if obj is in DB. Uses cached files obj, because looking into the database all the time would be inefficient.</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>files</td>
+              <td><code>Object</code></td>
+              <td>all files in db</td>
+            </tr>
+            <tr>
+              <td>obj</td>
+              <td><code>Object</code></td>
+              <td>Object to be checked for</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
