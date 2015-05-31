@@ -1,0 +1,477 @@
+<!-- saved from url=(0095)https://script.google.com/a/macros/domovpromne.cz/library/d/MAS_lfKk6839l2TcyeIAicpI83Ch5vERZ/7 -->
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Library Documentation</title>
+  <link rel="stylesheet" type="text/css" href="../css/screen-docs.css">
+  <link href="../css/css" rel="stylesheet" type="text/css">
+  <style type="text/css">
+  /* This is not a zero-length file! */
+  </style>
+  <style type="text/css">
+  /* This is not a zero-length file! */
+  </style>
+</head>
+
+<body class="two-column docs">
+  <div id="gc-wrapper">
+    <div id="gc-main" class="main">
+      <div id="gc-content" style="margin-left:0">
+       <a href="../index.html">
+          <font class="link">
+            <b>Home</b>
+          </font>
+        </a>
+        <h1 class="page_title">ObjDB</h1>
+        <p>insert row new version</p>
+        <h2>replaceRow(object handler, string table, object values, object cond)</h2>
+        <p>Replace a row in the database--insert if the row does not exist yet</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>handler</td>
+              <td><code>object</code></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>table</td>
+              <td><code>string</code></td>
+              <td>table in which row is set</td>
+            </tr>
+            <tr>
+              <td>values</td>
+              <td><code>object</code></td>
+              <td>key/value pairs that will be set in row</td>
+            </tr>
+            <tr>
+              <td>cond</td>
+              <td><code>object</code></td>
+              <td>key/value pair to identify row(s) to be updated</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>int</code></td>
+              <td>nr. of rows affected?</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>query(object handler, string query)</h2>
+        <p>Do a simple query without getting results, (jdbc only) useful for modifying, creating and deleting tables</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>handler</td>
+              <td><code>object</code></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>query</td>
+              <td><code>string</code></td>
+              <td>simple query to be executed</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>boolean</code></td>
+              <td>indicating success or failure.</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>getRows(object handler, string table, array columns, object cond, int limit)</h2>
+        <p>Get result rows: columns from table where cond</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>handler</td>
+              <td><code>object</code></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>table</td>
+              <td><code>string</code></td>
+              <td>database table</td>
+            </tr>
+            <tr>
+              <td>columns</td>
+              <td><code>array</code></td>
+              <td>list of columns, use all columns if no array or empty array</td>
+            </tr>
+            <tr>
+              <td>cond</td>
+              <td><code>object</code></td>
+              <td>key/value pairs for selecting rows</td>
+            </tr>
+            <tr>
+              <td>limit</td>
+              <td><code>int</code></td>
+              <td>max number of rows returned</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>array</code></td>
+              <td>array of objects, objects have column labels as keys</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>insertRow(object handler, string table, object values)</h2>
+        <p>Insert a row in the database</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>handler</td>
+              <td><code>object</code></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>table</td>
+              <td><code>string</code></td>
+              <td>table in which row is set</td>
+            </tr>
+            <tr>
+              <td>values</td>
+              <td><code>object</code></td>
+              <td>key/value pairs in row that will be inserted</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>int</code></td>
+              <td>nr. of rows affected?</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>close(object handler)</h2>
+        <p>Close the database connection (jdbc only)</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>handler</td>
+              <td><code>object</code></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>deleteRow(object handler, string table, object cond)</h2>
+        <p>Delete a row from the database</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>handler</td>
+              <td><code>object</code></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>table</td>
+              <td><code>string</code></td>
+              <td>table in which row is set</td>
+            </tr>
+            <tr>
+              <td>cond</td>
+              <td><code>object</code></td>
+              <td>key/value pair to identify row(s) to be deleted</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>int</code></td>
+              <td>nr. of rows affected?</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>open(string dbString, string user, string pass)</h2>
+        <p>Open database or spreadsheet</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>dbString</td>
+              <td><code>string</code></td>
+              <td>jdbc connection string or unique identifier for spreadsheet</td>
+            </tr>
+            <tr>
+              <td>user</td>
+              <td><code>string</code></td>
+              <td>(jdbc only)</td>
+            </tr>
+            <tr>
+              <td>pass</td>
+              <td><code>string</code></td>
+              <td>(jdbc only)</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>object</code></td>
+              <td>handler for further operations</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>update(object handler, string query)</h2>
+        <p>Do an update query without getting results, (jdbc only) use for INSERT, DELETE, UPDATE</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>handler</td>
+              <td><code>object</code></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>query</td>
+              <td><code>string</code></td>
+              <td>simple query to be executed</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>int</code></td>
+              <td>nr. of rows affected?</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>insertId(object handler)</h2>
+        <p>Get key of last insert statement (jdbc only)</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>handler</td>
+              <td><code>object</code></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>int</code></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>getRowsByQuery(object handler, string query)</h2>
+        <p>Get result rows from a SELECT query (jdbc only)</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>handler</td>
+              <td><code>object</code></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>query</td>
+              <td><code>string</code></td>
+              <td>SELECT query to be executed</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>array</code></td>
+              <td>array of objects, objects have column labels as keys</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>updateRow(object handler, string table, object values, object cond)</h2>
+        <p>Update a row in the database</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>handler</td>
+              <td><code>object</code></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>table</td>
+              <td><code>string</code></td>
+              <td>table in which row is set</td>
+            </tr>
+            <tr>
+              <td>values</td>
+              <td><code>object</code></td>
+              <td>key/value pairs that will be set in row</td>
+            </tr>
+            <tr>
+              <td>cond</td>
+              <td><code>object</code></td>
+              <td>key/value pair to identify row(s) to be updated</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>int</code></td>
+              <td>nr. of rows affected?</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>setSkipRows(object handler, string table, int index, int howMany)</h2>
+        <p>Set the rows to skip in sheets (spreadsheets only) so first row contains headers and second and below data similar to JS array splice function</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>handler</td>
+              <td><code>object</code></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>table</td>
+              <td><code>string</code></td>
+              <td>name of sheet</td>
+            </tr>
+            <tr>
+              <td>index</td>
+              <td><code>int</code></td>
+              <td>number of first row to skip, as in right margin in spreadsheet view</td>
+            </tr>
+            <tr>
+              <td>howMany</td>
+              <td><code>int</code></td>
+              <td>number of rows to remove</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

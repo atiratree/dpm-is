@@ -1,0 +1,402 @@
+<!-- saved from url=(0100)https://script.google.com/a/macros/domovpromne.cz/library/d/MVGfGI8BE6VC5b4XvUjXrnJI83Ch5vERZ/GS:web -->
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Library Documentation</title>
+  <link rel="stylesheet" type="text/css" href="../css/screen-docs.css">
+  <link href="../css/css" rel="stylesheet" type="text/css">
+  <style type="text/css">
+  /* This is not a zero-length file! */
+  </style>
+  <style type="text/css">
+  /* This is not a zero-length file! */
+  </style>
+</head>
+
+<body class="two-column docs">
+  <div id="gc-wrapper">
+    <div id="gc-main" class="main">
+      <div id="gc-content" style="margin-left:0">
+      <a href="../index.html">
+          <font class="link">
+            <b>Home</b>
+          </font>
+        </a>
+        <h1 class="page_title">StatisticsAndBillingRedirect</h1>
+        <p>web app meta-version</p>
+        <h2>getClients()</h2>
+        <p>returns array with name of all clients</p>
+        <h2>msToTime(Object duration)</h2>
+        <p>Converts duration into time format string @duration miliseconds</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>duration</td>
+              <td><code>Object</code></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>getSortedObjProps(Object obj)</h2>
+        <p>Creates array of object properties and sortes them</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>obj</td>
+              <td><code>Object</code></td>
+              <td>Object with string properties</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>getResource(Object resource)</h2>
+        <p>Helper function to create main HTML. It can return html, javascript ot strings we need to include in our page.</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>resource</td>
+              <td><code>Object</code></td>
+              <td>string describing wanted resource</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>createPresentableHTML(Object content, Object sourceType, Object title)</h2>
+        <p>Creates presentable HTML for a browser *cannot be run from library, becaouse of filename</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>content</td>
+              <td><code>Object</code></td>
+              <td>depends on a sourceType, if sourceType isn't string, it includes file with name == content</td>
+            </tr>
+            <tr>
+              <td>sourceType</td>
+              <td><code>Object</code></td>
+              <td>is string indicating values 'string'/'file' for source type, takes file as default for any other value</td>
+            </tr>
+            <tr>
+              <td>title</td>
+              <td><code>Object</code></td>
+              <td>title of a window</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>doGet(Object e)</h2>
+        <p>Serves HTML and checks user's permissionto view it</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>e</td>
+              <td><code>Object</code></td>
+              <td>url parameters setting this webapp's beahviour</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>include(Object filename)</h2>
+        <p>Generates HMTL from a file. *just shortcut a for a long command</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>filename</td>
+              <td><code>Object</code></td>
+              <td>name of file to be included</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>writeToCell(Object sheet, Object row, Object col, Object value)</h2>
+        <p>Writes data to specific cell</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>sheet</td>
+              <td><code>Object</code></td>
+              <td>where to write</td>
+            </tr>
+            <tr>
+              <td>row</td>
+              <td><code>Object</code></td>
+              <td>where to write</td>
+            </tr>
+            <tr>
+              <td>col</td>
+              <td><code>Object</code></td>
+              <td>where to write</td>
+            </tr>
+            <tr>
+              <td>value</td>
+              <td><code>Object</code></td>
+              <td>value to write</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>writeBilling(Object spreadsheetData, Object sheet, Object client)</h2>
+        <p>Writes billing into the sheet</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>spreadsheetData</td>
+              <td><code>Object</code></td>
+              <td>data to write into sheet</td>
+            </tr>
+            <tr>
+              <td>sheet</td>
+              <td><code>Object</code></td>
+              <td>sheet</td>
+            </tr>
+            <tr>
+              <td>client</td>
+              <td><code>Object</code></td>
+              <td>name of client</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>writeStats(Object events, Object spreadsheetData, Object sheet, Object type, Object from, Object to)</h2>
+        <p>Writes statistics into the sheet</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>events</td>
+              <td><code>Object</code></td>
+              <td>all events</td>
+            </tr>
+            <tr>
+              <td>spreadsheetData</td>
+              <td><code>Object</code></td>
+              <td>data to write into sheet</td>
+            </tr>
+            <tr>
+              <td>sheet</td>
+              <td><code>Object</code></td>
+              <td>sheet</td>
+            </tr>
+            <tr>
+              <td>type</td>
+              <td><code>Object</code></td>
+              <td>switches writing stats to different modes</td>
+            </tr>
+            <tr>
+              <td>from</td>
+              <td><code>Object</code></td>
+              <td>from which data to write stats</td>
+            </tr>
+            <tr>
+              <td>to</td>
+              <td><code>Object</code></td>
+              <td>to which data to write stats</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>getProp(Object name)</h2>
+        <p></p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>name</td>
+              <td><code>Object</code></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>writeToCellSpec(Object sheet, Object row, Object col, Object obj)</h2>
+        <p>Writes data to specific cell in a format specified in obj</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>sheet</td>
+              <td><code>Object</code></td>
+              <td>where to write</td>
+            </tr>
+            <tr>
+              <td>row</td>
+              <td><code>Object</code></td>
+              <td>where to write</td>
+            </tr>
+            <tr>
+              <td>col</td>
+              <td><code>Object</code></td>
+              <td>where to write</td>
+            </tr>
+            <tr>
+              <td>obj</td>
+              <td><code>Object</code></td>
+              <td>obj with input data and its format (as {value: xx, color: xx, isDuration: xx, roundPrice: xx, oneDigitFormat: xx, twoDigitFormat: xx})</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>createBilling(Object from, Object to, Object client)</h2>
+        <p>Creates billing spreadsheet in user's google drive and generates data into it</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>from</td>
+              <td><code>Object</code></td>
+              <td>from which day bill is going to be created</td>
+            </tr>
+            <tr>
+              <td>to</td>
+              <td><code>Object</code></td>
+              <td>to which day bill is going to be created</td>
+            </tr>
+            <tr>
+              <td>client</td>
+              <td><code>Object</code></td>
+              <td>name of client</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>processStatOrBillObj(Object formObject, Object isBill)</h2>
+        <p>Parses and validates data from formObject, then it creates Billing or Statistics.</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>formObject</td>
+              <td><code>Object</code></td>
+              <td>Object received from client's browser form.</td>
+            </tr>
+            <tr>
+              <td>isBill</td>
+              <td><code>Object</code></td>
+              <td>if true processes billing form, statistics otherwise</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>roundToTwo(Object num)</h2>
+        <p>Rounds to two places, "banking format" @num number</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>num</td>
+              <td><code>Object</code></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>createStatistics(Object from, Object to)</h2>
+        <p>Creates statistics spreadsheet in user's google drive and generates data into it</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>from</td>
+              <td><code>Object</code></td>
+              <td>from which day stats are going to be created</td>
+            </tr>
+            <tr>
+              <td>to</td>
+              <td><code>Object</code></td>
+              <td>to which day stats are going to be created</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>processForm(Object formObject)</h2>
+        <p>Processes form and returns result.</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>formObject</td>
+              <td><code>Object</code></td>
+              <td>Form object</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
