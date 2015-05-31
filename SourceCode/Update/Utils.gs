@@ -36,7 +36,7 @@ function getResource(resource) {
   }
 }
 
-/*
+/**
  * Evaluates GAS scriptlets and includes HMTL from a file. *just shortcut a for a long command
  *
  * @param filename name of file to be included
@@ -56,7 +56,7 @@ function include(filename) {
   return HtmlService.createHtmlOutputFromFile(filename).getContent();
 }
 
-/*
+/**
  * Creates presentable HTML for a browser
  * *cannot be run from library, becaouse of filename
  *

@@ -1,4 +1,4 @@
-/* 
+/** 
  * Runs actions on input in received order and sets errors accordingly 
  *
  * Valid actions are strings:

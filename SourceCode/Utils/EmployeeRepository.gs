@@ -127,6 +127,14 @@ function updateEmployee(user) {
   return result;
 }
 
+/**
+ * Refreshes information about groups which is user in or leads
+ *
+ * @param groups groups with attributes
+ * @param email email of user
+ * @param groupLeader if true refresh group leads, group is in otherwise
+ * @return {boolean} indicating success or failure.
+ */
 function refreshUserGroups_(groups, email, groupLeader) {
   var result = true;
 

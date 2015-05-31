@@ -79,7 +79,7 @@ function getProp(name) {
   return Utils.getUserProp(name);
 }
 
-/*
+/**
  * Generates HMTL from a file. *just shortcut a for a long command
  *
  * @param filename name of file to be included
@@ -96,7 +96,7 @@ function getClients() {
   return Utils.convertObjectsToArrayByProperty(Utils.findClients(), 'name');
 }
 
-/*
+/**
  * Creates presentable HTML for a browser
  * *cannot be run from library, becaouse of filename
  *

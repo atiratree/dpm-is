@@ -1,4 +1,4 @@
-/*
+/**
  * refreshes calendar events 
  *
  * @param day monday of week to be set in calendar
@@ -19,7 +19,7 @@ function refreshCalendar(day, till, week) {
   }
 }
 
-/*
+/**
  * Refreshes protections. Deletes protections not existing in emails and sets all permissions in emails.
  *
  * @param protection protection object to be changed
@@ -52,7 +52,7 @@ function appplyProtections(protection, emails) {
   });
 }
 
-/*
+/**
  * Checks if obj is in DB. Uses cached files obj, because looking into the database all the time would be inefficient.
  *
  * @param files all files in db

@@ -45,7 +45,7 @@ function logToSheet_(e, sheet, debug) {
   sheet.appendRow([value]);
 }
 
-/*
+/**
  * rolling appender, rolls only last 10 percent for effectivity reasons
  */
 function rollLog_(logSheet) {

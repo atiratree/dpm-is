@@ -13,7 +13,7 @@ function doGet() {
   return html;
 }
 
-/*
+/**
  * Creates presentable HTML for a browser
  * *cannot be run from library, becaouse of filename
  *

@@ -1,19 +1,19 @@
 var numberOfWeeksToAdd = 12;
-/*
+/**
  * automatic script which reloads calendar and creates missing Schedule Sheets
  */
 function runOnceAWeek() {
   run_(true);
 }
 
-/*
+/**
  * automatic script which creates missing Schedule Sheets
  */
 function runEverySixHours() {
   run_(false);
 }
 
-/*
+/**
  * not automatic
  */
 function refreshAll() {
@@ -21,7 +21,7 @@ function refreshAll() {
   runEveryTwoHours()
 }
 
-/*
+/**
  * automatic script which refreshes rights for Sheets and Sites
  */
 function runEveryTwoHours() {

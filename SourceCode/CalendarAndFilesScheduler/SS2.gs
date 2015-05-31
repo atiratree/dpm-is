@@ -1,4 +1,4 @@
-/*
+/**
  * Creates all spreadsheets not existing in this week
  *
  * @param day monday of week to be set
