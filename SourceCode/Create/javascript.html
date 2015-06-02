@@ -1,27 +1,38 @@
 <!-- Javascript which is served with main.html. It's purpose is to send forms to our GAS, resolve errors and resolve special alerts for creating users and groups -->
 <script src='//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js'></script>
 <script type='text/javascript'>
-$(document).ready(function() {
-  $('#create-form').submit(function() {
-    $('#submit').hide();
-    $('#loader').show();
+var submitValid = true;
+$(document).ready(function() {  
+  $('#create-form').submit(submitFunction);
+  
+  $('#again').click(function() {
+    $('#confirmation-content').hide();
+    $('#submit').show();
+    $('#create-form')[0].reset();
+    $('#create-form').show();
+    $('.error').hide();
+  });   
+});
+
+function submitFunction() {
+  $('#submit').hide();
+  $('#loader').show();
+     
+  if(submitValid){
+    submitValid = false;
     google.script.run.withSuccessHandler(function(obj) {
       $('#loader').hide();
       $('#submit').show();
       resolveDefault(obj);
+      submitValid = true;
     }).processForm(this);
+    
+  }
+  return false;
+}
 
-    $('#again').click(function() {
-      $('#confirmation-content').hide();
-      $('#submit').show();
-      $('#create-form')[0].reset();
-      $('#create-form').show();
-      $('.error').hide();
-    });
 
-    return false;
-  });
-});
+
 
 function resolveDefault(obj) {
   if (obj.fail) {
