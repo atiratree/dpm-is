@@ -1,58 +1,28 @@
 /**
- * Reloads data for spreadsheet to use, to user properties. 
- *
- * @param spreadSheet spreadSheet object to reload
- * @return "cached"(we don't have to get them from slow db) data for reusing
- */
-function loadDataAndSave(spreadSheet) {
-  var clients, tariffs, actors, nicksArray, clientsArray, sheetRecord, group;
-
-  try {
-    sheetRecord = Utils.findFiles(['group'], {
-      id: spreadSheet.getId()
-    })[0];
-    group = sheetRecord.group;
-
-    clients = getClientAndEvents(group);
-    tariffs = Utils.findTariffs();
-    actors = getActors(group);
-    nicksArray = Utils.convertObjectsToArrayByProperty(actors, 'nick');
-    clientsArray = Utils.convertObjectsToArrayByProperty(clients, 'name');
-
-    saveData('nicks', nicksArray, spreadSheet);
-    saveData('colors', Utils.convertObjectsToArrayByProperty(actors, 'color'), spreadSheet);
-    saveData('actors', actors, spreadSheet);
-    saveData('clientsNames', clientsArray, spreadSheet);
-    saveData('clientsSpecial', Utils.convertObjectsToArrayByProperty(clients, 'special'), spreadSheet);
-    saveData('defaultTariff', getDefaultTariff(tariffs), spreadSheet);
-  } catch (e) {
-    Utils.logError(e);
-  }
-
-  return {
-    clientsArray: clientsArray,
-    nicksArray: nicksArray,
-    tariffs: tariffs
-  };
-}
-
-/**
  * Reloads and prepares spreadsheet for a user.
  *
  * @param spreadSheet object of a spreadSheet to update
- * @param clientsArray array with clients of this spreadSheet's group
- * @param nicksArray array with nicks of this spreadSheet's group
- * @param tariffs array with tariffs of this spreadSheet's group
- * @return "cached"(we don't have to get them from slow db) data for reusing
+ * @param assistSheets if true generates assistants sheets
  */
-function updateMainSheet(spreadSheet, clientsArray, nicksArray, tariffs) {
-  var rules = makeRules([clientsArray, nicksArray, {
-    array: tariffs,
-    convertProp: 'shortcut'
-  }]);
+function updateSpreadSheet(spreadSheet, assistSheets) {
+  var sheetRecord = Utils.findFiles(['group'], {
+      id: spreadSheet.getId()
+    },1)[0];    
+  var group = sheetRecord.group;
+  
+  var tariffs = Utils.findTariffs();
+  var actors = getActors(group);
+  var clients = Utils.findGroupClients(['name'], { group: group});
+  var events = Utils.findEvents();
+  clients.push.apply(clients, events);  
+  
+  var arrays = [{array: clients, convertProp: 'name'}, {array: actors, convertProp: 'nick'}, {array: tariffs, convertProp: 'shortcut'}]  
+  
+  
+  var rules = makeRules(arrays);  
   var width = 6 // num of columns per day
   var sheet = spreadSheet.getSheetByName('Rozpis');
-
+  
   for (var i = 1; i < 6; i++) {
     updateDayRange(sheet, 4, i, 28, rules, width);
   }
@@ -60,6 +30,9 @@ function updateMainSheet(spreadSheet, clientsArray, nicksArray, tariffs) {
   for (var i = 1; i < 3; i++) {
     updateDayRange(sheet, 36, i, 20, rules, width);
   }
+  if(assistSheets){
+    refreshAssistantsSheets(spreadSheet,actors,Utils.convertObjectsToArrayByProperty(events, 'name'));
+  }  
 }
 
 /**
@@ -69,16 +42,13 @@ function updateMainSheet(spreadSheet, clientsArray, nicksArray, tariffs) {
  * @return arrays of rules in the same order as input
  */
 function makeRules(arrays) {
-  var result = []
+  var result = [];
+  
   for (var i = 0; i < arrays.length; i++) {
-    var tmp;
-    if (arrays[i] instanceof Array) {
-      tmp = arrays[i];
-    } else {
-      tmp = Utils.convertObjectsToArrayByProperty(arrays[i].array, arrays[i].convertProp);
-    }
-    result.push(SpreadsheetApp.newDataValidation().requireValueInList(tmp).setAllowInvalid(false).build());
+    var values = Utils.convertObjectsToArrayByProperty(arrays[i].array, arrays[i].convertProp);  
+    result.push(SpreadsheetApp.newDataValidation().requireValueInList(values).setAllowInvalid(false).build());
   }
+  
   return result;
 }
 
@@ -98,7 +68,7 @@ function updateDayRange(sheet, row, column, numberOfRows, rules, width) {
   var clientsRange = sheet.getRange(row + 1, block - 3, numberOfRows, 1);
   var assistantsRange = sheet.getRange(row + 1, block - 2, numberOfRows, 1);
   var tarifsRange = sheet.getRange(row + 1, block - 1, numberOfRows, 1);
-
+  
   clientsRange.setDataValidation(rules[0]);
   assistantsRange.setDataValidation(rules[1]);
   tarifsRange.setDataValidation(rules[2]);
@@ -131,41 +101,4 @@ function getActors(group) {
   return employees.filter(function(item) {
     return actors.indexOf(item.email) > -1;
   });
-}
-
-/**
- * @param tariffs all tariffs with its attributes
- * @return returns default tariff
- */
-function getDefaultTariff(tariffs) {
-  for (var i = 0; i < tariffs.length; i++) {
-    if (tariffs[i]['default'] == 1) {
-      return tariffs[i].shortcut;
-    }
-  }
-  return '';
-}
-
-/**
- * Gets all clients and events associated with this group
- *
- * @param group group identificator for events and clients
- * @return returns all events and clients with special attribute
- */
-function getClientAndEvents(group) {
-  var clients = Utils.findGroupClients(['name'], {
-    group: group
-  }).map(function(item) {
-    item.special = 0;
-    return item;
-  });
-
-  var events = Utils.findEvents().map(function(item) {
-    item.special = 1;
-    return item;
-  });
-
-  clients.push.apply(clients, events);
-
-  return clients;
 }

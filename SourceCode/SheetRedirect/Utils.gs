@@ -97,19 +97,32 @@ function getLinks(files, group, owner) {
 }
 
 /**
+ * Wrapper function for saving data 
+ */
+function saveData(fieldName, obj) {
+  Utils.setUserObjProp(fieldName + sessionId, obj);
+}
+
+/**
+ * Wrapper function for getting data
+ */
+function getData(fieldName) {
+  return Utils.getUserObjProp(fieldName + sessionId);
+}
+
+/**
  * Wrapper function for saving data associated it with this spreadsheet 
  */
-function saveData(fieldName, obj, ss) {
-  var token = ss == null ? '' : ss.getId();
-  Utils.setUserObjProp(token + fieldName + sessionId, obj);
+function saveScriptData(fieldName, obj) {
+  PropertiesService.getDocumentProperties().setProperty(fieldName, JSON.stringify(obj));
 }
 
 /**
  * Wrapper function for getting data associated it with this spreadsheet 
  */
-function getData(fieldName, ss) {
-  var token = ss == null ? '' : ss.getId();
-  return Utils.getUserObjProp(token + fieldName + sessionId);
+function getScriptData(fieldName) {
+  var data = PropertiesService.getDocumentProperties().getProperty(fieldName);
+  return data ? JSON.parse(data) : null;
 }
 
 /**
@@ -135,13 +148,14 @@ function setRuntimeProperties(params){
   var renewProps = {};
   
   propItems.forEach(function(prop){
-     var value = (params && params[prop] != null) ? params[prop] : '';
-     renewProps[prop] = value;
+     var value = (params && params[prop] != null) ? params[prop] : '';     
+     renewProps[prop + sessionId] = value;
+     
   });
   Utils.setUserProps(renewProps);
 }
  
 /* props settings variables*/
-var propItems = ['year', 'week', 'sheetsRedirectPart', 'colors', 'nicks', 'actors', 'clientsNames', 'clientsSpecial', 'defaultTariff', 'sheetsRedirectFiles', 'shRFRes', 'shRFRes2'];
+var propItems = ['year', 'week', 'sheetsRedirectPart', 'sheetsRedirectFiles', 'shRFRes', 'shRFRes2'];// 'colors', 'nicks', 'actors', 'clientsNames', 'clientsSpecial', 'defaultTariff',
 var sessionId = 'sheetsRedirect';  
 

@@ -5,14 +5,12 @@
  */
 function resolveTriggers(id) {
   try {
-    var ss = SpreadsheetApp.openById(id);
-    var data = loadDataAndSave(ss);
+    var ss = SpreadsheetApp.openById(id);    
 
-    if (Utils.getUserPermission() == Utils.AccessEnums.ADMIN || Utils.getUserPermission() == Utils.AccessEnums.LEADER) {
-      updateMainSheet(ss, data.clientsArray, data.nicksArray, data.tariffs)
-      resolveOnEdit(ss);
+    if (Utils.getUserPermission() == Utils.AccessEnums.ADMIN || Utils.getUserPermission() == Utils.AccessEnums.LEADER) {  
+      resolveOnTrigger(ss, 'edit', 'editMainSheet');
+      resolveOnTrigger(ss, 'open', 'onOpenSheet');
     }
-    refreshAssistantsSheets(ss);
   } catch (x) {
     Utils.logError(x);
   }
@@ -24,33 +22,37 @@ function resolveTriggers(id) {
  *
  * @param ss spreadsheet for setting triggers
  */
-function resolveOnEdit(ss) {
+function resolveOnTrigger(ss, type, functionName) { 
   try {
     var email = Utils.getUserEmail();
     var triggers = Utils.findTriggers([], {
-      sheetId: ss.getId()
+      sheetId: ss.getId(), 
+      type: type
     }, 1);
-
+    
     if (triggers.length > 0) {
       return;
     }
-
-    ScriptApp.newTrigger('editMainSheet').forSpreadsheet(ss).onEdit().create(); // Script can have only 20 triggers and we don't if that changes in the future 
+    
+    var t = ScriptApp.newTrigger(functionName).forSpreadsheet(ss); 
+    t = (type == 'edit') ? t.onEdit().create() : t.onOpen().create(); 
+    
     try {
       Utils.createTrigger({
-        sheetId: ss.getId(),
-        email: email
+        sheetId: t.getTriggerSourceId(),
+        email: email,
+        type: type
       });
     } catch (x) {
       Utils.logError(x);
     }
-  } catch (x) {
+    resolveMisplacedTriggers(email, type, functionName); // runs only after adding new trigger
+  } catch (x) { // Script can have only 20 triggers and we don't know, if that changes in the future 
     if (deleteLowestTrigger() > 0) {
-      resolveOnEdit(ss);
+      resolveOnTrigger(ss, type, functionName);
     } else {
       Utils.logError(email + ' has no place for triggers! Other scripts are using all triggers of this user!');
     }
-
   }
 }
 
@@ -63,7 +65,7 @@ function deleteLowestTrigger() {
   var email = Utils.getUserEmail();
   var triggers = ScriptApp.getProjectTriggers();
   var fileTriggers = Utils.findTriggers([], {
-    email: email
+    email: email    
   });
   var lowestTrigger = {
     sheetId: 0,
@@ -83,4 +85,37 @@ function deleteLowestTrigger() {
     }
   }
   return 0;
+}
+
+
+/**
+ * Deletes misplaced triggers of this user. For example if we delete row of a trigger in db, this function deletes it for user.
+ *
+ * @param email email of user who owns the triggers
+ * @param type type of trigger to resolve
+ * @param functionName name of trigger's funtion to resolve
+ */
+function resolveMisplacedTriggers(email, type, functionName){ // recover if trigger is deleted from db
+  var fileTriggers = Utils.convertObjectsToArrayByProperty(Utils.findTriggers([], {
+    email: email,
+    type: type
+  }), 'sheetId');  
+  var triggers = ScriptApp.getProjectTriggers();
+  var evType = (type == 'edit') ? ScriptApp.EventType.ON_EDIT : ScriptApp.EventType.ON_OPEN;
+  
+  for (var j = 0; j < triggers.length; j++) {
+    var trig = triggers[j];
+   
+    if(trig.getHandlerFunction() == functionName && trig.getEventType() == evType) {
+      var index = fileTriggers.indexOf(trig.getTriggerSourceId());
+      if(index < 0) {
+        ScriptApp.deleteTrigger(trig);
+      } else {
+        fileTriggers.splice(index, 1);
+      }
+    }
+  }
+  fileTriggers.forEach(function(item) {
+    Utils.deleteTrigger({sheetId: item, type: type});
+  });  
 }

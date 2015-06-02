@@ -2,13 +2,12 @@
  * Sorts data from sheet rozpis and creates sheets for all group actors and assigns appropriate data
  *
  * @param spreadSheet spreadsheet for refreshing
+ * @param actors array of actors
+ * @param eventsNames array with names of events
  */
-function refreshAssistantsSheets(spreadSheet) {
+function refreshAssistantsSheets(spreadSheet, actors, eventsNames) {
   spreadSheet = spreadSheet ? spreadSheet : SpreadsheetApp.getActiveSpreadsheet();
-  var actors = getData('actors', spreadSheet);
   var mainSheet = spreadSheet.getSheetByName('Rozpis');
-  var clientsNames = getData('clientsNames', spreadSheet);
-  var clientsSpecial = getData('clientsSpecial', spreadSheet);
   var data = [];
 
   for (var i = 1; i < 8; i++) {
@@ -16,7 +15,10 @@ function refreshAssistantsSheets(spreadSheet) {
       dayInWeek: i
     }]));
   }
-
+  if(actors == null){
+    return;
+  }
+  
   actors.forEach(function(item) {
     var sheet = spreadSheet.getSheetByName(item.nick);
     if (sheet == null) {
@@ -30,15 +32,10 @@ function refreshAssistantsSheets(spreadSheet) {
         sheet.deleteRows(61, 1000 - 60);
       } catch (ex) { // if google changed default limits of sheet catch exception
         Utils.logError(ex);
-      }
-      /* try{      
-           sheet.deleteColumns(31, 100); // not working properly, shows "Those columns are out of bounds."          
-       }catch(ex){
-         Utils.logError(ex);
-       }*/
+      }   
       Utils.prepareSheet(sheet, new Date(sheetRecord.weekStarts), messages);
     }
-    copyDataBetweenSheets(mainSheet, sheet, data, clientsNames, clientsSpecial);
+    copyDataBetweenSheets(mainSheet, sheet, data, eventsNames);
   });
 }
 
@@ -48,17 +45,15 @@ function refreshAssistantsSheets(spreadSheet) {
  * @param main main spreadsheet
  * @param secondary spreadsheet to be coppied into
  * @param data data from main spreadsheet
- * @param clientsNames array with clients names
- * @param clientsSpecial array with special attributes
+ * @param eventsNames array with events names
  */
-function copyDataBetweenSheets(main, secondary, data, clientsNames, clientsSpecial) {
+function copyDataBetweenSheets(main, secondary, data, eventsNames) {
   var name = secondary.getName();
 
   for (var i = 0; i < data.length; i++) {
 
     var cleanData = data[i].filter(function(a) {
-      var index = clientsNames.indexOf(a.event);
-      return a.employee == name || (index > -1 && clientsSpecial[index] == 1);
+      return a.employee == name || eventsNames.indexOf(a.event) > -1;
     }).sort(function(a, b) {
       return new Date(a.from) - new Date(b.from);
     }).map(function(a) {
