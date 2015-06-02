@@ -17,6 +17,20 @@ function editMainSheet(e) {
       return;
     }
     
+    //hack for running functions
+    if( col == 1 && row == 70){
+      var value = sheet.getRange(70, 1).getValue()
+      sheet.getRange(70, 1).setValue('');
+      
+      if (value == 1){
+        reloadData();
+      } else if (value == 2){
+        reloadSheets();
+      } else if (value == 3){
+        checkAssistantDuplicities();
+      } 
+    }
+    
     for (var j = 0; j < rows; j++) {
       if ((row + j > 4 && row + j < 33) || (row + j > 36 && row + j < 57)) // select our specified area
         for (var i = 0; i < cols; i++) { // we can delete more rows at once and keep formating, but we can insert only value to one cell

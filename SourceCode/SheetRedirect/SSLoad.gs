@@ -30,6 +30,10 @@ function updateSpreadSheet(spreadSheet, assistSheets) {
   for (var i = 1; i < 3; i++) {
     updateDayRange(sheet, 36, i, 20, rules, width);
   }
+  
+  sheet.getRange('A66:B69').setValues([[ 'Hodnota', "Typ akce"], [ 1, "Načti znovu data"], [ 2, "Generovat listy asistentů"], [ 3, "Zkontrolovat duplicity v programu asistentů"]]);
+  sheet.getRange('A70').setBackground('#ff5d5d');
+  
   if(assistSheets){
     refreshAssistantsSheets(spreadSheet,actors,Utils.convertObjectsToArrayByProperty(events, 'name'));
   }  

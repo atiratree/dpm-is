@@ -6,15 +6,18 @@ function onOpenSheet() {
   var spreadSheet = SpreadsheetApp.getActive();
   spreadSheet.toast('Načítají se data a generují listy...'); 
   updateSpreadSheet(spreadSheet, true);
-  
+ 
   if (Utils.getUserPermission() == Utils.AccessEnums.ADMIN || Utils.getUserPermission() == Utils.AccessEnums.LEADER) {  
-    spreadSheet.toast('...');      
-    SpreadsheetApp.getUi()
+    spreadSheet.toast('...'); 
+      // not working
+  /*  var mainSheet = spreadSheet.getSheetByName('Rozpis');
+    mainSheet.getRange(1, 40).setValue('1');*/
+     /*SpreadsheetApp.getUi()
       .createMenu('Funkcionalita sešitu')
       .addItem('Načti znovu data', 'reloadData')
       .addItem('Generovat listy asistentů', 'reloadSheets')  
       .addItem('Zkontrolovat duplicity v programu asistentů', 'checkAssistantDuplicities')
-      .addToUi();
+      .addToUi();*/
     initializeData();
   }
   
