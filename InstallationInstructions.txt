@@ -1,0 +1,235 @@
+Installation Instruction for Domov pro mne information system.
+
+This project runs in Google Cloud entirely.
+
+Requirements:
+	- project is set to work only with "Google Domain" accounts
+	- this project's GUI is only in Czech language (lots of internal constants are in czech)
+
+Notes 
+	- user owning the account and all files, Sites etc. will be called "admin"
+	- "/" will represent folder in Google Drive you want to put your files in	
+	- "Source" will be called folder with Scripts (as in https://github.com/suomiy/dpm-is/tree/master/SourceCode)
+	
+	
+1. Create Google Calendar called "Rozpisy", set respective time-zone and set this calendar public
+
+2. Create Google Site (you can design it as you want later, here will be described only structure)
+
+3. Set sharing of Sites as "Specific people can access". 
+
+4. Go to Site -> Manage Site -> Apps Scripts . You have to copy all scripts except CalendarAndFilesScheduler here.
+	scripts will be here described as 
+		x) script $FILENAME
+		
+	Algorithm for creating scripts
+		1) add new script
+		2) name it as $FILENAME
+		3) copy all files from Source/$FILENAME/* to this script with same extensions		
+		5) "todo" specified in each script
+		
+	a) script "ObjDB" 
+		- todo	
+			1) remember(copy) $ObjDBId located in ide -> menu -> project properties -> project key
+	b) script "Utils" 
+		- todo	
+			1) add ObjDB with id $ObjDBId to Libraries
+			2) ide -> manage versions -> save new version
+			3) remember(copy) $UtilsId located in ide -> menu -> project properties -> project key
+			4) ide -> project properties -> script properties -> set these values: 
+				{Site: *url of your site,
+				 logSize: 10000, // maximum number of rows used for logging in spreadsheet
+				 CacheTime: 300000, // cache time of user's permission 
+				 DatabaseSSid: *ID of spreadsheet Database,
+				 SpecialResourceID: *ID of file SpecialResource,
+				 storageID: *ID of folder Storage,
+				 TimetablesID: *ID of folder Timetables,
+				 LogSSid: *ID of spreadsheet Log }
+			  - IMPORTANT! files with * will be mentioned later. You can change script properties later anytime			  
+			  
+	Do this for the rest of the scripts
+		- todo	
+			1) add Utils with id $UtilsId to Libraries
+			2) ide -> manage versions -> save new version
+			3) ide -> deploy as web app (execute as user accessing the web app, access has anyone within $DOMAIN)
+	c) script "Create"		
+	d) script "Delete" 
+	e) script "SheetRedirect" 
+	f) script "StatisticsAndBillingRedirect" 
+	g) script "TableScript" 
+		you have to setup published url's of scripts Update and Delete in ButtonUtils.gs -> htmlManager.deleteScriptUrl and htmlManager.editScriptUrl
+	h) script "Update" 	
+		
+5. Go to Site -> Manage Site -> Attachments and put here gif you wish to use for loading. 
+	1) go to scripts Create, Delete, Update and StatisticsAndBillingRedirect
+	2) find main.html
+	3) replace attribute src of these elements <img id='loader'> with link of this gif
+	
+6. Create pages. Structure of them and it's content will be described here
+	Inserting scripts is done this ways: sites ide -> edit page ->  insert -> apps script
+	
+	Inserting awesome table is done this way: sites ide -> edit page ->  insert -> more gadgets -> awesome table
+	Set up awesome tables with these values:
+	   {Googgle Sheet URL: *ID of spreadsheet Database,
+		Sheet name: *name of required sheet,
+		Range: *anything,
+		Width: 100 percent,
+		Height: 600 pixels,
+		Caption: insideFilter,
+		Apps Script Proxy URL: published URL of TableScript }		
+				
+	All pages should have permission to access decided by top-level page
+	
+	a) page Admin
+		this is the only exception and should have permission for admin only 
+		this page should have included script with published url of CalendarAndFilesScheduler (IMPORTANT! - mentioned later)
+		
+	b) page Administrace (Administration in Czech)
+		one link $PUBLISHED_URL_OF_StatisticsAndBillingRedirect?instance=statistics
+		one link $PUBLISHED_URL_OF_StatisticsAndBillingRedirect?instance=billing
+		
+	c) page Povolení (Permissions in Czech)
+		it should have all scripts of this Sites (it is used for authorizing them all at once)
+		
+	d) page Rozpisy (Schedules in Czech)
+		it should have embedded calendar:  sites ide -> edit page ->  insert -> calendar
+			set up url of created calendar
+			
+	e) page Správa dat (Data management in Czech)
+		it is used only for grouping other pages managing data to menu
+		name of pages are important for scripts
+		
+		A) page Správa cenových pásem (Management of tariffs in Czech)
+			link to pridat-pasmo page
+			awesome table with Sheet name: Tariffs
+			
+			Y) page Přidat pásmo (Add tariff in Czech)
+				add script Create here
+				
+		B) page Správa klientů (Management of clients in Czech)
+			link to pridat-klienta page
+			awesome table with Sheet name: Clients
+			
+			Y) page Přidat klienta (Add client in Czech)
+				add script Create here
+				
+		C) page Správa skupin (Management of groups in Czech)
+			link to pridat-skupinu page
+			awesome table with Sheet name: Groups
+			
+			Y) page Přidat skupinu (Add group in Czech)
+				add script Create here
+				
+		D) page Správa událostí (Management of events in Czech)
+			link to pridat-udalost page
+			awesome table with Sheet name: Events
+			
+			Y) page Přidat událost (Add event in Czech)
+				add script Create here
+				
+		E) page Správa uživatelů (Management of users/employees in Czech)
+			link to pridat-uzivatele page
+			awesome table with Sheet name: Employees
+			
+			Y) page Přidat uživatele (Add user/employee in Czech)
+				add script Create here				
+		
+7. Create menu of those pages
+
+8. Create required files in Google Drive. Internal structure and attributes(path is optional) of files is described below.
+	a) spreadsheet "Log"
+		- permissions
+			anyone at domain can edit
+		- path
+			/Data/Log
+		- description
+			every log message is stored here
+		- structure
+			- sheet "log"	
+			- sheet "errors"
+	b) spreadsheet "SpecialResource"
+		- permissions
+			anyone at domain can edit
+		- path
+			/Data/SpecialResource
+		- description
+			this file is used for checking if other user belongs to the domain
+	c) spreadsheet "Database"
+		- permissions
+			anyone at domain can edit
+		- path
+			/Data/Database			
+		- description
+			storage for data. Every sheet represents table with first row as columns. Permission to it's sheets are set programmatically for setting access to users.
+		- structure
+			- sheet "Assistants"
+				- cells A1:D1
+					['email', 'name', 'nick', 'color']
+			- sheet "Clients"
+				- cells A1:B1
+					['email', 'name']			
+			- sheet "Employees"
+				- cells A1:E1
+					['email', 'name', 'nick','permission', 'color']
+			- sheet "Events"
+				- cells A1
+					['name']
+			- sheet "Files"
+				- cells A1:I1
+					['year', 'week', 'group', 'owner', 'type', 'id', 'url', 'created', 'weekStarts']
+			- sheet "GroupActors"
+				- cells A1:B1
+					['employeeEmail', 'group']
+			- sheet "GroupClients"
+				- cells A1:B1
+					['name', 'group']
+			- sheet "GroupLeaders"
+				- cells A1:B1
+					['employeeEmail', 'group']
+			- sheet "Groups"
+				- cells A1
+					['group']
+			- sheet "Tariffs"
+				- cells A1:D1
+					['name', 'price', 'shortcut', 'default']
+				- cells A2:D2
+					['Základní', '95', 'Z', '1']
+			- sheet "Triggers"
+				- cells A1:D1
+					['emailSequence', 'sheetId', 'type', 'email']
+	d) folder "Storage"
+		- permissions
+			private
+		- path
+			/Data/Storage			
+		- description
+			for storing generated statistics and billings of admin. It is just for convenience.
+	e) folder "Timetables"
+		- permissions
+			private
+		- path
+			/Data/Timetables			
+		- description
+			for storing all timetables which are groups to folders by year and week (these are generated)
+	f) folder "Scripts"
+		- permissions
+			private
+		- path
+			/Scripts			
+		- description
+			for storing scripts only admin can run
+	g) google apps script "CalendarAndFilesScheduler"
+		- permissions
+			private
+		- path
+			/Scripts/CalendarAndFilesScheduler			
+		- description
+			script located in Source/CalendarAndFilesScheduler
+		- structure
+			copy all files from Source/CalendarAndFilesScheduler/* to this script
+			add Utils to Libraries
+			publishApp (run as me, access to this script is me only)
+			- set triggers
+				runEveryTwoHours	Time-driven	Hour timer	Every 2 hours
+				runEverySixHours	Time-driven	Hour timer	Every 6 hours
+				runOnceAWeek		Time-driven	Week timer	Every Monday
