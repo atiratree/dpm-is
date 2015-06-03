@@ -4,11 +4,12 @@
  * @return HTML page with javascript
  */
 function doGet() {
+  var html;
   try {
-    return resolvePermissionAndGetHTML();
+    html = resolvePermissionAndGetHTML();
   } catch (error) {
-    Utils.logError(error);
-    throw error;
+    Utils.logError('[create] ' + JSON.stringify(error));
+    html = createPresentableHTML('<p>SERVER_ERROR</p>', 'string');
   }
   return html;
 }

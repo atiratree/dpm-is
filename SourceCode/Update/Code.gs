@@ -6,13 +6,13 @@
  */
 function doGet(e) {
   try {
-    setRuntimeProperties(e.parameter);
+    setRuntimeProperties(e.parameter);  
     
     switch (getProp('instance')) {
-      case 'user':
+      case 'user':        
         saveData('updateObj', Utils.findEmployees([], {
           email: e.parameter.email
-        })[0]);
+        })[0]);        
         break;
       case 'client':
         saveData('updateObj', Utils.findClients(['name', 'email'], {
@@ -31,8 +31,9 @@ function doGet(e) {
 
     return createPresentableHTML('main', 'file', 'Editace');
   } catch (error) {
+    Utils.logError('[update] ' + JSON.stringify(error));
     return createPresentableHTML('<p>SERVER_ERROR</p>', 'string');
-    Utils.logError(error);
+    
   }
 }
 

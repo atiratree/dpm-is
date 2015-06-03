@@ -19,7 +19,7 @@ function doGet(e) {
     }
   } catch (error) {
     html = createPresentableHTML('<p>SERVER_ERROR</p>', 'string');
-    Utils.log(error);
+    Utils.logError('[stats/bill] ' + JSON.stringify(error));
   }
   return html;
 }

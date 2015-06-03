@@ -1,12 +1,11 @@
-Installation Instruction for Domov pro mne information system.
+Installation Instructions for Domov pro mne information system.
 
-This project runs in Google Cloud entirely.
+Notes 1: 
+ - this project runs entirely in Google Cloud.
+ - project is set to work only with "Google Domain" accounts
+ - this project's GUI is only in Czech language (lots of internal constants are in czech)
 
-Requirements:
-	- project is set to work only with "Google Domain" accounts
-	- this project's GUI is only in Czech language (lots of internal constants are in czech)
-
-Notes 
+Notes 2: 
 	- user owning the account and all files, Sites etc. will be called "admin"
 	- "/" will represent folder in Google Drive you want to put your files in	
 	- "Source" will be called folder with Scripts (as in https://github.com/suomiy/dpm-is/tree/master/SourceCode)

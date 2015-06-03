@@ -16,7 +16,7 @@ function doGet(e) {
     }   
   } catch (error) {
     html = createPresentableHTML('<p>SERVER_ERROR</p>', 'string');
-    Utils.logError(error);
+    Utils.logError('[delete] ' + JSON.stringify(error));
   }
   return html;
 }

@@ -16,7 +16,7 @@ function doGet(e) {
     }
   } catch (error) {
     html = createPresentableHTML('<p>Nelze zobrazit rozpisy. 1) Server může být zaneprázdněn, zkuste znovu. 2) Nebo nenáležíte do žádné skupiny</p>', 'string');
-    Utils.log(error);
+    Utils.logError('[sheets redirect] ' + JSON.stringify(error));
   }
   return html;
 }
