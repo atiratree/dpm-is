@@ -79,10 +79,11 @@ function updateEmployee_(employee) {
  *
  * @param fields fields is array of strings . It assigns these strings as properties to final objects
  * @param restrictions object of key/value pairs for selecting rows
+ * @param limit maximum number of rows to be returned
  * @return array of employees
  */
-function findEmployees_(fields, restrictions) {
-  return repFind_(manager.employSh, fields, restrictions);
+function findEmployees_(fields, restrictions, limit) {
+  return repFind_(manager.employSh, fields, restrictions, limit);
 }
 
 /**

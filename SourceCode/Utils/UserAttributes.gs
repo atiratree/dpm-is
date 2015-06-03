@@ -31,7 +31,7 @@ function getUserPermission(email) {
   if (!email) {
     userPermission = getUserProp('userPermission');
     var age = getUserProp('userPermissionAge');
-    if (age != null && new Date().valueOf() - age > manager.cacheTime) { //60000 3 mins threshold for saving permission in case of changing rigths
+    if (age != null && new Date().valueOf() - age > manager.cacheTime) { // threshold for saving permission in case of changing rigths
       userPermission = null;
     }
 
@@ -43,9 +43,9 @@ function getUserPermission(email) {
   if (userPermission == null || isNaN(userPermission)) {
     userPermission = findAssistants_(['email'], {
       email: email
-    }).length == 1 ? AccessEnums.ASSISTANT : findEmployees_(['permission'], {
+    }, 1).length == 1 ? AccessEnums.ASSISTANT : findEmployees_(['permission'], {
       email: email
-    }).shift();
+    }, 1).shift();
     if (typeof userPermission === 'object') {
       userPermission = userPermission.permission;
     }
