@@ -15,9 +15,14 @@ function doGet(e) {
       html = createPresentableHTML('<p>Authorizace...OK</p>', 'string');
     }
   } catch (error) {
-    html = createPresentableHTML('<p>Nelze zobrazit rozpisy. 1) Server může být zaneprázdněn, zkuste znovu. 2) Nebo nenáležíte do žádné skupiny</p>', 'string');
-    Utils.logError('[sheets redirect] ' + JSON.stringify(error));
-  }
+   
+    if(checkIfPropsFull()){ // pri opakovani F5 dosáhne přístup do properties max limitu
+      Utils.logError('[sheets redirect] ' + JSON.stringify(error));
+      html = createPresentableHTML('<p>Nelze zobrazit rozpisy. 1) Server může být zaneprázdněn, zkuste znovu. 2) Nebo nenáležíte do žádné skupiny</p>', 'string');
+    }else{
+       html = createPresentableHTML('<p>Server je zaneprázdněn (mohlo dojít k dosáhnutí limitu u Google služby). Chvíly počkejte a zkuste znovu.</p>', 'string');
+    }    
+  } 
   return html;
 }
 

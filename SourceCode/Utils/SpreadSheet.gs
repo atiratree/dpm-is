@@ -68,7 +68,9 @@ function getAllSpreadSheetData(from, to) {
   });
 
   files.forEach(function(item) {
-    var ss = SpreadsheetApp.openById(item.id);
+    var ss;    
+    ss = openSpreadsheet(item.id);    
+   
     var monday = new Date(item.weekStarts);
     var extractDays = [];
 

@@ -12,8 +12,7 @@ function lock_() { //
       LockService.getScriptLock().waitLock(manager.waitForLockTime);
     } catch (ex) {
       logError(ex);
-    }
-    logError(x);
+    }    
   }
 }
 
@@ -31,8 +30,7 @@ function unlock_() {
       LockService.getScriptLock().releaseLock();
     } catch (ex) {
       logError(ex);
-    }
-    logError(x);
+    }    
   }
 }
 

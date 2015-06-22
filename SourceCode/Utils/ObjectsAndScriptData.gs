@@ -7,8 +7,9 @@ var manager = {
   logId: getScriptProp_('LogSSid'),
   myDB: objDB.open(getScriptProp_('DatabaseSSid')),
   site: getScriptProp_('Site'),
-  errSheet: SpreadsheetApp.openById(getScriptProp_('LogSSid')).getSheetByName('errors'),
-  logSheet: SpreadsheetApp.openById(getScriptProp_('LogSSid')).getSheetByName('log'), //LogSSid
+  errSheet: openSpreadsheet(getScriptProp_('LogSSid')).getSheetByName('errors'),
+  logSheet: openSpreadsheet(getScriptProp_('LogSSid')).getSheetByName('log'), //LogSSid
+  correctionSheet: openSpreadsheet(getScriptProp_('LogSSid')).getSheetByName('corrections'),
   assistSh: 'Assistants',
   employSh: 'Employees',
   clientsSh: 'Clients',
@@ -26,6 +27,8 @@ var manager = {
   waitForLockTime: 10000, // 10 s
   sleepConstantForLockBug: 5000, // 5 s
   sleepConstantForUnlockBug: 3000, // 3 s
+  sleepConstantForOpenSSBug: 3000, // 3 s
+  sleepConstantForSSServiceBug: 3000, // 3 s
   admin: {
     "permission": 0,
     "name": "Admin"

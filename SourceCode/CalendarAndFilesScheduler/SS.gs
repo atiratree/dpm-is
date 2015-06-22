@@ -10,10 +10,18 @@ function correctProtections() {
   Utils.findFiles([], {
     type: 'Rozpis'
   }).forEach(function(file) {
-    var sheet = SpreadsheetApp.openById(file.id).getSheetByName('Rozpis');
+    var sheet;
+    
+    try{
+      sheet = SpreadsheetApp.openById(file.id).getSheetByName('Rozpis');
+    }catch(x){ // Bug "Document 1xx is missing (perhaps it was deleted?)"
+      return;
+    }
+    
     if (sheet == null) {
       return;
     }
+    
     var emails = leaders.filter(function(a) {
       return a.group == file.group;
     });

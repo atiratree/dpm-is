@@ -10,7 +10,7 @@ function getResource(resource, param) {
     case 'isInGroups':
       switch (resource) {
         case 'includeBool':
-          var email = Utils.getUserEmail();
+          var email = Utils.getUserEmail();            
           var actors = Utils.findGroupActors([], {
             employeeEmail: email
           });
@@ -44,11 +44,11 @@ function getResource(resource, param) {
     case 'admin':
       switch (resource) {
         case 'includeBool':
-          return Utils.getUserPermission() == 0;
+          return Utils.getUserPermission() == Utils.AccessEnums.ADMIN;
         case 'name':
           return 'Všechny skupiny : ';
         case 'getGroups':
-          return Utils.findGroupsAsArray();
+          return Utils.getUserPermission() == Utils.AccessEnums.ADMIN ? Utils.findGroupsAsArray() : []; // precaution against too many F5s
         case 'links':
           return getLinks(param.files, param.group);
         default:
@@ -154,8 +154,41 @@ function setRuntimeProperties(params){
   });
   Utils.setUserProps(renewProps);
 }
+
+/**
+ * Checks if props are set corectly
+ *
+ * @return true if props are correctly set, false otherwise
+ */
+function checkIfPropsFull(){
+  var result = true;
+  
+  for(var item in propItems){
+    if(!getProp(item)){
+      result = false;
+      break;
+    }
+  }
+  
+  return result;
+}
+
+
+// log all users except admin, for debugging purposes
+function temporaryTestingLog(email, message){
+  email = email ? email : Utils.getUserEmail();
+  var value =  PropertiesService.getScriptProperties().getProperty('testLog');
+  
+  if(Utils.isSuperAdmin(email)){
+    Utils.log('\n' + value);
+  }else{
+    var msg = '[' + new Date().toString().replace(/(.*\d{2}:\d{2}:\d{2}).*/, '$1') + '] [' + email + ']  week: ' + message + '\n';
+    value = value ? value + msg : msg;
+    PropertiesService.getScriptProperties().setProperty('testLog', value);
+  }  
+}
  
 /* props settings variables*/
 var propItems = ['year', 'week', 'sheetsRedirectPart', 'sheetsRedirectFiles', 'shRFRes', 'shRFRes2'];// 'colors', 'nicks', 'actors', 'clientsNames', 'clientsSpecial', 'defaultTariff',
-var sessionId = 'sheetsRedirect';  
+var sessionId = 'sheetsRedirect_' + Utils.getUserEmail(); 
 

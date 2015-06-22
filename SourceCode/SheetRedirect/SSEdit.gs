@@ -70,12 +70,11 @@ function mainEventChanged(e, sheet, col, row) {
 /**
  * Validates values of changed date
  *
- * @param e event send from spreadsheet
  * @param sheet sheet of event
  * @param col col of event
  * @param row row of event
  */
-function dateChanged(e, sheet, col, row) {
+function dateChanged(sheet, col, row) {
   var from = sheet.getRange(row, col, 1, 1);
   var to = sheet.getRange(row, col + 1, 1, 1);
 

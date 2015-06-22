@@ -1,15 +1,23 @@
 /**
  * Insert Object to database
+ * sleep hack because of https://code.google.com/p/google-apps-script-issues/issues/detail?id=4901
  *
  * @param {string} sheet sheet/table where the object will be stored
  * @param obj object with key/value  pairs that will be inserted to database
  * @return {boolean} indicating success or failure.
  */
 function repCreate_(sheet, obj) {
+  var num;
+  
   if (sheet == null || obj == null) return false;
 
   lock_()
-  var num = objDB.insertRow(manager.myDB, sheet, obj);
+  try{
+    num = objDB.insertRow(manager.myDB, sheet, obj);
+  }catch(x){
+    Utilities.sleep(manager.sleepConstantForSSServiceBug)
+    num = objDB.insertRow(manager.myDB, sheet, obj);
+  } 
   unlock_();
 
   if (num) {
@@ -21,6 +29,7 @@ function repCreate_(sheet, obj) {
 
 /**
  * Deletes Object in database
+ * sleep hack because of https://code.google.com/p/google-apps-script-issues/issues/detail?id=4901
  *
  * @param {string} sheet sheet/table from which the object will be removed
  * @param obj object with key/value  pairs that will be removed from database
@@ -28,10 +37,17 @@ function repCreate_(sheet, obj) {
  * @return {boolean} indicating success or failure.
  */
 function repDelete_(sheet, obj, hasMoreInstances) {
+  var num;
+  
   if (sheet == null || obj == null) return false;
 
   lock_();
-  var num = objDB.deleteRow(manager.myDB, sheet, obj);
+  try{
+    num = objDB.deleteRow(manager.myDB, sheet, obj);
+  }catch(x){
+    Utilities.sleep(manager.sleepConstantForSSServiceBug)
+    num = objDB.deleteRow(manager.myDB, sheet, obj);
+  } 
   unlock_();
 
   if (num) {
@@ -47,6 +63,7 @@ function repDelete_(sheet, obj, hasMoreInstances) {
 
 /**
  * Updates Object in database
+ * sleep hack because of https://code.google.com/p/google-apps-script-issues/issues/detail?id=4901
  *
  * @param {string} sheet sheet/table where the object is stored
  * @param obj object with key/value  pairs that will be updated in database
@@ -54,10 +71,17 @@ function repDelete_(sheet, obj, hasMoreInstances) {
  * @return {boolean} indicating success or failure.
  */
 function repUpdate_(sheet, obj, cond) {
+  var num;
+  
   if (sheet == null || obj == null || cond == null) return false;
 
   lock_();
-  var num = objDB.updateRow(manager.myDB, sheet, obj, cond);
+  try{
+    num = objDB.updateRow(manager.myDB, sheet, obj, cond);
+  }catch(x){
+    Utilities.sleep(manager.sleepConstantForSSServiceBug)
+    num = objDB.updateRow(manager.myDB, sheet, obj, cond);
+  } 
   unlock_();
 
   if (num) {
@@ -73,6 +97,7 @@ function repUpdate_(sheet, obj, cond) {
 
 /**
  * Returns objects from database
+ * sleep hack because of https://code.google.com/p/google-apps-script-issues/issues/detail?id=4901
  *
  * @param {string} sheet sheet/table where the object is stored
  * @param fields array with strings of columns we want to have returned, if empty array it can return undefined properties for no data in property
@@ -81,6 +106,8 @@ function repUpdate_(sheet, obj, cond) {
  * @return array of found objects
  */
 function repFind_(sheet, fields, restrictions, limit) {
+  var rows;
+  
   if (sheet == null) return [];
 
   if (!(fields instanceof Array)) {
@@ -91,7 +118,12 @@ function repFind_(sheet, fields, restrictions, limit) {
   }
 
   lock_();
-  var rows = objDB.getRows(manager.myDB, sheet, fields, restrictions, limit);
+  try{
+    rows = objDB.getRows(manager.myDB, sheet, fields, restrictions, limit);
+  }catch(x){
+    Utilities.sleep(manager.sleepConstantForSSServiceBug)
+    rows = objDB.getRows(manager.myDB, sheet, fields, restrictions, limit);
+  }
   unlock_();
 
   if (fields.length > 0) {

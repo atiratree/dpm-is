@@ -30,7 +30,7 @@ function runEveryTwoHours() {
     correctDbProtections(employees);
     correctProtections();
     correctSitesRights(employees);
-    Utils.log('Corrected protections.');
+    Utils.logCorrection('Corrected protections.');
   } catch (e) {
     Utils.logError(e);
     throw e;
@@ -39,7 +39,7 @@ function runEveryTwoHours() {
 
 function run_(updateCalendar) {
   try {
-    Utils.log((updateCalendar ? 'Calendar and ' : '') + 'Spreadsheet updater executed');
+    Utils.logCorrection((updateCalendar ? 'Calendar and ' : '') + 'Spreadsheet updater executed');
     var day = new Date();
     var data = {
       files: Utils.findFiles(),

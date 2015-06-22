@@ -22,6 +22,17 @@ function logError(msg) {
 }
 
 /**
+ * Logs correction to Log SpreadSheet 
+ *
+ * @param msg message to be logged
+ */
+function logCorrection(msg) {
+  try {
+    logToSheet_(msg, manager.correctionSheet);
+  } catch (x) {}
+}
+
+/**
  * Appends message to Log SpreadSheet 
  *
  * @param e message to be logged
