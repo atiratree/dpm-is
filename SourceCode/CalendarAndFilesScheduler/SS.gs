@@ -10,13 +10,8 @@ function correctProtections() {
   Utils.findFiles([], {
     type: 'Rozpis'
   }).forEach(function(file) {
-    var sheet;
-    
-    try{
-      sheet = SpreadsheetApp.openById(file.id).getSheetByName('Rozpis');
-    }catch(x){ // Bug "Document 1xx is missing (perhaps it was deleted?)"
-      return;
-    }
+  
+    var sheet = Utils.openSpreadsheet(file.id).getSheetByName('Rozpis');
     
     if (sheet == null) {
       return;
@@ -42,8 +37,8 @@ function correctDbProtections(employees) {
   var administration = filterByPermission_(employees, Utils.AccessEnums.ADMINISTRATIVE);
   var leadersSheets = ['Assistants', 'GroupActors', 'GroupLeaders', 'Tariffs', 'Clients', 'Triggers', 'GroupClients', 'Events'];
   var administrationSheets = ['Tariffs'];
-
-  SpreadsheetApp.openById(Utils.manager.dbID).getSheets().forEach(function(sheet) {
+  
+  Utils.openSpreadsheet(Utils.manager.dbID).getSheets().forEach(function(sheet) {
     var sheetName = sheet.getName();
     var finalEmails = [];
 

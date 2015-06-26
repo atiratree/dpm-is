@@ -121,7 +121,8 @@ function getMyAccessRights(type) {
     AccessEnums.GROUP,
     AccessEnums.SCHEDULE,
     AccessEnums.CLIENT,
-    AccessEnums.EVENT
+    AccessEnums.EVENT,
+    AccessEnums.EMAIL_SENDER
   ];
 
   switch (userPerm) {
@@ -140,7 +141,7 @@ function getMyAccessRights(type) {
         case PermissionTypes.VIEW:
           return fullRights;
         case PermissionTypes.EDIT:
-          return [AccessEnums.ASSISTANT, AccessEnums.EMPLOYEES_GROUPS, AccessEnums.CLIENT, AccessEnums.EVENT, AccessEnums.TARIFF];
+          return [AccessEnums.ASSISTANT, AccessEnums.EMPLOYEES_GROUPS, AccessEnums.CLIENT, AccessEnums.EVENT, AccessEnums.TARIFF, AccessEnums.EMAIL_SENDER];
       }
       break;
 

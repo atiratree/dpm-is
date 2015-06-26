@@ -21,6 +21,8 @@ function getResource(resource, param) {
           return getData('shRFRes');
         case 'links':
           return getLinks(param.files, param.group, Utils.getUserEmail());
+        case 'sendsEmails':
+          return false;
         default:
           return null;
       }
@@ -38,6 +40,8 @@ function getResource(resource, param) {
           return getData('shRFRes2');
         case 'links':
           return getLinks(param.files, param.group);
+        case 'sendsEmails':
+          return true;
         default:
           return null;
       }
@@ -50,7 +54,9 @@ function getResource(resource, param) {
         case 'getGroups':
           return Utils.getUserPermission() == Utils.AccessEnums.ADMIN ? Utils.findGroupsAsArray() : []; // precaution against too many F5s
         case 'links':
-          return getLinks(param.files, param.group);
+          return getLinks(param.files, param.group);          
+        case 'sendsEmails':
+          return true;
         default:
           return null;
       }
@@ -187,6 +193,43 @@ function temporaryTestingLog(email, message){
     PropertiesService.getScriptProperties().setProperty('testLog', value);
   }  
 }
+ 
+
+/**
+ * Maps obj properties to string as url parameters.
+ *
+ * @param obj object to convert
+ * @return parameter part of html
+ */
+function constructUrlParameters(obj) {
+  var value = '';
+
+  for (var prop in obj) {
+    if (value) {
+      value += '&';
+    } else {
+      value = '?';
+    }
+    value += prop + '=' + rfc3986EncodeURIComponent(obj[prop]);
+  }
+  return value;
+}
+
+/**
+ * Encodes URI component.
+ *
+ * @param str string to encode
+ * @return rfc3986 URI component
+ */
+function rfc3986EncodeURIComponent(str) {
+  var v = '';
+  try {
+    v = encodeURIComponent(str).replace(/[!'()*]/g, function(v) {
+      return escape(v);
+    });
+  } catch (e) {}
+  return v;
+} 
  
 /* props settings variables*/
 var propItems = ['year', 'week', 'sheetsRedirectPart', 'sheetsRedirectFiles', 'shRFRes', 'shRFRes2'];// 'colors', 'nicks', 'actors', 'clientsNames', 'clientsSpecial', 'defaultTariff',

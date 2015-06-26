@@ -61,7 +61,8 @@ var AccessEnums = {
   GROUP: 504,
   SCHEDULE: 505, // neměnit číslo - používají javascript soubory
   CLIENT: 506,
-  EVENT: 507
+  EVENT: 507,
+  EMAIL_SENDER: 508
 }
 
 var PermissionTypes = {

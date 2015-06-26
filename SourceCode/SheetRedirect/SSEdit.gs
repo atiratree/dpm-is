@@ -17,7 +17,7 @@ function editMainSheet(e) {
       return;
     }
     
-    //hack for running functions
+    //hack   
     if( col == 1 && row == 70){
       var value = sheet.getRange(70, 1).getValue()
       sheet.getRange(70, 1).setValue('');
@@ -42,10 +42,10 @@ function editMainSheet(e) {
             mainEventChanged(e, sheet, col + i, row + j);
           }
           if (((col + i + 4) % 6 == 0)) {
-            dateChanged(e, sheet, col + i - 1, row + j);
+            dateChanged(sheet, col + i - 1, row + j);
           }
           if (((col + i + 5) % 6 == 0)) {
-            dateChanged(e, sheet, col + i, row + j);
+            dateChanged(sheet, col + i, row + j);
           }
       }
     }   
@@ -78,7 +78,7 @@ function dateChanged(sheet, col, row) {
   var from = sheet.getRange(row, col, 1, 1);
   var to = sheet.getRange(row, col + 1, 1, 1);
 
-  if (from != '' && to != '' && Utils.compareTimes(from.getValue(), to.getValue()) < 0) {
+  if (from.getValue() != '' && to.getValue() != '' && Utils.compareTimes(from.getValue(), to.getValue()) < 0) {
     to.setValue('');
     SpreadsheetApp.getUi().alert(to.getA1Notation() + ': Od je větší než Do !')
   }
@@ -226,5 +226,6 @@ var manager = {
   colors: null,
   index: null,
   defaultTariff: null,
-  events: null
+  events: null,
+  emailSenderScriptURL: 'https://script.google.com/a/macros/domovpromne.cz/s/AKfycbywixrXyYgpPAm_DQgBHeVtic-QnzoAMfoGyF0UZuk/dev'
 }  

@@ -139,24 +139,34 @@ function updateClient(client) {
 }
 
 /**
- * Finds clients from database based on restrictions 
+ * Finds clients from database based on restrictions, 
+ * each client has attribute with his groups unless group specified 
  *
  * @param fields fields is array of strings . It assigns these strings as properties to final objects
  * @param restrictions object of key/value pairs for selecting rows
+ * @param group group for selecting clients
  * @return array of clients
  */
-function findClients(fields, restrictions) {
-  var isInGroups = findGroupClients();
+function findClients(fields, restrictions, group) {
+  var groupSearchCriteria = group ? {group: group} : {};
+  var isInGroups = findGroupClients([], groupSearchCriteria);
   var rows;
 
   rows = repFind_(manager.clientsSh, fields, restrictions);
 
-  for (var i = 0; i < rows.length; i++) {
-    var isIn = isInGroups.filter(function(item) {
-      return item.name === rows[i].name;
-    });
-
-    rows[i].isInGroups = convertObjectsToArrayByProperty(isIn, 'group');;
+  if(group){
+    var clientsInGroup = convertObjectsToArrayByProperty(isInGroups, 'name');
+    rows = rows.filter(function(item) {
+        return clientsInGroup.indexOf(item.name) > -1;
+    })
+  }else{
+    for (var i = 0; i < rows.length; i++) {
+      var isIn = isInGroups.filter(function(item) {
+        return item.name === rows[i].name;
+      });
+  
+      rows[i].isInGroups = convertObjectsToArrayByProperty(isIn, 'group');
+    }    
   }
 
   return rows;

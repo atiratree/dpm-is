@@ -1,0 +1,41 @@
+<!-- This is page for selecting emails -->
+<?!= include('css');?>
+<div id='mainDiv'>
+  <h2>Odeslat rozpis <?!= manager.ss.getName() ?> </h2>
+    <div id='form-content'>
+      <form id='form'>
+        <table >
+           <tr>          
+             <th><p><label><input type='checkbox' checked='true' id='mainCheckbox'/> </label></p></th>
+             <th><p><label><?= getProp('type') == 'client' ? 'Klient' : 'Asistent' ?></label></p></th>
+             <th><p><label>Email</label></p></th>
+           </tr>
+<?         for(var num in manager.clients){ ?>
+<?           var client = manager.clients[num]; ?>
+             <tr>
+               <td>
+                 <input type='checkbox' value='<?= client.email ?>' id='<?= client.email ?>' checked='true'/> 
+               </td>
+               <td>
+                 <label> <?= client.name?></label>
+               </td>
+               <td>
+                 <label><?= client.email ?></label>
+               </td>
+             </tr>
+<?        } ?>
+        </table>
+        <br>
+        <p id='submit'>
+          <input class='send' type='submit' value='Odešli rozpisy'>     
+        </p>
+      </form>
+    </div>
+    <div id='loading' class='clearDiv'>
+      <img id='loader' src='https://6d435c32-a-9809a6ee-s-sites.googlegroups.com/a/domovpromne.cz/rozpisy/loading.gif?attachauth=ANoY7cqOg-5ThZpQYtGVK7N_QZapE3DyACsAQx58jBl_bZSrBiA9Ci-Vro0L6VcqbkEekR4TlTzCkbRFiXISMrGfi50p-WaIjynbNTSTBI4KMuP9Y45rg0uq2fcLtrkRHRgxeUELIzYc-8XFm4cceRBZkcqSTbXEfAXbBVMNDI-Z21zrGYUL_I9x-UDS0B0LGyOn5YyYm_PsQDYCZPO8opla7xLHRWiUNQ%3D%3D&attredirects=0' />
+    </div> 
+    <div id='confirmation-content' class='clearDiv' hidden='true'>
+      <pre id='confirmation' ></pre>  
+    </div>
+</div>
+<?!= include('javascript');?> 

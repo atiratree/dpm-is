@@ -1,9 +1,7 @@
 <!-- This is template page for redirection,template groupsPart is going to be inserted into this template -->
 <?!= include('css');?>
-<div id='mainDiv'>
-  <p>
-    <label>Týden <?!= getProp('week'); ?> (<?!= getProp('year') ?>)</label>
-  </p>
+<div id='mainDiv'>  
+  <h2>Týden <?!= getProp('week'); ?> (<?!= getProp('year') ?>)</h2>  
   <? setProp('sheetsRedirectPart','isInGroups'); ?>
   <? saveData('sheetsRedirectFiles',Utils.findFiles(['url','id','group','type','owner'],{year: getProp('year'),week: getProp('week')})); ?>
   <div class='partDiv'>

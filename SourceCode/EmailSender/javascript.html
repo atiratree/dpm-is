@@ -1,0 +1,43 @@
+<!-- javascritp-->
+<script src='//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js'></script>
+<script type='text/javascript'>
+var submitValid = true;
+
+$(document).ready(function() {  
+  $('#mainCheckbox').click(changeAllCheckboxes);
+  $('#form').submit(submitFunction);
+});
+
+function submitFunction() {
+  if(submitValid){
+    submitValid = false;
+    
+    $('#submit').hide();
+    $('#loader').show();
+    
+    google.script.run.withSuccessHandler(function(obj) {
+      $('#loader').hide();
+      resolveDefault(obj);
+    }).processForm(this);
+  }
+  
+  return false;
+}
+
+function resolveDefault(obj) {
+  if (obj.fail) {
+    $('#confirmation').text('Chyba na serveru (' + obj.message + ') : zkuste znovu');  
+    $('#form-content').slideUp();
+  } else if (obj.success) {
+    $('#confirmation').text(obj.success);    
+  } else if (obj.failMessage) {
+    $('#confirmation').text(obj.failMessage);    
+  }  
+  
+  $('#confirmation-content').show('slow'); 
+}
+
+function changeAllCheckboxes(){
+  $( ":input[type=checkbox]" ).prop('checked', this.checked);
+}
+</script>
