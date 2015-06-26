@@ -11,9 +11,17 @@ function updateSpreadSheet(spreadSheet, assistSheets) {
   var group = sheetRecord.group;
   
   var tariffs = Utils.findTariffs();
+  tariffs = Utils.sort(tariffs, 'shortcut');
+  
   var actors = getActors(group);
+  actors = Utils.sort(actors, 'nick');
+  
   var clients = Utils.findGroupClients(['name'], { group: group});
+  clients = Utils.sort(clients, 'name')
+  
   var events = Utils.findEvents();
+  events = Utils.sort(events, 'name')
+  
   clients.push.apply(clients, events);  
   
   var arrays = [{array: clients, convertProp: 'name'}, {array: actors, convertProp: 'nick'}, {array: tariffs, convertProp: 'shortcut'}]  
@@ -37,6 +45,12 @@ function updateSpreadSheet(spreadSheet, assistSheets) {
   if(assistSheets){
     refreshAssistantsSheets(spreadSheet,actors,Utils.convertObjectsToArrayByProperty(events, 'name'));
   }  
+}
+
+function test(){
+  var clients = Utils.findGroupClients(['name'], { group: 'Tým A'});
+  clients = sort_(clients, 'name')
+  Utils.logError(clients)
 }
 
 /**

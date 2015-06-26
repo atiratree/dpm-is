@@ -87,6 +87,27 @@ function convertObjectsToArrayByProperty(array, property) {
   });
 }
 
+/**
+ * sorts array by sortProp
+ *
+ * @param array array to be sorted
+ * @param sortProp property of obj to be sorted by, optional
+ * @return sorted array
+ *
+ */
+function sort(array, sortProp){
+  try{
+    if(array.length > -1 &&  typeof array[0] === 'string' ){
+      return array.sort(function(a,b) {return a.localeCompare(b);} );
+    }
+    return array.sort(function(a,b) {return a[sortProp].localeCompare(b[sortProp]);} );
+  }catch(x){
+    logError(x);
+    return array.sort();
+  }
+}
+
+
 /** 
  * Checks if obj is error free, error is property which is non empty string.
  *

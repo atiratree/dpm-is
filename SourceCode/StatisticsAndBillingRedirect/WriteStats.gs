@@ -13,29 +13,30 @@ function createStatistics(from, to) {
   var clientsSheet = ss.getActiveSheet();
   var clientsSheet2 = ss.insertSheet('Klienti Počet návštěv');
   var assistantsSheet = ss.insertSheet('Asistenti');
-
-  clientsSheet.setName('Klienti');
-
   var events = Utils.convertObjectsToArrayByProperty(Utils.findEvents(), 'name');
-
-  writeStats(events, spreadsheetData, clientsSheet, 'event', from, to);
-  writeStats(events, spreadsheetData, clientsSheet2, 'event2', from, to);
-  writeStats(events, spreadsheetData, assistantsSheet, 'employee', from, to);
-
+  
+  clientsSheet.setName('Klienti');
+  
+  spreadsheetData = spreadsheetData.filter(function(item) {
+     return (events.indexOf(item['event']) < 0);
+  });
+  
+  writeStats(spreadsheetData, clientsSheet, 'event', from, to);
+  writeStats(spreadsheetData, clientsSheet2, 'event2', from, to);
+  writeStats(spreadsheetData, assistantsSheet, 'employee', from, to);
   return ss.getUrl();
 }
 
 /**
  * Writes statistics into the sheet
  *
- * @param events all events
  * @param spreadsheetData data to write into sheet
  * @param sheet sheet
  * @param type switches writing stats to different modes
  * @param from from which data to write stats
  * @param to to which data to write stats
  */
-function writeStats(events, spreadsheetData, sheet, type, from, to) {
+function writeStats(spreadsheetData, sheet, type, from, to) {
   var sortedExtractObjs, sortedMonths;
   var extractObjSums = [];
   var monthsSums = [];
@@ -48,9 +49,8 @@ function writeStats(events, spreadsheetData, sheet, type, from, to) {
 
   spreadsheetData.forEach(function(item) {
     var extractObj, monthObj, identifier, month;
-    var condition = (type == 'event') ? (item[type] && events.indexOf(item[type]) < 0 && item.tariff) : (item[type] && item.tariff);
-
-    if (condition) {
+   
+    if (item[type] && item.tariff) {
 
       if (!result[item[type]]) {
         result[item[type]] = {};

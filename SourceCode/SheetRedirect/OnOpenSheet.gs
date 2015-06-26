@@ -18,11 +18,12 @@ function onOpenSheet() {
       .addItem('Generovat listy asistentů', 'reloadSheets')  
       .addItem('Zkontrolovat duplicity v programu asistentů', 'checkAssistantDuplicities')
       .addToUi();*/
-    initializeData();
+    initializeData();   
   }
   
   spreadSheet.toast('Hotovo.'); 
 }
+
 
 /**
  * Reloads data for spreadsheet to use, to user properties. 
