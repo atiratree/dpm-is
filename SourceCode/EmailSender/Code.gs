@@ -21,26 +21,32 @@ function doGet(e) {
     }
   } catch (error) {
     Utils.logError('[sheets redirect] ' + JSON.stringify(error));
-    html = createPresentableHTML('<p>Server je zaneprázdněn (mohlo dojít k dosáhnutí limitu u Google služby). Chvíly počkejte a zkuste znovu.</p>', 'string');
-    
+    html = createPresentableHTML('<p>Server je zaneprázdněn (mohlo dojít k dosáhnutí limitu u Google služby). Chvíly počkejte a zkuste znovu.</p>', 'string');    
   } 
+  
   return html;
 }
 
+
+/**
+ *  Init clients array to manager
+ *
+ */
 function initialize(){
   manager.ss = SpreadsheetApp.openById(getProp('sheetId'));
   manager.clients = Utils.findClients([], {}, getProp('group')).filter(function(item){
-    return item != '';    
+    return item.email != null && item.email != '';    
   }); 
   
-  // testing
-  manager.clients =  manager.clients.map(function(item){
-   item.email = "uzivatel02@domovpromne.cz";
-   return item;   
-  }); 
-  
+  manager.clients = Utils.sort(manager.clients, 'name')  
 }
 
+/**
+ * Processes form and returns result.
+ *
+ * @param formObject Form object
+ * @return object which designates success or failure
+ */
 function processForm(formObject) {
   try {
     switch (getProp('type')) {

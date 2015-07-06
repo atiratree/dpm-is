@@ -9,7 +9,7 @@ function getTariffsTable() {
     return {};
   }
   
-  var tariffs = Utils.findTariffs();
+  var tariffs = Utils.sort(Utils.findTariffs(), 'name');
   var canDeleteAndEdit = Utils.hasAccessTo(Utils.AccessEnums.TARIFF,Utils.PermissionTypes.EDIT);
   var dt = {
     cols:[

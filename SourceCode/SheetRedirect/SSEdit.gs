@@ -220,12 +220,3 @@ function checkDayDuplicities(sheet, row, column, numberOfRows, width) {
   });
   return resultMessages;
 }
-
-/* Manager for storing and caching*/
-var manager = { 
-  colors: null,
-  index: null,
-  defaultTariff: null,
-  events: null,
-  emailSenderScriptURL: 'https://script.google.com/a/macros/domovpromne.cz/s/AKfycbywixrXyYgpPAm_DQgBHeVtic-QnzoAMfoGyF0UZuk/dev'
-}  

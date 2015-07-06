@@ -1,4 +1,4 @@
-<!-- javascritp-->
+<!-- js-->
 <script src='//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js'></script>
 <script type='text/javascript'>
 var submitValid = true;
@@ -10,8 +10,7 @@ $(document).ready(function() {
 
 function submitFunction() {
   if(submitValid){
-    submitValid = false;
-    
+    submitValid = false; 
     $('#submit').hide();
     $('#loader').show();
     
@@ -19,14 +18,16 @@ function submitFunction() {
       $('#loader').hide();
       resolveDefault(obj);
     }).processForm(this);
-  }
+    $(':input[type=checkbox]').prop('disabled', true);    
+    $('#textArea').prop('disabled', true);   
+  }  
   
   return false;
 }
 
 function resolveDefault(obj) {
   if (obj.fail) {
-    $('#confirmation').text('Chyba na serveru (' + obj.message + ') : zkuste znovu');  
+    $('#confirmation').text('Chyba na serveru (' + obj.message + ') : zkontrolujte složku odeslaná pošta, pro zkontrolování již odeslaných emailů a popřípadě zkuste odeslat znovu.');  
     $('#form-content').slideUp();
   } else if (obj.success) {
     $('#confirmation').text(obj.success);    
@@ -38,6 +39,6 @@ function resolveDefault(obj) {
 }
 
 function changeAllCheckboxes(){
-  $( ":input[type=checkbox]" ).prop('checked', this.checked);
+  $(':input[type=checkbox]').prop('checked', this.checked);
 }
 </script>

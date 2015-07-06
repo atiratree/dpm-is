@@ -9,7 +9,7 @@ function getEventsTable() {
     return {};
   }
   
-  var events = Utils.findEvents();
+  var events = Utils.sort(Utils.findEvents(), 'name');
   var canDelete = Utils.hasAccessTo(Utils.AccessEnums.EVENT,Utils.PermissionTypes.EDIT);  
   var dt = {
     cols:[

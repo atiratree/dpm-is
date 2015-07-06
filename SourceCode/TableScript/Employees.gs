@@ -10,7 +10,9 @@ function getEmployeesTable() {
   
   var editAccessRights = Utils.getMyAccessRights(Utils.PermissionTypes.EDIT);
   var canEditGroups = Utils.hasAccessTo(Utils.AccessEnums.EMPLOYEES_GROUPS,Utils.PermissionTypes.EDIT);  
-  var employees = Utils.findEmployees();
+  var employees = Utils.findEmployees([],{},'');
+  employees = Utils.sort(Utils.sort(employees, 'name'), 'permission');
+  
   var allPermissions = Utils.getUserRolesInCzech();   
   var dt = {
     cols:[

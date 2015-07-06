@@ -113,6 +113,7 @@ function updateEmployee(user) {
         email: email
       });
       result = result && createAssistant_(user);
+      result = result && deleteGroupLeader({employeeEmail: email}, true);
     } else {
       result = deleteAssistant_({
         email: email

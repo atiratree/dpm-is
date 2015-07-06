@@ -235,3 +235,11 @@ function rfc3986EncodeURIComponent(str) {
 var propItems = ['year', 'week', 'sheetsRedirectPart', 'sheetsRedirectFiles', 'shRFRes', 'shRFRes2'];// 'colors', 'nicks', 'actors', 'clientsNames', 'clientsSpecial', 'defaultTariff',
 var sessionId = 'sheetsRedirect_' + Utils.getUserEmail(); 
 
+/* Manager for storing and caching*/
+var manager = { 
+  colors: null,
+  index: null,
+  defaultTariff: null,
+  events: null,
+  emailSenderScriptURL: 'https://script.google.com/a/macros/domovpromne.cz/s/AKfycbzZMQ21z3CsjzoDGMFNkUMbFFdupbjfqhQX1Cv6n1UiZkxDd1Q/exec'
+}  

@@ -9,7 +9,7 @@ function getGroupsTable() {
     return {};
   }
   
-  var groups = Utils.findGroups();
+  var groups = Utils.sort(Utils.findGroupsAsArray());
   var canDelete = Utils.hasAccessTo(Utils.AccessEnums.GROUP,Utils.PermissionTypes.EDIT);
   var dt = {
     cols:[
@@ -22,8 +22,8 @@ function getGroupsTable() {
   for(var i = 0; i < groups.length; i++) {   
       dt.rows.push({
         c:[
-          {v: groups[i].group},
-          {v: canDelete ? getDeleteButtonHtml({instance: 'group',name:groups[i].group},500,150) : ''}
+          {v: groups[i]},
+          {v: canDelete ? getDeleteButtonHtml({instance: 'group',name:groups[i]},500,150) : ''}
         ]
       });    
   }

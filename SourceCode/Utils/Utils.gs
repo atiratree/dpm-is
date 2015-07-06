@@ -88,7 +88,7 @@ function convertObjectsToArrayByProperty(array, property) {
 }
 
 /**
- * sorts array by sortProp
+ * sorts array by sortProp with Czech comparision
  *
  * @param array array to be sorted
  * @param sortProp property of obj to be sorted by, optional
@@ -98,15 +98,16 @@ function convertObjectsToArrayByProperty(array, property) {
 function sort(array, sortProp){
   try{
     if(array.length > -1 &&  typeof array[0] === 'string' ){
-      return array.sort(function(a,b) {return a.localeCompare(b);} );
+      return array.sort(function(a,b) {return a.toString().localeCompare(b.toString());} );
     }
-    return array.sort(function(a,b) {return a[sortProp].localeCompare(b[sortProp]);} );
+    return array.sort(function(a,b) {
+      return a[sortProp].toString().localeCompare(b[sortProp].toString());
+    });
   }catch(x){
     logError(x);
     return array.sort();
   }
 }
-
 
 /** 
  * Checks if obj is error free, error is property which is non empty string.
