@@ -6,9 +6,9 @@
  * @param secondary spreadsheet to be coppied into
  * @param data data from main spreadsheet
  * @param eventsNames array with events names
- * @param clientName if true copies clients data, assistants otherwise
+ * @param clientNames if true copies clients data, assistants otherwise
  */
-function copyDataBetweenSheets(main, secondary, data, eventsNames, clientName, smallLayout){
+function copyDataBetweenSheets(main, secondary, data, eventsNames, clientNames, smallLayout){
   var name = secondary.getName();
   
   var firstDays = smallLayout ? 3 : 5;
@@ -27,9 +27,9 @@ function copyDataBetweenSheets(main, secondary, data, eventsNames, clientName, s
   for (var i = 0; i < data.length; i++) {
     var cleanData;
     
-    if(clientName){
+    if(clientNames){
       cleanData = data[i].filter(function(a) {
-        return a.event == clientName;
+        return clientNames.indexOf(a.event) > -1;
       })
     }else{      
       cleanData = data[i].filter(function(a) {

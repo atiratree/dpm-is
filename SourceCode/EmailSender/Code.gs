@@ -33,12 +33,26 @@ function doGet(e) {
  *
  */
 function initialize(){
-  manager.ss = SpreadsheetApp.openById(getProp('sheetId'));
-  manager.clients = Utils.findClients([], {}, getProp('group')).filter(function(item){
+  var map = {}; //getProp('group')
+  var clients = Utils.findClients([], {}, 'Tým B').filter(function(item){
     return item.email != null && item.email != '';    
+  });
+  
+  clients = Utils.sort(clients, 'name');
+  
+  clients.forEach(function(item){   
+    var key = item.email;
+    var value = item.name;
+    
+    if(map[key]){
+      map[key].names.push(value);      
+    }else{
+      map[key] = {names: [value]};
+    }
   }); 
   
-  manager.clients = Utils.sort(manager.clients, 'name')  
+  manager.ss = SpreadsheetApp.openById(getProp('sheetId'));
+  manager.clients = map; 
 }
 
 /**

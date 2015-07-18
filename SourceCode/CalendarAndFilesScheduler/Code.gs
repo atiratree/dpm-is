@@ -31,6 +31,7 @@ function runEveryTwoHours() {
     correctProtections();
     correctSitesRights(employees);
     Utils.logCorrection('Corrected protections.');
+    deleteOldTriggers();
   } catch (e) {
     Utils.logError(e);
     throw e;
@@ -69,4 +70,16 @@ function run_(updateCalendar) {
     Utils.logError(e);
     throw e;
   }
+}
+
+function deleteOldTriggers(){
+  var users = Utils.convertObjectsToArrayByProperty(Utils.findEmployees(['email']), 'email');
+  var triggers = Utils.convertObjectsToArrayByProperty(Utils.findTriggers(['email']), 'email');
+  triggers = Utils.toUniquePrimitiveArray(triggers);
+  
+  triggers.forEach(function(trig){
+    if(users.indexOf(trig)  < 0){
+      Utils.deleteTrigger({email:email}, true)
+    }  
+  });
 }

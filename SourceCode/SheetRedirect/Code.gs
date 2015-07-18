@@ -9,22 +9,74 @@ function doGet(e) {
   try {
     setRuntimeProperties(e.parameter);  
     
-    if (e.parameter.year && e.parameter.week) {
-      html = createPresentableHTML('redirect', 'file', 'Výběr rozpisu');
+    if (e.parameter.year && e.parameter.week && e.parameter.sheetId) {
+      if (!Utils.hasAccessTo(Utils.AccessEnums.EMAIL_SENDER, Utils.PermissionTypes.VIEW)) {
+        html = createPresentableHTML('<p>NO_PERMISSION</p>', 'string');
+      }else{
+        initialize();
+        html = createPresentableHTML('main', 'file', 'Výběr emailů');
+      }
     } else {
       html = createPresentableHTML('<p>Authorizace...OK</p>', 'string');
     }
   } catch (error) {
-    if(checkIfPropsFull()){ // pri opakovani F5 dosáhne přístup do properties max limitu
-      Utils.logError('[sheets redirect] ' + JSON.stringify(error));
-      html = createPresentableHTML('<p>Nelze zobrazit rozpisy. 1) Server může být zaneprázdněn, zkuste znovu. 2) Nebo nenáležíte do žádné skupiny</p>', 'string');
-    }else{
-       html = createPresentableHTML('<p>Server je zaneprázdněn (mohlo dojít k dosáhnutí limitu u Google služby). Chvíly počkejte a zkuste znovu.</p>', 'string');
-    }    
+    Utils.logError('[sheets redirect] ' + JSON.stringify(error));
+    html = createPresentableHTML('<p>Server je zaneprázdněn (mohlo dojít k dosáhnutí limitu u Google služby). Chvíly počkejte a zkuste znovu.</p>', 'string');    
   } 
+  
   return html;
 }
 
+
+/**
+ *  Init clients array to manager
+ *
+ */
+function initialize(){
+  var map = {}; 
+  var clients = Utils.findClients([], {}, getProp('group')).filter(function(item){
+    return item.email != null && item.email != '';    
+  });
+  
+  clients = Utils.sort(clients, 'name');
+  
+  clients.forEach(function(item){   
+    var key = item.email;
+    var value = item.name;
+    
+    if(map[key]){
+      map[key].names.push(value);      
+    }else{
+      map[key] = {names: [value]};
+    }
+  }); 
+  
+  manager.ss = SpreadsheetApp.openById(getProp('sheetId'));
+  manager.clients = map; 
+}
+
+/**
+ * Processes form and returns result.
+ *
+ * @param formObject Form object
+ * @return object which designates success or failure
+ */
+function processForm(formObject) {
+  try {
+    switch (getProp('type')) {
+      case 'client':
+        return processClients(formObject);
+      default:
+        return null;
+    }
+  } catch (error) {
+    Utils.logError(error);
+    return {
+      fail: 'fail',
+      message: error.message
+    }
+  }
+}
 /**
  * Includes HMTL from a file. *just shortcut a for a long command
  *

@@ -41,7 +41,7 @@ function processClients(formObject) {
   PropertiesService.getScriptProperties().setProperty('defaultMessage_' + sessionId, body);
 
   // prepare and send
-  emails.forEach(function(email){    
+  emails.forEach(function(email){
     try{
       preparePayloadAndEmail(email, body, mainSheetData, mainSS, payloadSS, mainSheet, payloadSheet, payloadAsFile)
       sendeddEmails += sendeddEmails ? ', ' + email : email;
@@ -52,6 +52,7 @@ function processClients(formObject) {
   });
   
   Utils.log('Sended pdf schedules to: ' + sendeddEmails);
+  payloadAsFile.setTrashed(true);
   
   if(failedEmails){
      Utils.logError('Failed to send to: ' + failedEmails);
@@ -60,7 +61,6 @@ function processClients(formObject) {
   
   return {success: 'Všechny emaily byli v pořádku odeslány'};
 }
-
 
 /**
  * prepares sheets for clients and sends emails
@@ -76,12 +76,12 @@ function processClients(formObject) {
  * @return success string
  */
 function preparePayloadAndEmail(email, body, mainSheetData, mainSS, payloadSS, mainSheet, payloadSheet, payloadAsFile){ 
-  var name = findNameByEmail(email);
+  var names = manager.clients[email].names;
   var mainSheet = mainSS.getSheetByName('Rozpis');
-  var payloadSheet = payloadSS.getActiveSheet(); 
+  var payloadSheet = payloadSS.getActiveSheet();
   
-  Utils.copyDataBetweenSheets(mainSheet, payloadSheet, mainSheetData, [], name, true);
-  payloadSheet.getRange(1, 1).setValue('Rozpis ' + name);
+  Utils.copyDataBetweenSheets(mainSheet, payloadSheet, mainSheetData, [], names, true);
+  payloadSheet.getRange(1, 1).setValue('Rozpis ' + names.join(', '));
  
   SpreadsheetApp.flush();
   

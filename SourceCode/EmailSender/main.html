@@ -2,27 +2,30 @@
 <?!= include('css');?>
 <div id='mainDiv'>
   <h2>Odeslat rozpis <?!= manager.ss.getName() ?> </h2>
+  <hr>
     <div id='form-content'>
       <form id='form'>
         <table >
            <tr>          
-             <th><p><label><input type='checkbox' checked='true' id='mainCheckbox'/> </label></p></th>
-             <th><p><label><?= getProp('type') == 'client' ? 'Klient' : 'Asistent' ?></label></p></th>
-             <th><p><label>Email</label></p></th>
+             <th><p><input type='checkbox' checked='true' id='mainCheckbox'/></p></th>
+             <th><p><label for='mainCheckbox'><?= getProp('type') == 'client' ? 'Klient' : 'Asistent' ?></label></p></th>
+             <th><p><label for='mainCheckbox'>Email</label></p></th>
            </tr>
-<?         for(var num in manager.clients){ ?>
-<?           var client = manager.clients[num]; ?>
-             <tr>
-               <td>
-                 <input type='checkbox' value='<?= client.email ?>' id='<?= client.email ?>' checked='true'/> 
-               </td>
-               <td>
-                 <label> <?= client.name?></label>
-               </td>
-               <td>
-                 <label><?= client.email ?></label>
-               </td>
-             </tr>
+<?         var clients = manager.clients ?>
+<?         for(var email in clients){ ?>
+<?           if (clients.hasOwnProperty(email)){ ?>
+               <tr>
+                 <td>
+                   <input type='checkbox' value='<?= email ?>' id='<?= email ?>' checked='true'/> 
+                 </td>
+                 <td>
+                   <label for='<?= email ?>'> <?= clients[email].names.join(', ');?></label>
+                 </td>
+                 <td>
+                   <label for='<?= email ?>'><?= email ?></label>
+                 </td>
+               </tr>
+<?          } ?>
 <?        } ?>
         </table>  
         <p> 

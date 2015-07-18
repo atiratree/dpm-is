@@ -44,6 +44,9 @@ function deleteEmployee(user) { // *wrapper function: treats assistant and emplo
     deleteGroupActor({
       employeeEmail: user.email
     });
+    deleteTrigger({
+      email: user.email
+    });
   }
   return result;
 }

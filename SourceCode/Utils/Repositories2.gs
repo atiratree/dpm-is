@@ -78,10 +78,11 @@ function updateFile(file) {
  *
  * @param fields fields is array of strings . It assigns these strings as properties to final objects
  * @param restrictions object of key/value pairs for selecting rows
+ * @param limit maximum number of rows to be returned
  * @return array of files
  */
-function findFiles(fields, restrictions) {
-  return repFind_(manager.filesSh, fields, restrictions);
+function findFiles(fields, restrictions, limit) {
+  return repFind_(manager.filesSh, fields, restrictions, limit);
 }
 
 /**
@@ -117,10 +118,11 @@ function createTrigger(trigger) {
  * Delete trigger/s from database based on its properties
  *
  * @param trigger object
+ * @param hasMoreInstances  if true turns off error logging if object has more instances 
  * @return {boolean} indicating success or failure.
  */
-function deleteTrigger(trigger) {
-  return repDelete_(manager.trigSh, trigger);
+function deleteTrigger(trigger, hasMoreInstances) {
+  return repDelete_(manager.trigSh, trigger, hasMoreInstances);
 }
 
 /**
