@@ -1,89 +1,4 @@
 /**
- * Helper function to create main HTML. It can return html, string or arrays of objects we need to include in our page.
- *
- * @param resource string describing wanted resource 
- * @param param object as {files: [..], group: [..]} with objects for faster execution
- * @return requested resource or null if resource not found
- */
-function getResource(resource, param) {
-  switch (getProp('sheetsRedirectPart')) {
-    case 'isInGroups':
-      switch (resource) {
-        case 'includeBool':
-          var email = Utils.getUserEmail();            
-          var actors = Utils.findGroupActors([], {
-            employeeEmail: email
-          });
-          return setAndLook(email, actors, 'shRFRes')
-        case 'name':
-          return 'Náležíte do těchto skupin : ';
-        case 'getGroups':
-          return getData('shRFRes');
-        case 'links':
-          return getLinks(param.files, param.group, Utils.getUserEmail());
-        case 'sendsEmails':
-          return false;
-        default:
-          return null;
-      }
-    case 'leadsGroups':
-      switch (resource) {
-        case 'includeBool':
-          var email = Utils.getUserEmail();
-          var leaders = Utils.findGroupLeaders([], {
-            employeeEmail: email
-          });
-          return setAndLook(email, leaders, 'shRFRes2')
-        case 'name':
-          return 'Vedete tyto skupiny : ';
-        case 'getGroups':
-          return getData('shRFRes2');
-        case 'links':
-          return getLinks(param.files, param.group);
-        case 'sendsEmails':
-          return true;
-        default:
-          return null;
-      }
-    case 'admin':
-      switch (resource) {
-        case 'includeBool':
-          return Utils.getUserPermission() == Utils.AccessEnums.ADMIN;
-        case 'name':
-          return 'Všechny skupiny : ';
-        case 'getGroups':
-          return Utils.getUserPermission() == Utils.AccessEnums.ADMIN ? Utils.findGroupsAsArray() : []; // precaution against too many F5s
-        case 'links':
-          return getLinks(param.files, param.group);          
-        case 'sendsEmails':
-          return true;
-        default:
-          return null;
-      }
-    default:
-      return null;
-  }
-}
-
-/**
- * Function for telling if the user can see this part of html, it is called from scriptlet.
- * Sets array to user properties.
- *
- * @param email email of active user
- * @param array array of groups this user belongs to
- * @param prop id for setting user properties, should be unique
- * @return boolean if user found in array of groups
- */
-function setAndLook(email, array, prop) {
-  var emails = Utils.convertObjectsToArrayByProperty(array, 'employeeEmail');
-  var groups = Utils.convertObjectsToArrayByProperty(array, 'group');
-
-  saveData(prop, groups);
-
-  return emails.indexOf(email) > -1;
-}
-
-/**
  * Gets links for group in format for scriptlets to assemble the page 
  * sets array to user properties
  *
@@ -100,20 +15,6 @@ function getLinks(files, group, owner) {
     }
   }
   return result;
-}
-
-/**
- * Wrapper function for saving data 
- */
-function saveData(fieldName, obj) {
-  Utils.setUserObjProp(fieldName + sessionId, obj);
-}
-
-/**
- * Wrapper function for getting data
- */
-function getData(fieldName) {
-  return Utils.getUserObjProp(fieldName + sessionId);
 }
 
 /**
@@ -136,6 +37,22 @@ function getScriptData(fieldName) {
  */
 function getProp(prop) {
   return Utils.getUserProp(prop  + sessionId);
+}
+
+/**
+ * Wrapper function.
+ */
+function getParsedScriptProp(prop) {
+  var obj  = PropertiesService.getScriptProperties().getProperty(prop + sessionId);
+  return obj ? JSON.parse(obj) : '';
+}
+
+/**
+ * Wrapper function.
+ */
+function setScriptProp(prop, value) {
+  PropertiesService.getScriptProperties().setProperty(prop + sessionId, value);
+  return Utils.getUserObjProp(prop  + sessionId);
 }
 
 /**
@@ -232,13 +149,13 @@ function rfc3986EncodeURIComponent(str) {
 } 
  
 /* props settings variables*/
-var propItems = ['year', 'week', 'sheetsRedirectPart', 'sheetsRedirectFiles', 'shRFRes', 'shRFRes2'];// 'colors', 'nicks', 'actors', 'clientsNames', 'clientsSpecial', 'defaultTariff',
+var propItems = ['year', 'week'];
 var sessionId = 'sheetsRedirect_' + Utils.getUserEmail(); 
 
 /* Manager for storing and caching*/
 var manager = { 
   colors: null,
-  index: null,
+  nicks: null,
   defaultTariff: null,
   events: null,
   emailSenderScriptURL: 'https://script.google.com/a/macros/domovpromne.cz/s/AKfycbzZMQ21z3CsjzoDGMFNkUMbFFdupbjfqhQX1Cv6n1UiZkxDd1Q/exec'

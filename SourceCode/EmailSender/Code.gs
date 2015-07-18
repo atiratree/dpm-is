@@ -33,8 +33,8 @@ function doGet(e) {
  *
  */
 function initialize(){
-  var map = {}; //getProp('group')
-  var clients = Utils.findClients([], {}, 'Tým B').filter(function(item){
+  var map = {}; 
+  var clients = Utils.findClients([], {}, getProp('group')).filter(function(item){
     return item.email != null && item.email != '';    
   });
   

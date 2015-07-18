@@ -29,6 +29,7 @@ function refreshAssistantsSheets(spreadSheet, actors, eventsNames) {
       var messages = ['Rozpis služeb ' + item.nick, 'týden č. ' + sheetRecord.week, sheetRecord.year];
 
       sheet = spreadSheet.insertSheet(item.nick);
+      spreadSheet.setActiveSheet(mainSheet);
       try { // limit 2 000 000 cells per spreadsheet 1000 rows x 100 celss per sheet
         sheet.deleteRows(61, 1000 - 60);
       } catch (ex) { // if google changed default limits of sheet catch exception

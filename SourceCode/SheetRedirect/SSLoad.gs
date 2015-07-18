@@ -2,49 +2,50 @@
  * Reloads and prepares spreadsheet for a user.
  *
  * @param spreadSheet object of a spreadSheet to update
- * @param assistSheets if true generates assistants sheets
+ * @param checkIntegrity if true checks color and data integrity
  */
-function updateSpreadSheet(spreadSheet, assistSheets) {
+function updateSpreadSheet(spreadSheet, checkIntegrity) {
   var sheetRecord = Utils.findFiles(['group'], {
       id: spreadSheet.getId()
     },1)[0];    
   var group = sheetRecord.group;
   var actors = Utils.sort(getActors(group), 'nick');
-  var events = Utils.sort(Utils.findEvents(), 'name')
+  var events = Utils.sort(Utils.findEvents(), 'name');
+  var assistUser = Utils.getUserEmail();
   
-  if(Utils.getUserPermission() != Utils.AccessEnums.ASSISTANT){
+  var cell = SpreadsheetApp.getActive().getRange('A5');
+  var firstRun = cell.getDataValidation() ==  null;
+  
+  if(firstRun || checkIntegrity){
+    var turnOffColors = !checkIntegrity && firstRun; 
+    spreadSheet.toast('Obnova integrity dat' + (turnOffColors ? '' : ' a barev')); 
     var tariffs = Utils.sort(Utils.findTariffs(), 'shortcut');
     var clients = Utils.sort(Utils.findGroupClients(['name'], { group: group}), 'name')
     
     clients.push.apply(clients, events);  
     
-    var arrays = [{array: clients, convertProp: 'name'}, {array: actors, convertProp: 'nick'}, {array: tariffs, convertProp: 'shortcut'}]  
-    
+    var arrays = [{array: clients, convertProp: 'name'}, {array: actors, convertProp: 'nick'}, {array: tariffs, convertProp: 'shortcut'}];    
     
     var rules = makeRules(arrays);  
-    var width = 6 // num of columns per day
-    var sheet = spreadSheet.getSheetByName('Rozpis');
+    var width = 6; // num of columns per day
+    var sheet = spreadSheet.getSheetByName('Rozpis');   
     
+   
     for (var i = 1; i < 6; i++) {
-      updateDayRange(sheet, 4, i, 28, rules, width);
+      updateDayRange(sheet, 5, i, 28, rules, width, turnOffColors);
     }
   
     for (var i = 1; i < 3; i++) {
-      updateDayRange(sheet, 36, i, 20, rules, width);
+      updateDayRange(sheet, 37, i, 20, rules, width, turnOffColors);
     }
-    
-    sheet.getRange('A66:B69').setValues([[ 'Hodnota', "Typ akce"], [ 1, "Načti znovu data"], [ 2, "Generovat listy asistentů"], [ 3, "Zkontrolovat duplicity v programu asistentů"]]);
-    sheet.getRange('A70').setBackground('#ff5d5d');
-  }else{
-    var assistUser = Utils.getUserEmail();
-    actors = actors.filter(function(actor){
-      return actor.email == assistUser;
-    });
-    if(actors.length == 0)
-      return;
-  }
+  } 
   
-  if(assistSheets){    
+  actors = actors.filter(function(actor){
+    return actor.email == assistUser;
+  });  
+  
+  if(actors.length > 0){   
+    spreadSheet.toast('Tvorba vašeho listu'); 
     refreshAssistantsSheets(spreadSheet,actors,Utils.convertObjectsToArrayByProperty(events, 'name'));
   }  
 }
@@ -75,13 +76,14 @@ function makeRules(arrays) {
  * @param numberOfRows numberOfRows to update
  * @param rules rules to set for associated drop down lists
  * @param width width of one day(for now should be 6 only)
+ * @param turnOffColors if true doesn't update colors
  */
-function updateDayRange(sheet, row, column, numberOfRows, rules, width) {
+function updateDayRange(sheet, row, column, numberOfRows, rules, width, turnOffColors) {
   var block = column * width;
-  var timesRange = sheet.getRange(row + 1, block - 5, numberOfRows, 2);
-  var clientsRange = sheet.getRange(row + 1, block - 3, numberOfRows, 1);
-  var assistantsRange = sheet.getRange(row + 1, block - 2, numberOfRows, 1);
-  var tarifsRange = sheet.getRange(row + 1, block - 1, numberOfRows, 1);
+  var timesRange = sheet.getRange(row, block - 5, numberOfRows, 2);
+  var clientsRange = sheet.getRange(row, block - 3, numberOfRows, 1);
+  var assistantsRange = sheet.getRange(row, block - 2, numberOfRows, 1);
+  var tarifsRange = sheet.getRange(row , block - 1, numberOfRows, 1);
   
   clientsRange.setDataValidation(rules[0]);
   assistantsRange.setDataValidation(rules[1]);
@@ -92,6 +94,40 @@ function updateDayRange(sheet, row, column, numberOfRows, rules, width) {
     .requireFormulaSatisfied('= REGEXMATCH( TO_TEXT(INDEX(' + timesRange.getCell(1, 1).getA1Notation() +
       ')),"^((([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9])|24:00:00)$")')
     .setAllowInvalid(false).build());
+    
+  if(turnOffColors)
+    return;
+  //colors updated efficently
+  var values = sheet.getRange(row, block - 3, numberOfRows, 3).getValues();  
+  var count = 0;
+  var update = false;
+  var timesRange = sheet.getRange(row, block - 5, numberOfRows, 2);
+  var noteRange = sheet.getRange(row + numberOfRows, block - 5, 1, 6);
+  
+  timesRange.setBackground('#fff2cc');
+  noteRange.setBackground('#e2f3ff');
+  
+  for(var i = 0; i < values.length; i++){  
+    if(values[i][1] == ''){
+      count++;
+    }else {      
+      if(count > 0){
+        update = true;  
+      }      
+      employeeChanged(sheet, row + i, block - 2);
+    }
+    
+    if(i == values.length -1 && values[i][1] == ''){
+      i++;
+      update = true;  
+    }
+    
+    if(update){
+      sheet.getRange(row + i - count, block - 3, count, 3).setBackground('#ffffff');
+      count = 0;
+      update = false;
+    }    
+  }
 }
 
 /**

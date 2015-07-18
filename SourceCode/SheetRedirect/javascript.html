@@ -3,4 +3,12 @@
 function resolveTriggers(id) {
   google.script.run.resolveTriggers(id);
 }
+
+function integrity(){
+  google.script.run.setIntegrityCheck(document.getElementById('colorAndDataIntegrity').checked);
+}
+
+function duplicates(){
+  google.script.run.setDuplicateCheck(document.getElementById('duplicitiesCheck').checked);
+}
 </script>

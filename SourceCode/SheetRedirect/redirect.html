@@ -1,19 +1,133 @@
 <!-- This is template page for redirection,template groupsPart is going to be inserted into this template -->
 <?!= include('css');?>
+<? var week = getProp('week'); ?> 
+<? var year = getProp('year'); ?>
+<? var files =  Utils.findFiles(['url','id','group','type','owner'],{year: year,week: week});?>
+<? var email = Utils.getUserEmail(); ?>  
 <div id='mainDiv'>  
-  <h2>Týden <?!= getProp('week'); ?> (<?!= getProp('year') ?>)</h2>  
-  <? setProp('sheetsRedirectPart','isInGroups'); ?>
-  <? saveData('sheetsRedirectFiles',Utils.findFiles(['url','id','group','type','owner'],{year: getProp('year'),week: getProp('week')})); ?>
-  <div class='partDiv'>
-    <?!= includeAndEvaluate('groupsPart'); ?>
+  <h2>Týden <?!= week ?> (<?!= year ?>)</h2>
+  <hr>
+  <div class='partDiv'>        
+<? var actors = Utils.findGroupActors([], { employeeEmail: email});?>
+<? var emails = Utils.convertObjectsToArrayByProperty(actors, 'employeeEmail'); ?>
+<? if(emails.indexOf(email) > -1){ ?> 
+<?   var groups = Utils.convertObjectsToArrayByProperty(actors, 'group'); ?>  
+<?   var i = 0; ?>
+     <p>
+       <h4>Náležíte do těchto skupin: </h4>
+     </p>    
+<?   for (var i = 0; i < groups.length; i++) { 
+        var group = groups[i];  
+        if(i % 4 == 0){ ?>
+           <div class='clearDiv'>
+<?      } ?>
+         <table style='float: left;'>
+           <tr>
+             <th><label>Skupina <?!= group ?></label></th>
+           </tr>
+<?            var links = getLinks(files, group, email);
+              for (var j = 0; j < links.length; j++) {?>
+                <tr><td><a class='button blue' onclick='resolveTriggers("<?!= links[j].id ?>")' href='<?!= links[j].url; ?>'><?!= (links[j].owner ? links[j].owner + ' ': '' ) + links[j].type; ?></a></td></tr>            
+<?            } ?>
+        </table>
+<?        if(i % 4 == 3){?>
+            </div>
+<?        }
+      } 
+      if(groups.length != 0 && i % 4 != 3){ ?>
+            </div>
+<?    } ?>
+<? } ?>
+  </div>  
+  
+<? var leaders = Utils.findGroupLeaders([], { employeeEmail: email});?>
+<? var emails = Utils.convertObjectsToArrayByProperty(leaders, 'employeeEmail'); ?>
+<? var isLeader = emails.indexOf(email) > -1 ?>
+<? if(isLeader){ ?> 
+   <div class='partDiv'>
+<?   var groups = Utils.convertObjectsToArrayByProperty(leaders, 'group'); ?>  
+<?   var i = 0; ?>
+     <p>
+       <h4>Vedete tyto skupiny: </h4>
+     </p>     
+<?   for (var i = 0; i < groups.length; i++) { 
+        var group = groups[i];  
+        if(i % 4 == 0){ ?>
+           <div class='clearDiv'>
+<?      } ?>
+         <table style='float: left;'>
+           <tr>
+             <th><label>Skupina <?!= group ?></label></th>
+           </tr>
+<?            var links = getLinks(files, group);
+              for (var j = 0; j < links.length; j++) {?>                
+                <tr><td><a class='button blue' onclick='resolveTriggers("<?!= links[j].id ?>")' href='<?!= links[j].url; ?>'><?!= (links[j].owner ? links[j].owner + ' ': '' ) + links[j].type; ?></a></td></tr>   
+                <tr><td><a class='button green'  href='<?!= manager.emailSenderScriptURL + constructUrlParameters({type: 'client', week: week, year: year, group: group, sheetId: links[j].id})?>'>Odeslat klientům</a></td></tr>             
+<?            } ?>
+        </table>
+<?        if(i % 4 == 3){?>
+            </div>
+<?        }
+      } 
+      if(groups.length != 0 && i % 4 != 3){ ?>
+            </div>
+<?    } ?>
+ 
   </div>
-  <? setProp('sheetsRedirectPart','leadsGroups'); ?>
+<?} ?> 
+<? var isAdmin = Utils.getUserPermission() == Utils.AccessEnums.ADMIN ?>
+<? if(isLeader || isAdmin){ ?> 
   <div class='partDiv'>
-    <?!= includeAndEvaluate('groupsPart'); ?>
+  <table class='settingsTable'>
+    <tr>
+      <th><label>Nastavení</label></th>
+    </tr>
+    <tr><td>
+      <div class="tooltip-wrap">
+        <input type='checkbox' <?= getParsedScriptProp('integrity') ? 'checked' : '' ?> id='colorAndDataIntegrity' onclick="integrity();"/>
+        <label  for='colorAndDataIntegrity'>Obnova integrity dat a barev</label>
+        <div class="tooltip-content">
+          <label style="color:red">Znatelně zpomaluje načítání</label>
+        </div> 
+      </div>
+    </td></tr>   
+    <tr><td>
+      <input type='checkbox' <?= getParsedScriptProp('duplicates') ? 'checked' : '' ?> id='duplicitiesCheck' onclick="duplicates();"/>
+      <label for='duplicitiesCheck'>Kontrola duplicit</label>
+    </td></tr>             
+  </table>
   </div>
-  <? setProp('sheetsRedirectPart','admin'); ?>
+<?} ?> 
   <div class='partDiv'>
-    <?!= includeAndEvaluate('groupsPart'); ?>
+<? if(isAdmin){ ?> 
+<?   var groups = Utils.findGroupsAsArray(); ?>  
+<?   var i = 0; ?>
+     <p>
+       <h4>Všechny skupiny: </h4>
+     </p>    
+<?   for (var i = 0; i < groups.length; i++) { 
+        var group = groups[i];  
+        if(i % 4 == 0){ ?>
+           <div class='clearDiv'>
+<?      } ?>
+         <table style='float: left;'>
+           <tr>
+             <th><label>Skupina <?!= group ?></label></th>
+           </tr>
+<?            var links = getLinks(files, group);
+              for (var j = 0; j < links.length; j++) {?>
+                <tr><td><a class='button blue' onclick='resolveTriggers("<?!= links[j].id ?>")' href='<?!= links[j].url; ?>'><?!= (links[j].owner ? links[j].owner + ' ': '' ) + links[j].type; ?></a></td></tr>            
+                <tr><td><a class='button green'  href='<?!= manager.emailSenderScriptURL + constructUrlParameters({type: 'client', week: week, year: year, group: group, sheetId: links[j].id})?>'>Odeslat klientům</a></td></tr>               
+<?            } ?>
+        </table>
+<?        if(i % 4 == 3){?>
+            </div>
+<?        }
+      } 
+      if(groups.length != 0 && i % 4 != 3){ ?>
+            </div>
+<?    } ?>
+<? } ?>  
   </div>
 </div>
 <?!= include('javascript');?> 

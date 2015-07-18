@@ -5,9 +5,8 @@
  */
 function resolveTriggers(id) {
   try {
-    var ss = SpreadsheetApp.openById(id);    
-
     if (Utils.getUserPermission() == Utils.AccessEnums.ADMIN || Utils.getUserPermission() == Utils.AccessEnums.LEADER) {  
+      var ss = SpreadsheetApp.openById(id);    
       resolveOnTrigger(ss, 'edit', 'editMainSheet');
       resolveOnTrigger(ss, 'open', 'onOpenSheet');
     }
@@ -30,6 +29,8 @@ function resolveOnTrigger(ss, type, functionName) {
       type: type
     }, 1);
     
+    resolveMisplacedTriggers(email, type, functionName); 
+    
     if (triggers.length > 0) {
       return;
     }
@@ -46,7 +47,7 @@ function resolveOnTrigger(ss, type, functionName) {
     } catch (x) {
       Utils.logError(x);
     }
-    resolveMisplacedTriggers(email, type, functionName); // runs only after adding new trigger
+    
   } catch (x) { // Script can have only 20 triggers and we don't know, if that changes in the future 
     if (deleteLowestTrigger() > 0) {
       resolveOnTrigger(ss, type, functionName);

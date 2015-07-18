@@ -4,30 +4,26 @@
  */
 function onOpenSheet() {  
   try{
-    var spreadSheet = SpreadsheetApp.getActive();  
-    spreadSheet.toast('Načítají se data a generují listy...'); 
-    updateSpreadSheet(spreadSheet, true);
-   
-    if (Utils.getUserPermission() == Utils.AccessEnums.ADMIN || Utils.getUserPermission() == Utils.AccessEnums.LEADER) {  
-      spreadSheet.toast('...'); 
-        // not working
-    /*  var mainSheet = spreadSheet.getSheetByName('Rozpis');
-      mainSheet.getRange(1, 40).setValue('1');*/
-       /*SpreadsheetApp.getUi()
-        .createMenu('Funkcionalita sešitu')
-        .addItem('Načti znovu data', 'reloadData')
-        .addItem('Generovat listy asistentů', 'reloadSheets')  
-        .addItem('Zkontrolovat duplicity v programu asistentů', 'checkAssistantDuplicities')
-        .addToUi();*/
-      initializeData();   
+    var spreadSheet = SpreadsheetApp.getActive(); 
+    
+    var isLeader = Utils.getUserPermission() == Utils.AccessEnums.ADMIN || Utils.getUserPermission() == Utils.AccessEnums.LEADER;
+    if (isLeader) { 
+      spreadSheet.toast('Načítají se data'); 
+      initializeData();
     }
+    
+    updateSpreadSheet(spreadSheet, isLeader && getParsedScriptProp('integrity'));
+    
+    if(getParsedScriptProp('duplicates')){
+      checkAssistantDuplicities();
+    }
+   
     SpreadsheetApp.flush();
-    spreadSheet.toast('Hotovo.'); 
+    spreadSheet.toast('Hotovo.');     
   }catch(x){
     Utils.logError(x);
   }
 }
-
 
 /**
  * Reloads data for spreadsheet to use, to user properties. 
@@ -74,23 +70,4 @@ function getDefaultTariff_(tariffs) {
     }
   }
   return '';
-}
-
-/**
- * Wrapper funtion
- */
-function reloadData(){
-  SpreadsheetApp.getActive().toast('Načítají se znovu veškerá data...');   
-  updateSpreadSheet(SpreadsheetApp.getActive());  
-  initializeData();
-  SpreadsheetApp.getActive().toast('Data načtena.'); 
-}
-
-/**
- * Wrapper funtion
- */
-function reloadSheets(){
-  SpreadsheetApp.getActive().toast('Generují se listy asistentů...'); 
-  updateSpreadSheet(SpreadsheetApp.getActive(), true);  
-  SpreadsheetApp.getActive().toast('Hotovo.'); 
 }
