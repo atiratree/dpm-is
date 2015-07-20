@@ -1,8 +1,8 @@
-<!-- saved from url=(0100)https://script.google.com/a/macros/domovpromne.cz/library/d/MMTJE0COguR80jD3SAWOnt5I83Ch5vERZ/GS:web -->
+<!-- saved from url=(0100)https://script.google.com/a/macros/domovpromne.cz/library/d/MKjOsnqH-RNddlGah3U7GwZSID2c2_1-P/GS:web -->
 <html>
 
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title>Library Documentation</title>
   <link rel="stylesheet" type="text/css" href="../css/screen-docs.css">
   <link href="../css/css" rel="stylesheet" type="text/css">
@@ -18,14 +18,14 @@
   <div id="gc-wrapper">
     <div id="gc-main" class="main">
       <div id="gc-content" style="margin-left:0">
-       <a href="../index.html">
+      <a href="../index.html">
           <font class="link">
             <b>Home</b>
           </font>
         </a>
-        <h1 class="page_title">Create</h1>
-        <h2>processUserObj(Object formObject)</h2>
-        <p>Parses and validates data from formObject, then it creates User. @throws Exception if creating User failed</p>
+        <h1 class="page_title">EmailSender</h1>
+        <h2>includeAndEvaluate(Object filename)</h2>
+        <p>Evaluates GAS scriptlets and includes HMTL from a file. *just shortcut a for a long command</p>
         <h3>Arguments:</h3>
         <table style="width: 100%">
           <tbody>
@@ -35,27 +35,12 @@
               <th scope="col" style="width: 65%;">Description</th>
             </tr>
             <tr>
-              <td>formObject</td>
+              <td>filename</td>
               <td><code>Object</code></td>
-              <td>Object received from client's browser form.</td>
+              <td>name of file to be included</td>
             </tr>
           </tbody>
         </table>
-        <h3>Return Values:</h3>
-        <table style="width: 100%">
-          <tbody>
-            <tr>
-              <th scope="col" style="width: 20%;">Type</th>
-              <th scope="col" style="width: 80%;">Description</th>
-            </tr>
-            <tr>
-              <td><code>Object</code></td>
-              <td>object which designates success or failure (in a case form had nonvalid data)</td>
-            </tr>
-          </tbody>
-        </table>
-        <h2>getPageName()</h2>
-        <p>It is not possible to use url parameters aproach so we identify script by pageName. Bug - (https://code.google.com/p/google-apps-script-issues/issues/detail?id=535)</p>
         <h3>Return Values:</h3>
         <table style="width: 100%">
           <tbody>
@@ -65,134 +50,14 @@
             </tr>
             <tr>
               <td><code>string</code></td>
-              <td>name of Page in Sites or null if no active Sites found</td>
+              <td>string of result html</td>
             </tr>
           </tbody>
         </table>
-        <h2>doGet()</h2>
-        <p>Serves HTML according to the Sites page it is embedded in.</p>
-        <h3>Return Values:</h3>
-        <table style="width: 100%">
-          <tbody>
-            <tr>
-              <th scope="col" style="width: 20%;">Type</th>
-              <th scope="col" style="width: 80%;">Description</th>
-            </tr>
-            <tr>
-              <td><code>Object</code></td>
-              <td>HTML page with javascript</td>
-            </tr>
-          </tbody>
-        </table>
-        <h2>processTariffObj(Object formObject)</h2>
-        <p>Parses and validates data from formObject, then it creates Tariff. @throws Exception if creating Tariff failed</p>
-        <h3>Arguments:</h3>
-        <table style="width: 100%">
-          <tbody>
-            <tr>
-              <th scope="col" style="wdith: 20%;">Name</th>
-              <th scope="col" style="width: 15%;">Type</th>
-              <th scope="col" style="width: 65%;">Description</th>
-            </tr>
-            <tr>
-              <td>formObject</td>
-              <td><code>Object</code></td>
-              <td>Object received from client's browser form.</td>
-            </tr>
-          </tbody>
-        </table>
-        <h3>Return Values:</h3>
-        <table style="width: 100%">
-          <tbody>
-            <tr>
-              <th scope="col" style="width: 20%;">Type</th>
-              <th scope="col" style="width: 80%;">Description</th>
-            </tr>
-            <tr>
-              <td><code>Object</code></td>
-              <td>object which designates success or failure (in a case form had nonvalid data)</td>
-            </tr>
-          </tbody>
-        </table>
-        <h2>getClientAndEventNames()</h2>
-        <p></p>
-        <h3>Return Values:</h3>
-        <table style="width: 100%">
-          <tbody>
-            <tr>
-              <th scope="col" style="width: 20%;">Type</th>
-              <th scope="col" style="width: 80%;">Description</th>
-            </tr>
-            <tr>
-              <td><code>Array&lt;string&gt;</code></td>
-              <td>returns names of all events and clients</td>
-            </tr>
-          </tbody>
-        </table>
-        <h2>processGroupObj(Object formObject)</h2>
-        <p>Parses and validates data from formObject, then it creates Group. @throws Exception if creating Group failed</p>
-        <h3>Arguments:</h3>
-        <table style="width: 100%">
-          <tbody>
-            <tr>
-              <th scope="col" style="wdith: 20%;">Name</th>
-              <th scope="col" style="width: 15%;">Type</th>
-              <th scope="col" style="width: 65%;">Description</th>
-            </tr>
-            <tr>
-              <td>formObject</td>
-              <td><code>Object</code></td>
-              <td>Object received from client's browser form.</td>
-            </tr>
-          </tbody>
-        </table>
-        <h3>Return Values:</h3>
-        <table style="width: 100%">
-          <tbody>
-            <tr>
-              <th scope="col" style="width: 20%;">Type</th>
-              <th scope="col" style="width: 80%;">Description</th>
-            </tr>
-            <tr>
-              <td><code>Object</code></td>
-              <td>object which designates success or failure (in a case form had nonvalid data)</td>
-            </tr>
-          </tbody>
-        </table>
-        <h2>processClientObj(Object formObject)</h2>
-        <p>Parses and validates data from formObject, then it creates Client @throws Exception if creating Event failed</p>
-        <h3>Arguments:</h3>
-        <table style="width: 100%">
-          <tbody>
-            <tr>
-              <th scope="col" style="wdith: 20%;">Name</th>
-              <th scope="col" style="width: 15%;">Type</th>
-              <th scope="col" style="width: 65%;">Description</th>
-            </tr>
-            <tr>
-              <td>formObject</td>
-              <td><code>Object</code></td>
-              <td>Object received from client's browser form.</td>
-            </tr>
-          </tbody>
-        </table>
-        <h3>Return Values:</h3>
-        <table style="width: 100%">
-          <tbody>
-            <tr>
-              <th scope="col" style="width: 20%;">Type</th>
-              <th scope="col" style="width: 80%;">Description</th>
-            </tr>
-            <tr>
-              <td><code>Object</code></td>
-              <td>object which designates success or failure (in a case form had nonvalid data)</td>
-            </tr>
-          </tbody>
-        </table>
-        <h2>getMyAccessRightsNames()</h2>
+        <h2>initialize()</h2>
+        <p>Init clients array to manager</p>
+        <h2>getProp(Object prop)</h2>
         <p>Wrapper function.</p>
-        <h2>getResource(Object resource)</h2>
-        <p>Helper function to create main HTML. It can return html, javascript or string we need, to include in our page.</p>
         <h3>Arguments:</h3>
         <table style="width: 100%">
           <tbody>
@@ -202,9 +67,26 @@
               <th scope="col" style="width: 65%;">Description</th>
             </tr>
             <tr>
-              <td>resource</td>
+              <td>prop</td>
               <td><code>Object</code></td>
-              <td>string describing wanted resource</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>processClients(Object formObject)</h2>
+        <p>prepares sheets for clients and sends emails</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>formObject</td>
+              <td><code>Object</code></td>
+              <td>form with emails and message</td>
             </tr>
           </tbody>
         </table>
@@ -216,8 +98,25 @@
               <th scope="col" style="width: 80%;">Description</th>
             </tr>
             <tr>
+              <td><code>string</code></td>
+              <td>success string</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>setRuntimeProperties(Object params)</h2>
+        <p>Sets runtime properties</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>params</td>
               <td><code>Object</code></td>
-              <td>requested resource or null if resource not found</td>
+              <td>object with properties to set</td>
             </tr>
           </tbody>
         </table>
@@ -251,8 +150,8 @@
             </tr>
           </tbody>
         </table>
-        <h2>findAllGroups(Object user)</h2>
-        <p>Wrapper function.</p>
+        <h2>preparePayloadAndEmail(Object email, Object body, Object mainSheetData, Object mainSS, Object payloadSS, Object mainSheet, Object payloadSheet, Object payloadAsFile)</h2>
+        <p>prepares sheets for clients and sends emails</p>
         <h3>Arguments:</h3>
         <table style="width: 100%">
           <tbody>
@@ -262,14 +161,47 @@
               <th scope="col" style="width: 65%;">Description</th>
             </tr>
             <tr>
-              <td>user</td>
+              <td>email</td>
               <td><code>Object</code></td>
-              <td></td>
+              <td>email address</td>
+            </tr>
+            <tr>
+              <td>body</td>
+              <td><code>Object</code></td>
+              <td>body of email</td>
+            </tr>
+            <tr>
+              <td>mainSheetData</td>
+              <td><code>Object</code></td>
+              <td>data to insert into sheet</td>
+            </tr>
+            <tr>
+              <td>mainSS</td>
+              <td><code>Object</code></td>
+              <td>main SpreadSheet resource</td>
+            </tr>
+            <tr>
+              <td>payloadSS</td>
+              <td><code>Object</code></td>
+              <td>SpreadSheet for email attachment</td>
+            </tr>
+            <tr>
+              <td>mainSheet</td>
+              <td><code>Object</code></td>
+              <td>main sheet resource</td>
+            </tr>
+            <tr>
+              <td>payloadSheet</td>
+              <td><code>Object</code></td>
+              <td>sheet for email attachment</td>
+            </tr>
+            <tr>
+              <td>payloadAsFile</td>
+              <td><code>Object</code></td>
+              <td>link to drive for email attachment</td>
             </tr>
           </tbody>
         </table>
-        <h2>resolvePermissionAndGetHTML()</h2>
-        <p>Checks access rights for page we are serving and denies access accordingly.</p>
         <h3>Return Values:</h3>
         <table style="width: 100%">
           <tbody>
@@ -278,43 +210,13 @@
               <th scope="col" style="width: 80%;">Description</th>
             </tr>
             <tr>
-              <td><code>Object</code></td>
-              <td>html page with javascript</td>
-            </tr>
-          </tbody>
-        </table>
-        <h2>processEventObj(Object formObject)</h2>
-        <p>Parses and validates data from formObject, then it creates Event @throws Exception if creating Event failed</p>
-        <h3>Arguments:</h3>
-        <table style="width: 100%">
-          <tbody>
-            <tr>
-              <th scope="col" style="wdith: 20%;">Name</th>
-              <th scope="col" style="width: 15%;">Type</th>
-              <th scope="col" style="width: 65%;">Description</th>
-            </tr>
-            <tr>
-              <td>formObject</td>
-              <td><code>Object</code></td>
-              <td>Object received from client's browser form.</td>
-            </tr>
-          </tbody>
-        </table>
-        <h3>Return Values:</h3>
-        <table style="width: 100%">
-          <tbody>
-            <tr>
-              <th scope="col" style="width: 20%;">Type</th>
-              <th scope="col" style="width: 80%;">Description</th>
-            </tr>
-            <tr>
-              <td><code>Object</code></td>
-              <td>object which designates success or failure (in a case form had nonvalid data)</td>
+              <td><code>string</code></td>
+              <td>success string</td>
             </tr>
           </tbody>
         </table>
         <h2>createPresentableHTML(Object content, Object sourceType, Object title)</h2>
-        <p></p>
+        <p>Creates presentable HTML for a browser *cannot be run from library, becaouse of filename</p>
         <h3>Arguments:</h3>
         <table style="width: 100%">
           <tbody>
@@ -326,17 +228,30 @@
             <tr>
               <td>content</td>
               <td><code>Object</code></td>
-              <td></td>
+              <td>depends on a sourceType, if sourceType isn't string, it includes file with name == content</td>
             </tr>
             <tr>
               <td>sourceType</td>
               <td><code>Object</code></td>
-              <td></td>
+              <td>is string indicating values 'string'/'file' for source type, takes file as default for any other value</td>
             </tr>
             <tr>
               <td>title</td>
               <td><code>Object</code></td>
-              <td></td>
+              <td>title of a window</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Object</code></td>
+              <td>html object</td>
             </tr>
           </tbody>
         </table>
@@ -367,6 +282,36 @@
             <tr>
               <td><code>string</code></td>
               <td>string of html</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>doGet(Object e)</h2>
+        <p>Serves HTML</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>e</td>
+              <td><code>Object</code></td>
+              <td>url parameters setting this webapp's beahviour</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Object</code></td>
+              <td>HTML page with javascript</td>
             </tr>
           </tbody>
         </table>

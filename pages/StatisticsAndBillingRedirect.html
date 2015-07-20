@@ -24,9 +24,80 @@
           </font>
         </a>
         <h1 class="page_title">StatisticsAndBillingRedirect</h1>
-        <p>web app meta-version</p>
+        <h2>writeStats(Object spreadsheetData, Object sheet, Object type, Object from, Object to)</h2>
+        <p>Writes statistics into the sheet</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>spreadsheetData</td>
+              <td><code>Object</code></td>
+              <td>data to write into sheet</td>
+            </tr>
+            <tr>
+              <td>sheet</td>
+              <td><code>Object</code></td>
+              <td>sheet</td>
+            </tr>
+            <tr>
+              <td>type</td>
+              <td><code>Object</code></td>
+              <td>switches writing stats to different modes</td>
+            </tr>
+            <tr>
+              <td>from</td>
+              <td><code>Object</code></td>
+              <td>from which data to write stats</td>
+            </tr>
+            <tr>
+              <td>to</td>
+              <td><code>Object</code></td>
+              <td>to which data to write stats</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>setProp(Object prop, Object value)</h2>
+        <p>Wrapper function.</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>prop</td>
+              <td><code>Object</code></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>value</td>
+              <td><code>Object</code></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
         <h2>getClients()</h2>
-        <p>returns array with name of all clients</p>
+        <p></p>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Array&lt;Object&gt;</code></td>
+              <td>array with name of all clients</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>msToTime(Object duration)</h2>
         <p>Converts duration into time format string @duration miliseconds</p>
         <h3>Arguments:</h3>
@@ -41,6 +112,19 @@
               <td>duration</td>
               <td><code>Object</code></td>
               <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>string</code></td>
+              <td>duration in format h:mm:ss:SSS</td>
             </tr>
           </tbody>
         </table>
@@ -61,6 +145,19 @@
             </tr>
           </tbody>
         </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Array&lt;Object&gt;</code></td>
+              <td>sorted array of obj properties</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>getResource(Object resource)</h2>
         <p>Helper function to create main HTML. It can return html, javascript ot strings we need to include in our page.</p>
         <h3>Arguments:</h3>
@@ -75,6 +172,19 @@
               <td>resource</td>
               <td><code>Object</code></td>
               <td>string describing wanted resource</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Object</code></td>
+              <td>requested resource or null if resource not found</td>
             </tr>
           </tbody>
         </table>
@@ -105,6 +215,19 @@
             </tr>
           </tbody>
         </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>string</code></td>
+              <td>string of html</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>doGet(Object e)</h2>
         <p>Serves HTML and checks user's permissionto view it</p>
         <h3>Arguments:</h3>
@@ -122,6 +245,19 @@
             </tr>
           </tbody>
         </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Object</code></td>
+              <td>HTML page with javascript</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>include(Object filename)</h2>
         <p>Generates HMTL from a file. *just shortcut a for a long command</p>
         <h3>Arguments:</h3>
@@ -136,6 +272,19 @@
               <td>filename</td>
               <td><code>Object</code></td>
               <td>name of file to be included</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>string</code></td>
+              <td>html</td>
             </tr>
           </tbody>
         </table>
@@ -198,50 +347,8 @@
             </tr>
           </tbody>
         </table>
-        <h2>writeStats(Object events, Object spreadsheetData, Object sheet, Object type, Object from, Object to)</h2>
-        <p>Writes statistics into the sheet</p>
-        <h3>Arguments:</h3>
-        <table style="width: 100%">
-          <tbody>
-            <tr>
-              <th scope="col" style="wdith: 20%;">Name</th>
-              <th scope="col" style="width: 15%;">Type</th>
-              <th scope="col" style="width: 65%;">Description</th>
-            </tr>
-            <tr>
-              <td>events</td>
-              <td><code>Object</code></td>
-              <td>all events</td>
-            </tr>
-            <tr>
-              <td>spreadsheetData</td>
-              <td><code>Object</code></td>
-              <td>data to write into sheet</td>
-            </tr>
-            <tr>
-              <td>sheet</td>
-              <td><code>Object</code></td>
-              <td>sheet</td>
-            </tr>
-            <tr>
-              <td>type</td>
-              <td><code>Object</code></td>
-              <td>switches writing stats to different modes</td>
-            </tr>
-            <tr>
-              <td>from</td>
-              <td><code>Object</code></td>
-              <td>from which data to write stats</td>
-            </tr>
-            <tr>
-              <td>to</td>
-              <td><code>Object</code></td>
-              <td>to which data to write stats</td>
-            </tr>
-          </tbody>
-        </table>
         <h2>getProp(Object name)</h2>
-        <p></p>
+        <p>Wrapper function.</p>
         <h3>Arguments:</h3>
         <table style="width: 100%">
           <tbody>
@@ -289,6 +396,23 @@
             </tr>
           </tbody>
         </table>
+        <h2>setRuntimeProperties(Object params)</h2>
+        <p>Sets runtime properties</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>params</td>
+              <td><code>Object</code></td>
+              <td>object with properties to set</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>createBilling(Object from, Object to, Object client)</h2>
         <p>Creates billing spreadsheet in user's google drive and generates data into it</p>
         <h3>Arguments:</h3>
@@ -316,6 +440,19 @@
             </tr>
           </tbody>
         </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>string</code></td>
+              <td>url of new spreadsheet</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>processStatOrBillObj(Object formObject, Object isBill)</h2>
         <p>Parses and validates data from formObject, then it creates Billing or Statistics.</p>
         <h3>Arguments:</h3>
@@ -338,6 +475,19 @@
             </tr>
           </tbody>
         </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Object</code></td>
+              <td>object which designates success or failure (in a case form had nonvalid data)</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>roundToTwo(Object num)</h2>
         <p>Rounds to two places, "banking format" @num number</p>
         <h3>Arguments:</h3>
@@ -352,6 +502,19 @@
               <td>num</td>
               <td><code>Object</code></td>
               <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>number</code></td>
+              <td>number with two places decimal</td>
             </tr>
           </tbody>
         </table>
@@ -377,6 +540,19 @@
             </tr>
           </tbody>
         </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>string</code></td>
+              <td>url of new spreadsheet</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>processForm(Object formObject)</h2>
         <p>Processes form and returns result.</p>
         <h3>Arguments:</h3>
@@ -391,6 +567,19 @@
               <td>formObject</td>
               <td><code>Object</code></td>
               <td>Form object</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Object</code></td>
+              <td>object which designates success or failure</td>
             </tr>
           </tbody>
         </table>

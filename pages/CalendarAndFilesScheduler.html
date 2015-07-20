@@ -1,7 +1,6 @@
 <!-- saved from url=(0124)https://script.google.com/a/macros/domovpromne.cz/library/d/1tcSslMYASRFgN5q2J8oN_qmn_P1UOQmnHrzoQNOxb4gyweX9HlUg0k5r/GS:web -->
 <html>
 
-
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title>Library Documentation</title>
@@ -25,7 +24,6 @@
           </font>
         </a>
         <h1 class="page_title">CalendarAndFilesScheduler</h1>
-        <p>web app meta-version</p>
         <h2>correctDbProtections(Object employees)</h2>
         <p>Corrects database permissions for all empoyees</p>
         <h3>Arguments:</h3>
@@ -120,10 +118,10 @@
             </tr>
           </tbody>
         </table>
-        <h2>refreshAll()</h2>
-        <p>not automatic</p>
         <h2>runEverySixHours()</h2>
         <p>automatic script which creates missing Schedule Sheets</p>
+        <h2>refreshAll()</h2>
+        <p>not automatic</p>
         <h2>createPresentableHTML(Object content, Object sourceType, Object title)</h2>
         <p>Creates presentable HTML for a browser *cannot be run from library, becaouse of filename</p>
         <h3>Arguments:</h3>
@@ -151,6 +149,19 @@
             </tr>
           </tbody>
         </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Object</code></td>
+              <td>html object</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>appplyProtections(Object protection, Object emails)</h2>
         <p>Refreshes protections. Deletes protections not existing in emails and sets all permissions in emails.</p>
         <h3>Arguments:</h3>
@@ -175,6 +186,21 @@
         </table>
         <h2>doGet()</h2>
         <p>Serves HTML of refresh button for super admin only, this script can run only as super admin</p>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Object</code></td>
+              <td>HTML page with javascript</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>deleteOldTriggers()</h2>
+        <p>deletes old triggers of not active users</p>
         <h2>isFileInDB(Object files, Object obj)</h2>
         <p>Checks if obj is in DB. Uses cached files obj, because looking into the database all the time would be inefficient.</p>
         <h3>Arguments:</h3>
@@ -194,6 +220,19 @@
               <td>obj</td>
               <td><code>Object</code></td>
               <td>Object to be checked for</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>boolean</code></td>
+              <td>true if is in DB</td>
             </tr>
           </tbody>
         </table>

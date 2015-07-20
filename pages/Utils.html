@@ -1,4 +1,4 @@
-<!-- saved from url=(0097)https://script.google.com/a/macros/domovpromne.cz/library/d/MnG63u59Ch9RE0E4dprsu05SID2c2_1-P/107 -->
+<!-- saved from url=(0097)https://script.google.com/a/macros/domovpromne.cz/library/d/MnG63u59Ch9RE0E4dprsu05SID2c2_1-P/133 -->
 <html>
 
 <head>
@@ -24,7 +24,46 @@
           </font>
         </a>
         <h1 class="page_title">Utils</h1>
-        <p></p>
+        <h2>findClients(Object fields, Object restrictions, Object group)</h2>
+        <p>Finds clients from database based on restrictions, each client has attribute with his groups unless group specified</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>fields</td>
+              <td><code>Object</code></td>
+              <td>fields is array of strings . It assigns these strings as properties to final objects</td>
+            </tr>
+            <tr>
+              <td>restrictions</td>
+              <td><code>Object</code></td>
+              <td>object of key/value pairs for selecting rows</td>
+            </tr>
+            <tr>
+              <td>group</td>
+              <td><code>Object</code></td>
+              <td>group for selecting clients</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Array&lt;Object&gt;</code></td>
+              <td>array of clients</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>createEmployee(Object user)</h2>
         <p>Insert User(employee) into database user has properties leadsGroups or isInGroups which are arrays and this function inserts them into diferent tables of
           database too</p>
@@ -58,7 +97,20 @@
         </table>
         <h2>getUserEmail()</h2>
         <p>Gets active User email.</p>
-        <h2>validate(Object errorResult, Object input, Object processObj)</h2>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>string</code></td>
+              <td>email of active User.</td>
+            </tr>
+          </tbody>
+        </table>
+       <h2>validate(Object errorResult, Object input, Object processObj)</h2>
         <p>Runs actions on input in received order and sets errors accordingly Valid actions are strings:<br> <br>
           trim : trims(' counts as space) object and sets input as trimmed<br>
           input notNull : checks if input is not null or empty string<br>
@@ -98,8 +150,34 @@
             </tr>
           </tbody>
         </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Object</code></td>
+              <td>validated and processed input</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>findGroupsAsArray()</h2>
         <p></p>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Array&lt;Object&gt;</code></td>
+              <td>all groups as array</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>getWeekNumber(Object dateObj)</h2>
         <p>This script is released to the public domain and may be used, modified and distributed without restrictions. Attribution not necessary but appreciated. Source:
           http://weeknumber.net/how-to/javascript Returns the ISO week of the date.</p>
@@ -115,6 +193,36 @@
               <td>dateObj</td>
               <td><code>Object</code></td>
               <td>Date</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>number</code></td>
+              <td>number of a week of dateObj</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>stop(Object name)</h2>
+        <p></p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>name</td>
+              <td><code>Object</code></td>
+              <td></td>
             </tr>
           </tbody>
         </table>
@@ -140,6 +248,19 @@
             </tr>
           </tbody>
         </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>boolean</code></td>
+              <td>true if has access, false otherwise</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>isSuperAdmin(Object email)</h2>
         <p>Checks if email is super admin or if active user is (in case email == null).</p>
         <h3>Arguments:</h3>
@@ -157,23 +278,6 @@
             </tr>
           </tbody>
         </table>
-        <h2>createTrigger(Object trigger)</h2>
-        <p>Insert Trigger into database and sets emailSequence for trigger.email as increment of the last greatest one for this user</p>
-        <h3>Arguments:</h3>
-        <table style="width: 100%">
-          <tbody>
-            <tr>
-              <th scope="col" style="wdith: 20%;">Name</th>
-              <th scope="col" style="width: 15%;">Type</th>
-              <th scope="col" style="width: 65%;">Description</th>
-            </tr>
-            <tr>
-              <td>trigger</td>
-              <td><code>Object</code></td>
-              <td>trigger with email property</td>
-            </tr>
-          </tbody>
-        </table>
         <h3>Return Values:</h3>
         <table style="width: 100%">
           <tbody>
@@ -183,7 +287,39 @@
             </tr>
             <tr>
               <td><code>boolean</code></td>
-              <td>indicating success or failure.</td>
+              <td>true if is super admin.</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>prepareSheet(Object sheet, Object day, Object messages, Object smallLayout)</h2>
+        <p>Formatts sheet as schedule.</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>sheet</td>
+              <td><code>Object</code></td>
+              <td>to be formatted</td>
+            </tr>
+            <tr>
+              <td>day</td>
+              <td><code>Object</code></td>
+              <td>date which is the beginning of week (should be monday)</td>
+            </tr>
+            <tr>
+              <td>messages</td>
+              <td><code>Object</code></td>
+              <td>array of strings of length 3, these strings are going to be shown in a sheet</td>
+            </tr>
+            <tr>
+              <td>smallLayout</td>
+              <td><code>Object</code></td>
+              <td>if true uses small layout</td>
             </tr>
           </tbody>
         </table>
@@ -217,6 +353,71 @@
             </tr>
           </tbody>
         </table>
+        <h2>createTrigger(Object trigger)</h2>
+        <p>Insert Trigger into database and sets emailSequence for trigger.email as increment of the last greatest one for this user</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>trigger</td>
+              <td><code>Object</code></td>
+              <td>trigger with email property</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>boolean</code></td>
+              <td>indicating success or failure.</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>sort(Object array, Object sortProp)</h2>
+        <p>sorts array by sortProp with Czech comparision</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>array</td>
+              <td><code>Object</code></td>
+              <td>array to be sorted</td>
+            </tr>
+            <tr>
+              <td>sortProp</td>
+              <td><code>Object</code></td>
+              <td>property of obj to be sorted by, optional</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Array&lt;Object&gt;</code></td>
+              <td>sorted array</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>findGroupClients(Object fields, Object restrictions)</h2>
         <p>Finds group Clients from database based on restrictions</p>
         <h3>Arguments:</h3>
@@ -239,6 +440,19 @@
             </tr>
           </tbody>
         </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Array&lt;Object&gt;</code></td>
+              <td>array of group Clients</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>getUserObjProp(Object key)</h2>
         <p></p>
         <h3>Arguments:</h3>
@@ -256,6 +470,19 @@
             </tr>
           </tbody>
         </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Object</code></td>
+              <td>object from UserProperties</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>setUserProps(Object obj)</h2>
         <p></p>
         <h3>Arguments:</h3>
@@ -270,6 +497,23 @@
               <td>obj</td>
               <td><code>Object</code></td>
               <td>object with multiple properties to be set in UserProperties</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>start(Object name)</h2>
+        <p></p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>name</td>
+              <td><code>Object</code></td>
+              <td></td>
             </tr>
           </tbody>
         </table>
@@ -355,6 +599,19 @@
             </tr>
           </tbody>
         </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Array&lt;Object&gt;</code></td>
+              <td>array of group leaders</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>createFile(Object file)</h2>
         <p>Insert file into database with current time</p>
         <h3>Arguments:</h3>
@@ -422,6 +679,19 @@
         </table>
         <h2>getWeekDaysNames()</h2>
         <p></p>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Array&lt;string&gt;</code></td>
+              <td>array of ordered string of days in week(starting on monday) in Czech language</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>createClient(Object client)</h2>
         <p>Insert Client into database</p>
         <h3>Arguments:</h3>
@@ -505,6 +775,36 @@
             </tr>
           </tbody>
         </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>number</code></td>
+              <td>negative value if first is larger than second</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>logCorrection(Object msg)</h2>
+        <p>Logs correction to Log SpreadSheet</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>msg</td>
+              <td><code>Object</code></td>
+              <td>message to be logged</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>getUserPermission(Object email)</h2>
         <p>Finds user permission of email or active user (in case email == null). Caches userPermission for time which can be set in Script Properties</p>
         <h3>Arguments:</h3>
@@ -519,6 +819,19 @@
               <td>email</td>
               <td><code>Object</code></td>
               <td>email to be checked or falsy value to check active user</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>number</code></td>
+              <td>user permission</td>
             </tr>
           </tbody>
         </table>
@@ -604,6 +917,19 @@
             </tr>
           </tbody>
         </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>string</code></td>
+              <td>formatted date as string</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>getAllSpreadSheetData(Object from, Object to)</h2>
         <p>Extracts all valid data from 'Rozpis' files in defined time span.</p>
         <h3>Arguments:</h3>
@@ -623,6 +949,19 @@
               <td>to</td>
               <td><code>Object</code></td>
               <td>to which date extract data</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Array&lt;Object&gt;</code></td>
+              <td>array of extracted data</td>
             </tr>
           </tbody>
         </table>
@@ -658,6 +997,19 @@
         </table>
         <h2>getMyAccessRightsNames()</h2>
         <p>Returns names and permission of all users roles active user can edit and create</p>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Array&lt;Object&gt;</code></td>
+              <td>array of permissions with names in Czech</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>hasAccessTo(Object accessEnum, Object permissionType)</h2>
         <p>Checks if active user has access to resource (specified as accessEnum).</p>
         <h3>Arguments:</h3>
@@ -680,6 +1032,61 @@
             </tr>
           </tbody>
         </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>boolean</code></td>
+              <td>true if has access, false otherwise</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>copyDayRange(Object mainSheet, Object sheet, Object row, Object block, Object numberOfRows, Object data)</h2>
+        <p>Copies data for one day between two sheets</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>mainSheet</td>
+              <td><code>Object</code></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>sheet</td>
+              <td><code>Object</code></td>
+              <td>spreadsheet to be coppied into</td>
+            </tr>
+            <tr>
+              <td>row</td>
+              <td><code>Object</code></td>
+              <td>row of sheet to start writing data</td>
+            </tr>
+            <tr>
+              <td>block</td>
+              <td><code>Object</code></td>
+              <td>last column of block to start writing data, block has 6 columns</td>
+            </tr>
+            <tr>
+              <td>numberOfRows</td>
+              <td><code>Object</code></td>
+              <td>numberOfRows of one day</td>
+            </tr>
+            <tr>
+              <td>data</td>
+              <td><code>Object</code></td>
+              <td>data to be written in sheet</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>getNextMonday(Object monday)</h2>
         <p>Returns next monday.</p>
         <h3>Arguments:</h3>
@@ -694,6 +1101,19 @@
               <td>monday</td>
               <td><code>Object</code></td>
               <td>Date</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Object</code></td>
+              <td>monday Date</td>
             </tr>
           </tbody>
         </table>
@@ -744,23 +1164,6 @@
             </tr>
           </tbody>
         </table>
-        <h2>deleteTrigger(Object trigger)</h2>
-        <p>Delete trigger/s from database based on its properties</p>
-        <h3>Arguments:</h3>
-        <table style="width: 100%">
-          <tbody>
-            <tr>
-              <th scope="col" style="wdith: 20%;">Name</th>
-              <th scope="col" style="width: 15%;">Type</th>
-              <th scope="col" style="width: 65%;">Description</th>
-            </tr>
-            <tr>
-              <td>trigger</td>
-              <td><code>Object</code></td>
-              <td>object</td>
-            </tr>
-          </tbody>
-        </table>
         <h3>Return Values:</h3>
         <table style="width: 100%">
           <tbody>
@@ -769,8 +1172,8 @@
               <th scope="col" style="width: 80%;">Description</th>
             </tr>
             <tr>
-              <td><code>boolean</code></td>
-              <td>indicating success or failure.</td>
+              <td><code>string</code></td>
+              <td>string from UserProperties</td>
             </tr>
           </tbody>
         </table>
@@ -809,8 +1212,8 @@
             </tr>
           </tbody>
         </table>
-        <h2>findFiles(Object fields, Object restrictions)</h2>
-        <p>Finds files from database based on restrictions</p>
+        <h2>deleteTrigger(Object trigger, Object hasMoreInstances)</h2>
+        <p>Delete trigger/s from database based on its properties</p>
         <h3>Arguments:</h3>
         <table style="width: 100%">
           <tbody>
@@ -820,14 +1223,27 @@
               <th scope="col" style="width: 65%;">Description</th>
             </tr>
             <tr>
-              <td>fields</td>
+              <td>trigger</td>
               <td><code>Object</code></td>
-              <td>fields is array of strings . It assigns these strings as properties to final objects</td>
+              <td>object</td>
             </tr>
             <tr>
-              <td>restrictions</td>
+              <td>hasMoreInstances</td>
               <td><code>Object</code></td>
-              <td>object of key/value pairs for selecting rows</td>
+              <td>if true turns off error logging if object has more instances</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>boolean</code></td>
+              <td>indicating success or failure.</td>
             </tr>
           </tbody>
         </table>
@@ -850,6 +1266,19 @@
               <td>extractDays</td>
               <td><code>Object</code></td>
               <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Array&lt;Object&gt;</code></td>
+              <td>array of extracted data</td>
             </tr>
           </tbody>
         </table>
@@ -957,8 +1386,76 @@
             </tr>
           </tbody>
         </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>boolean</code></td>
+              <td>true if is Error free</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>copyDataBetweenSheets(Object main, Object secondary, Object data, Object eventsNames, Object clientNames, Object smallLayout)</h2>
+        <p>Copies data between two sheets, only sorted out data will be in secondary sheet</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>main</td>
+              <td><code>Object</code></td>
+              <td>main spreadsheet</td>
+            </tr>
+            <tr>
+              <td>secondary</td>
+              <td><code>Object</code></td>
+              <td>spreadsheet to be coppied into</td>
+            </tr>
+            <tr>
+              <td>data</td>
+              <td><code>Object</code></td>
+              <td>data from main spreadsheet</td>
+            </tr>
+            <tr>
+              <td>eventsNames</td>
+              <td><code>Object</code></td>
+              <td>array with events names</td>
+            </tr>
+            <tr>
+              <td>clientNames</td>
+              <td><code>Object</code></td>
+              <td>if true copies clients data, assistants otherwise</td>
+            </tr>
+            <tr>
+              <td>smallLayout</td>
+              <td><code>Object</code></td>
+              <td>if true uses small layout</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>getMonthsNames()</h2>
         <p></p>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Array&lt;string&gt;</code></td>
+              <td>array of ordered string of months in Czech language</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>setUserProp(Object key, Object value)</h2>
         <p></p>
         <h3>Arguments:</h3>
@@ -995,6 +1492,19 @@
               <td>str</td>
               <td><code>Object</code></td>
               <td>string to be trimmed of white spaces and apppostrophes '</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>string</code></td>
+              <td>trimmed string</td>
             </tr>
           </tbody>
         </table>
@@ -1058,6 +1568,46 @@
             </tr>
           </tbody>
         </table>
+        <h2>findFiles(Object fields, Object restrictions, Object limit)</h2>
+        <p>Finds files from database based on restrictions</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>fields</td>
+              <td><code>Object</code></td>
+              <td>fields is array of strings . It assigns these strings as properties to final objects</td>
+            </tr>
+            <tr>
+              <td>restrictions</td>
+              <td><code>Object</code></td>
+              <td>object of key/value pairs for selecting rows</td>
+            </tr>
+            <tr>
+              <td>limit</td>
+              <td><code>Object</code></td>
+              <td>maximum number of rows to be returned</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Array&lt;Object&gt;</code></td>
+              <td>array of files</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>getOlderWeek(Object day, Object week, Object numberOfWeeksBack)</h2>
         <p>Roll backs by number of weeks.</p>
         <h3>Arguments:</h3>
@@ -1085,6 +1635,19 @@
             </tr>
           </tbody>
         </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>year:year,week:week</code></td>
+              <td>of rolled back date</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>getThisWeeksSunday(Object monday)</h2>
         <p>Returns This week's Sunday.</p>
         <h3>Arguments:</h3>
@@ -1099,6 +1662,19 @@
               <td>monday</td>
               <td><code>Object</code></td>
               <td>Date</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Object</code></td>
+              <td>sunday Date</td>
             </tr>
           </tbody>
         </table>
@@ -1135,6 +1711,19 @@
             </tr>
           </tbody>
         </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Array&lt;Object&gt;</code></td>
+              <td>array of validated groups</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>getMonday(Object day)</h2>
         <p>Checks if today is monday or returns last monday.</p>
         <h3>Arguments:</h3>
@@ -1149,6 +1738,19 @@
               <td>day</td>
               <td><code>Object</code></td>
               <td>Date</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Object</code></td>
+              <td>monday Date</td>
             </tr>
           </tbody>
         </table>
@@ -1174,6 +1776,49 @@
             </tr>
           </tbody>
         </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Array&lt;Object&gt;</code></td>
+              <td>array of groups</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>openSpreadsheet(Object id)</h2>
+        <p>Tries to open spreadsheet waits a while if Google service unavailible</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>id</td>
+              <td><code>Object</code></td>
+              <td>id of spreadsheet</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Object</code></td>
+              <td>opened spreadsheet</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>compareTimes(Object first, Object second)</h2>
         <p>Compares times of Dates between first and second and returns difference</p>
         <h3>Arguments:</h3>
@@ -1196,6 +1841,19 @@
             </tr>
           </tbody>
         </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>number</code></td>
+              <td>negative value if first is larger than second</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>getMyAccessRights(Object type)</h2>
         <p>Returns all Accesses current user is possesing for permission type.</p>
         <h3>Arguments:</h3>
@@ -1213,8 +1871,34 @@
             </tr>
           </tbody>
         </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Array&lt;number&gt;</code></td>
+              <td>array of accessable resources</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>getUserRolesInCzech()</h2>
         <p>Gets User permissions neatly sorted and with Czech Transaltions</p>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Array&lt;Object&gt;</code></td>
+              <td>list of user roles and their names</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>deleteEvent(Object event, Object hasMoreInstances)</h2>
         <p>Delete Event/s from database based on its properties</p>
         <h3>Arguments:</h3>
@@ -1272,6 +1956,19 @@
             </tr>
           </tbody>
         </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Array&lt;Object&gt;</code></td>
+              <td>array of tariffs</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>findGroupActors(Object fields, Object restrictions)</h2>
         <p>Finds group Actors from database based on restrictions</p>
         <h3>Arguments:</h3>
@@ -1291,6 +1988,19 @@
               <td>restrictions</td>
               <td><code>Object</code></td>
               <td>object key/value pairs for selecting rows</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Array&lt;Object&gt;</code></td>
+              <td>array of group Actors</td>
             </tr>
           </tbody>
         </table>
@@ -1341,6 +2051,19 @@
             </tr>
           </tbody>
         </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Array&lt;Object&gt;</code></td>
+              <td>unique array</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>deleteGroup(Object group)</h2>
         <p>Delete group/s from database based on its properties</p>
         <h3>Arguments:</h3>
@@ -1368,28 +2091,6 @@
             <tr>
               <td><code>boolean</code></td>
               <td>indicating success or failure.</td>
-            </tr>
-          </tbody>
-        </table>
-        <h2>findClients(Object fields, Object restrictions)</h2>
-        <p>Finds clients from database based on restrictions</p>
-        <h3>Arguments:</h3>
-        <table style="width: 100%">
-          <tbody>
-            <tr>
-              <th scope="col" style="wdith: 20%;">Name</th>
-              <th scope="col" style="width: 15%;">Type</th>
-              <th scope="col" style="width: 65%;">Description</th>
-            </tr>
-            <tr>
-              <td>fields</td>
-              <td><code>Object</code></td>
-              <td>fields is array of strings . It assigns these strings as properties to final objects</td>
-            </tr>
-            <tr>
-              <td>restrictions</td>
-              <td><code>Object</code></td>
-              <td>object of key/value pairs for selecting rows</td>
             </tr>
           </tbody>
         </table>
@@ -1424,6 +2125,36 @@
               <td>user</td>
               <td><code>Object</code></td>
               <td>user/client to be checked or null to check active user</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Array&lt;Object&gt;</code></td>
+              <td>array of groups with editing attributes</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>logDebug(Object msg)</h2>
+        <p></p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>msg</td>
+              <td><code>Object</code></td>
+              <td></td>
             </tr>
           </tbody>
         </table>
@@ -1496,6 +2227,19 @@
             </tr>
           </tbody>
         </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Array&lt;Object&gt;</code></td>
+              <td>array of group Events</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>deleteClient(Object client)</h2>
         <p>Delete client/s from database based on its properties</p>
         <h3>Arguments:</h3>
@@ -1565,30 +2309,16 @@
             </tr>
           </tbody>
         </table>
-        <h2>prepareSheet(Object sheet, Object day, Object messages)</h2>
-        <p>Formatts sheet as schedule.</p>
-        <h3>Arguments:</h3>
+        <h3>Return Values:</h3>
         <table style="width: 100%">
           <tbody>
             <tr>
-              <th scope="col" style="wdith: 20%;">Name</th>
-              <th scope="col" style="width: 15%;">Type</th>
-              <th scope="col" style="width: 65%;">Description</th>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
             </tr>
             <tr>
-              <td>sheet</td>
-              <td><code>Object</code></td>
-              <td>to be formatted</td>
-            </tr>
-            <tr>
-              <td>day</td>
-              <td><code>Object</code></td>
-              <td>date which is the beginning of week (should be monday)</td>
-            </tr>
-            <tr>
-              <td>messages</td>
-              <td><code>Object</code></td>
-              <td>array of strings of length 3, these strings are going to be shown in a sheet</td>
+              <td><code>Array&lt;Object&gt;</code></td>
+              <td>unique array</td>
             </tr>
           </tbody>
         </table>
@@ -1606,6 +2336,19 @@
               <td>obj</td>
               <td><code>Object</code></td>
               <td>object which can have properties type, year, week, group</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Object</code></td>
+              <td>SpreadSheet or null if obj.type is invalid</td>
             </tr>
           </tbody>
         </table>
@@ -1661,6 +2404,19 @@
             </tr>
           </tbody>
         </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Array&lt;Object&gt;</code></td>
+              <td>array of users(employees)</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>findTriggers(Object fields, Object restrictions, Object limit)</h2>
         <p>Finds triggers from database based on restrictions</p>
         <h3>Arguments:</h3>
@@ -1685,6 +2441,19 @@
               <td>limit</td>
               <td><code>Object</code></td>
               <td>maximum number of rows to be returned</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Array&lt;Object&gt;</code></td>
+              <td>array of triggers</td>
             </tr>
           </tbody>
         </table>

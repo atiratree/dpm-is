@@ -24,7 +24,6 @@
           </font>
         </a>
         <h1 class="page_title">Update</h1>
-        <p>web app meta-version</p>
         <h2>includeAndEvaluate(Object filename)</h2>
         <p>Evaluates GAS scriptlets and includes HMTL from a file. *just shortcut a for a long command</p>
         <h3>Arguments:</h3>
@@ -39,6 +38,19 @@
               <td>filename</td>
               <td><code>Object</code></td>
               <td>name of file to be included</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>string</code></td>
+              <td>string of result html</td>
             </tr>
           </tbody>
         </table>
@@ -59,8 +71,56 @@
             </tr>
           </tbody>
         </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Object</code></td>
+              <td>object which designates success or failure (in a case form had nonvalid data)</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>setProp(Object prop, Object value)</h2>
+        <p>Wrapper function.</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>prop</td>
+              <td><code>Object</code></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>value</td>
+              <td><code>Object</code></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
         <h2>getMyAccessRightsNames()</h2>
         <p>Returns roles in system I can edit or the role of user being edited.</p>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Array&lt;Object&gt;</code></td>
+              <td>array of roles in format {permission:x,name:x};</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>getResource(Object resource)</h2>
         <p>Helper function to create main HTML. It can return html, javascript or string we need, to include in our page.</p>
         <h3>Arguments:</h3>
@@ -75,6 +135,19 @@
               <td>resource</td>
               <td><code>Object</code></td>
               <td>string describing wanted resource</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Object</code></td>
+              <td>requested resource or null if resource not found</td>
             </tr>
           </tbody>
         </table>
@@ -122,6 +195,19 @@
             </tr>
           </tbody>
         </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>string</code></td>
+              <td>string of html</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>doGet(Object e)</h2>
         <p>Webapp entry function, returns HTML.</p>
         <h3>Arguments:</h3>
@@ -136,6 +222,19 @@
               <td>e</td>
               <td><code>Object</code></td>
               <td>url parameters setting this webapp's beahviour</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Object</code></td>
+              <td>HTML page with javascript</td>
             </tr>
           </tbody>
         </table>
@@ -156,6 +255,19 @@
             </tr>
           </tbody>
         </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>string</code></td>
+              <td>string of html</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>processUserObj(Object formObject)</h2>
         <p>Parses and validates data from formObject, then it updates User. @throws Exception if updating User failed</p>
         <h3>Arguments:</h3>
@@ -170,6 +282,19 @@
               <td>formObject</td>
               <td><code>Object</code></td>
               <td>Object received from client's browser form.</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Object</code></td>
+              <td>object which designates success or failure (in a case form had nonvalid data)</td>
             </tr>
           </tbody>
         </table>
@@ -214,6 +339,19 @@
             </tr>
           </tbody>
         </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>boolean</code></td>
+              <td>true if changes were made to user, false otherwise</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>processClientObj(Object formObject)</h2>
         <p>Parses and validates data from formObject, then it updates Client. @throws Exception if updating Client failed</p>
         <h3>Arguments:</h3>
@@ -228,6 +366,36 @@
               <td>formObject</td>
               <td><code>Object</code></td>
               <td>Object received from client's browser form.</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Object</code></td>
+              <td>object which designates success or failure (in a case form had nonvalid data)</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>setRuntimeProperties(Object params)</h2>
+        <p>Sets runtime properties</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>params</td>
+              <td><code>Object</code></td>
+              <td>object with properties to set</td>
             </tr>
           </tbody>
         </table>
@@ -267,6 +435,19 @@
               <td>formObject</td>
               <td><code>Object</code></td>
               <td>Form object</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Object</code></td>
+              <td>object which designates success or failure</td>
             </tr>
           </tbody>
         </table>

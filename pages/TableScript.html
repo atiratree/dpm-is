@@ -24,11 +24,36 @@
           </font>
         </a>
         <h1 class="page_title">TableScript</h1>
-        <p>web app meta-version</p>
         <h2>getClientsTable()</h2>
         <p>Loads data for Clients Table. Doesn't permit access for assistant.</p>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Object</code></td>
+              <td>dataTable object or empty object</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>getEventsTable()</h2>
         <p>Loads data for Events Table. Doesn't permit access for assistant.</p>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Object</code></td>
+              <td>dataTable object or empty object</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>getDeleteButtonHtml(Object params, Object width, Object height)</h2>
         <p>Gets html of delete button which opens new window and calls our Delete script project.</p>
         <h3>Arguments:</h3>
@@ -56,6 +81,19 @@
             </tr>
           </tbody>
         </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>string</code></td>
+              <td>html of delete button</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>getEditButtonHtml(Object params, Object width, Object height)</h2>
         <p>Gets html of edit button which opens in new window and calls our Update script project.</p>
         <h3>Arguments:</h3>
@@ -80,6 +118,19 @@
               <td>height</td>
               <td><code>Object</code></td>
               <td>height of new window</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>string</code></td>
+              <td>html of edit button</td>
             </tr>
           </tbody>
         </table>
@@ -115,6 +166,19 @@
             </tr>
           </tbody>
         </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>string</code></td>
+              <td>html of edit button</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>doGet(Object e)</h2>
         <p>Processes data for Awesome Table Gadget. This function is expected to be called from this gadget, if called from different sources then shows authorization
           confirmation.</p>
@@ -130,6 +194,19 @@
               <td>e</td>
               <td><code>Object</code></td>
               <td>passed parameters from Awesome Table Gadget, or no parameter for showing authorization confirmation</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Object</code></td>
+              <td>object with data for Awesome Table Gadget or shows auth message</td>
             </tr>
           </tbody>
         </table>
@@ -150,8 +227,34 @@
             </tr>
           </tbody>
         </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>string</code></td>
+              <td>parameter part of html</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>getTariffsTable()</h2>
         <p>Loads data for Tariffs Table. Doesn't permit access for assistant.</p>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Object</code></td>
+              <td>dataTable object or empty object</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>rfc3986EncodeURIComponent(Object str)</h2>
         <p>Encodes URI component.</p>
         <h3>Arguments:</h3>
@@ -169,10 +272,49 @@
             </tr>
           </tbody>
         </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>string</code></td>
+              <td>rfc3986 URI component</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>getEmployeesTable()</h2>
         <p>Loads data for Employess Table.</p>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Object</code></td>
+              <td>dataTable object</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>getGroupsTable()</h2>
         <p>Loads data for Groups Table. Doesn't permit access for assistant.</p>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Object</code></td>
+              <td>dataTable object or empty object</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>

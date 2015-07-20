@@ -24,12 +24,37 @@
           </font>
         </a>
         <h1 class="page_title">Delete</h1>
-        <p>web app meta-version</p>
         <h2>deleteClient()</h2>
         <p>Checks if webApp got right parameters and deletes Client or Event</p>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Object</code></td>
+              <td>object which designates success or failure</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>deleteEvent()</h2>
         <p>Checks if webApp got right parameters and deletes Client or Event</p>
-        <h2>getProp(Object name)</h2>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Object</code></td>
+              <td>object which designates success or failure</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>setProp(Object prop, Object value)</h2>
         <p>Wrapper function.</p>
         <h3>Arguments:</h3>
         <table style="width: 100%">
@@ -40,18 +65,47 @@
               <th scope="col" style="width: 65%;">Description</th>
             </tr>
             <tr>
-              <td>name</td>
+              <td>prop</td>
+              <td><code>Object</code></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>value</td>
               <td><code>Object</code></td>
               <td></td>
             </tr>
           </tbody>
         </table>
-        <h2>del()</h2>
-        <p>Calls delete for object of this instance</p>
-        <h2>deleteTariff()</h2>
-        <p>Checks if webApp got right parameters and deletes Tariff</p>
         <h2>deleteGroup()</h2>
         <p>Checks if webApp got right parameters and deletes Group</p>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Object</code></td>
+              <td>object which designates success or failure</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>deleteTariff()</h2>
+        <p>Checks if webApp got right parameters and deletes Tariff</p>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Object</code></td>
+              <td>object which designates success or failure</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>getResource(Object resource)</h2>
         <p>Helper function to create main HTML. It can return html, javascript or string we need, to include in page.</p>
         <h3>Arguments:</h3>
@@ -69,8 +123,19 @@
             </tr>
           </tbody>
         </table>
-        <h2>hasSitesPermission()</h2>
-        <p></p>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Object</code></td>
+              <td>requested resource or null if resource not found</td>
+            </tr>
+          </tbody>
+        </table>
         <h2>createPresentableHTML(Object content, Object sourceType, Object title)</h2>
         <p></p>
         <h3>Arguments:</h3>
@@ -98,20 +163,18 @@
             </tr>
           </tbody>
         </table>
-        <h2>include(Object filename)</h2>
-        <p>Includes HMTL from a file. *just shortcut a for a long command</p>
-        <h3>Arguments:</h3>
+        <h2>deleteUser()</h2>
+        <p>Checks if webApp got right parameters and deletes User</p>
+        <h3>Return Values:</h3>
         <table style="width: 100%">
           <tbody>
             <tr>
-              <th scope="col" style="wdith: 20%;">Name</th>
-              <th scope="col" style="width: 15%;">Type</th>
-              <th scope="col" style="width: 65%;">Description</th>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
             </tr>
             <tr>
-              <td>filename</td>
               <td><code>Object</code></td>
-              <td>name of file to be included</td>
+              <td>object which designates success or failure</td>
             </tr>
           </tbody>
         </table>
@@ -132,8 +195,113 @@
             </tr>
           </tbody>
         </table>
-        <h2>deleteUser()</h2>
-        <p>Checks if webApp got right parameters and deletes User</p>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Object</code></td>
+              <td>HTML page with javascript</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>include(Object filename)</h2>
+        <p>Includes HMTL from a file. *just shortcut a for a long command</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>filename</td>
+              <td><code>Object</code></td>
+              <td>name of file to be included</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>string</code></td>
+              <td>string of html</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>del()</h2>
+        <p>Calls delete for object of this instance</p>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>Object</code></td>
+              <td>object which designates success or failure</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>getProp(Object name)</h2>
+        <p>Wrapper function.</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>name</td>
+              <td><code>Object</code></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>setRuntimeProperties(Object params)</h2>
+        <p>Sets runtime properties</p>
+        <h3>Arguments:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="wdith: 20%;">Name</th>
+              <th scope="col" style="width: 15%;">Type</th>
+              <th scope="col" style="width: 65%;">Description</th>
+            </tr>
+            <tr>
+              <td>params</td>
+              <td><code>Object</code></td>
+              <td>object with properties to set</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>hasSitesPermission()</h2>
+        <p></p>
+        <h3>Return Values:</h3>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 20%;">Type</th>
+              <th scope="col" style="width: 80%;">Description</th>
+            </tr>
+            <tr>
+              <td><code>boolean</code></td>
+              <td>true if we are editing user</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
