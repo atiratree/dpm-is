@@ -28,7 +28,7 @@ var manager = {
   sleepConstantForLockBug: 5000, // 5 s
   sleepConstantForUnlockBug: 3000, // 3 s
   sleepConstantForOpenSSBug: 3000, // 3 s
-  sleepConstantForSSServiceBug: 3000, // 3 s
+  sleepConstantForSSServiceBug: 5000, // 5 s // 30.5.2016 changed from 3s -> 5s
   admin: {
     "permission": 0,
     "name": "Admin"

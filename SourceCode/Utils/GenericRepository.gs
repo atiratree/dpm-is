@@ -103,7 +103,9 @@ function repUpdate_(sheet, obj, cond) {
  * @param fields array with strings of columns we want to have returned, if empty array it can return undefined properties for no data in property
  * @param restrictions object with key/value  pairs that will be used for filtering columns of database
  * @param limit maximum number of objects function returns
- * @return array of found objects
+ * @return {Array<Object>} array of found objects
+ *
+ *  30.5.2016 Do not lock on find - Google throws lock exception often and it is not really necessary to lock db here
  */
 function repFind_(sheet, fields, restrictions, limit) {
   var rows;
@@ -116,15 +118,15 @@ function repFind_(sheet, fields, restrictions, limit) {
   if (restrictions == null) {
     restrictions = {};
   }
-
-  lock_();
+  
+  // lock_();
   try{
     rows = objDB.getRows(manager.myDB, sheet, fields, restrictions, limit);
   }catch(x){
     Utilities.sleep(manager.sleepConstantForSSServiceBug)
     rows = objDB.getRows(manager.myDB, sheet, fields, restrictions, limit);
   }
-  unlock_();
+  // unlock_();
 
   if (fields.length > 0) {
     rows = rows.map(function(item) {

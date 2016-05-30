@@ -49,9 +49,15 @@ function getAllSpreadSheetData(from, to) {
   });
   var fromWeek = getWeekNumber(from);
   var fromYear = from.getFullYear();
+  if(from.getMonth() == 0 && fromWeek > 10){ //30.5.2016 fix: if we are asking for a day (in January) which belongs to the week in a last year (larger than  10, i.e. not January)
+    fromYear -= 1;
+  }
   var toWeek = getWeekNumber(to);
   var toYear = to.getFullYear();
-  var result = [];
+  if(to.getMonth() == 0 && toWeek > 10){ //** also, TODO: refactor into function
+    toYear -= 1;
+  }
+  var result = []
 
   files = files.filter(function(item) {
     var year = item.year;
