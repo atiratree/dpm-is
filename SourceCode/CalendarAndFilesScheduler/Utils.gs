@@ -1,5 +1,5 @@
 /**
- * refreshes calendar events 
+ * refreshes calendar events
  *
  * @param day monday of week to be set in calendar
  * @param till end of week to be set in calendar
@@ -47,7 +47,10 @@ function appplyProtections(protection, emails) {
     try {
       protection.addEditor(newActor);
     } catch (e) {
-      Utils.logError(e);
+      var invalidUserMessage = "Invalid user";
+      if (e.message == null || !e.message.substring(0, invalidUserMessage.length) === invalidUserMessage) { // ignore deleted users
+        Utils.logError(e);
+      }
     }
   });
 }
