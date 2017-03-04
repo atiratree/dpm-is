@@ -59,7 +59,7 @@ var AccessEnums = {
   EMPLOYEE: 502,
   EMPLOYEES_GROUPS: 503,
   GROUP: 504,
-  SCHEDULE: 505, // neměnit číslo - používají javascript soubory
+  SCHEDULE: 505, // do not change - used by javascript files
   CLIENT: 506,
   EVENT: 507,
   EMAIL_SENDER: 508
@@ -73,7 +73,7 @@ var PermissionTypes = {
 /**
  * Gets User permissions neatly sorted and with Czech Transaltions
  *
- * @return list of user roles and their names
+ * @return {Array<Object>} list of user roles and their names
  */
 function getUserRolesInCzech() {
   return [manager.admin, manager.leader, manager.administrative, manager.assistant];
