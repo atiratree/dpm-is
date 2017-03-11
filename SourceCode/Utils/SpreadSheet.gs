@@ -1,9 +1,9 @@
-/** 
+/**
  * Creates SpreadSheet and names it and stores it in location depending on obj.type.
- *   Possible values for type are 'Rozpis' 'Statistika' and 'Fakturace' 
+ *   Possible values for type are 'Rozpis' 'Statistika' and 'Fakturace'
  *
  * @param obj object which can have properties type, year, week, group
- * @return SpreadSheet or null if obj.type is invalid
+ * @return {Object} SpreadSheet or null if obj.type is invalid
  */
 function createSpreadsheet(obj) {
   var filename;
@@ -36,46 +36,23 @@ function createSpreadsheet(obj) {
   return ss;
 }
 
-/** 
- * Extracts all valid data from 'Rozpis' files in defined time span. 
+/**
+ * Extracts all valid data from 'Rozpis' files in defined time span.
  *
  * @param from from which date to start extracting
  * @param to to which date extract data
- * @return array of extracted data
+ * @return {Array<Object>} array of extracted data
  */
 function getAllSpreadSheetData(from, to) {
+  var result = [];
+
   var files = findFiles([], {
     type: 'Rozpis'
-  });
-  var fromWeek = getWeekNumber(from);
-  var fromYear = from.getFullYear();
-  if(from.getMonth() == 0 && fromWeek > 10){ //30.5.2016 fix: if we are asking for a day (in January) which belongs to the week in a last year (larger than  10, i.e. not January)
-    fromYear -= 1;
-  }
-  var toWeek = getWeekNumber(to);
-  var toYear = to.getFullYear();
-  if(to.getMonth() == 0 && toWeek > 10){ //** also, TODO: refactor into function
-    toYear -= 1;
-  }
-  var result = []
+  }).filter(function(file) {
+    return isWeekWithinDates(from, to, file.year, file.week);;
+  }).forEach(function(item) {
+    var ss = openSpreadsheet(item.id);
 
-  files = files.filter(function(item) {
-    var year = item.year;
-    var week = item.week;
-
-    if (year < fromYear || (year == fromYear && week < fromWeek)) {
-      return false;
-    }
-
-    if (toYear < year || (year == toYear && toWeek < week)) {
-      return false;
-    }
-    return true;
-  });
-
-  files.forEach(function(item) {
-    var ss = openSpreadsheet(item.id);    
-   
     var monday = new Date(item.weekStarts);
     var extractDays = [];
 
@@ -95,16 +72,15 @@ function getAllSpreadSheetData(from, to) {
 
     result.push.apply(result, extractSpreadSheet(ss.getSheetByName('Rozpis'), extractDays));
   });
-
   return result
 }
 
-/** 
+/**
  * Extracts data from one spreadsheet
  *
  * @param sheet from which date to start extracting
  * @return extractDays array of days in week(1-7) for extracting
- * @return array of extracted data
+ * @return {Array<Object>} array of extracted data
  */
 function extractSpreadSheet(sheet, extractDays) {
   var result = [];
@@ -121,10 +97,10 @@ function extractSpreadSheet(sheet, extractDays) {
   return result;
 }
 
-/** 
+/**
  * Extracts data day range
  *
- * @return array of extracted data
+ * @return {Array<Object>} array of extracted data
  */
 function getDayRange_(sheet, row, column, numberOfRows, width, date) {
   var result = [];

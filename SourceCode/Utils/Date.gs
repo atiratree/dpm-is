@@ -1,11 +1,11 @@
 /**
  * This script is released to the public domain and may be used, modified and distributed without restrictions. Attribution not necessary but appreciated.
- * 
- * Source: http://weeknumber.net/how-to/javascript 
+ *
+ * Source: http://weeknumber.net/how-to/javascript
  * Returns the ISO week of the date.
  *
  * @param dateObj Date
- * @return number of week of dateObj
+ * @return {number} number of a week of dateObj
  */
 function getWeekNumber(dateObj) {
   var date = new Date(dateObj.getTime());
@@ -24,7 +24,7 @@ function getWeekNumber(dateObj) {
  * @param day year part is parsed from it
  * @param week week
  * @param numberOfWeeksBack number of weeks to roll back
- * @return object {year:year,week:week} of rolled back date
+ * @return {year:year,week:week} of rolled back date
  */
 function getOlderWeek(day, week, numberOfWeeksBack) {
   return getOlderWeekRecursive_(day.getFullYear(), week - numberOfWeeksBack);
@@ -34,7 +34,7 @@ function getOlderWeek(day, week, numberOfWeeksBack) {
  * Checks if today is monday or returns last monday.
  *
  * @param day Date
- * @return monday Date
+ * @return {Object} monday Date
  */
 function getMonday(day) {
   var retDay = new Date(day);
@@ -55,7 +55,7 @@ function getMonday(day) {
  * Returns next monday.
  *
  * @param monday Date
- * @return monday Date
+ * @return {Object} monday Date
  */
 function getNextMonday(monday) {
   var retDay = new Date(monday);
@@ -68,7 +68,7 @@ function getNextMonday(monday) {
  * Returns This week's Sunday.
  *
  * @param monday Date
- * @return sunday Date
+ * @return {Object} sunday Date
  */
 function getThisWeeksSunday(monday) {
   var retDay = new Date(monday);
@@ -82,7 +82,7 @@ function getThisWeeksSunday(monday) {
  *
  * @param first Date
  * @param second Date
- * @return negative value if first is larger than second
+ * @return {number} negative value if first is larger than second
  */
 function compareDates(first, second) {
   var d1 = new Date(first);
@@ -96,7 +96,7 @@ function compareDates(first, second) {
  *
  * @param first Date
  * @param second Date
- * @return negative value if first is larger than second
+ * @return {number} negative value if first is larger than second
  */
 function compareTimes(first, second) {
   var d1 = new Date(first);
@@ -110,7 +110,7 @@ function compareTimes(first, second) {
  *
  * @param date Date
  * @differentType if true uses . , otherwise - as separator
- * @return formatted date as string
+ * @return {string} formatted date as string
  */
 function getFormatedDate(date, differentType) {
   var d = date.getDate();
@@ -147,14 +147,42 @@ function getNumberOfWeeksInYear_(year) {
 }
 
 /**
- * @return array of ordered string of months in Czech language 
+ * @return true if weekToCompare in yearToCompare is in interval <from,to>
+ */
+function isWeekWithinDates(from, to, yearToCompare, weekToCompare){
+  // TODO: refactor to use weekStarts property
+
+  var fromWeek = getWeekNumber(from);
+  var fromYear = from.getFullYear();
+  if (from.getMonth() == 0 && fromWeek > 10) { // if we are ask for a day (in January) which belongs to the week in a last year (larger than  10, i.e. not January)
+    fromYear -= 1;
+  }
+  var toWeek = getWeekNumber(to);
+  var toYear = to.getFullYear();
+
+  if (to.getMonth() == 0 && toWeek > 10) { // same
+    toYear -= 1;
+  }
+
+  if (yearToCompare < fromYear || (yearToCompare == fromYear && weekToCompare < fromWeek)) { // before
+    return false;
+  }
+
+  if (toYear < yearToCompare || (yearToCompare == toYear && toWeek < weekToCompare)) { // after
+    return false;
+  }
+  return true;
+}
+
+/**
+ * @return {Array<string>} array of ordered string of months in Czech language
  */
 function getMonthsNames() {
   return ['Leden', 'Únor', 'Březen', 'Duben', 'Květen', 'Červen', 'Červenec', 'Srpen', 'Září', 'Říjen', 'Listopad', 'Prosinec'];
 }
 
 /**
- * @return array of ordered string of days in week(starting on monday) in Czech language 
+ * @return {Array<string>} array of ordered string of days in week(starting on monday) in Czech language
  */
 function getWeekDaysNames() {
   return ['Pondělí', 'Uterý', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota', 'Neděle'];

@@ -1,4 +1,4 @@
-/** 
+/**
  * @param key key for object in ScriptProperties
  * @return string from ScriptProperties
  */
@@ -6,7 +6,7 @@ function getScriptProp_(key) {
   return PropertiesService.getScriptProperties().getProperty(key);
 }
 
-/** 
+/**
  * @param key key of object in UserProperties
  * @return string from UserProperties
  */
@@ -14,7 +14,7 @@ function getUserProp(key) {
   return PropertiesService.getUserProperties().getProperty(key);
 }
 
-/** 
+/**
  * @param key key of object in UserProperties
  * @return object from UserProperties
  */
@@ -23,7 +23,7 @@ function getUserObjProp(key) {
   return obj ? JSON.parse(obj) : '';
 }
 
-/** 
+/**
  * @param key key for object to be set in UserProperties
  * @param value string to be set
  */
@@ -31,7 +31,7 @@ function setUserProp(key, value) {
   PropertiesService.getUserProperties().setProperty(key, value);
 }
 
-/** 
+/**
  * @param key key for object to be set in UserProperties
  * @param value object to be set
  */
@@ -39,21 +39,21 @@ function setUserObjProp(key, value) {
   PropertiesService.getUserProperties().setProperty(key, JSON.stringify(value));
 }
 
-/** 
+/**
  * @param obj object with multiple properties to be set in UserProperties
  */
 function setUserProps(obj) {
   PropertiesService.getUserProperties().setProperties(obj);
 }
 
-/** 
+/**
  * @param key of object to delete in UserProperties
  */
 function deleteProp(key) {
   PropertiesService.getUserProperties().deleteProperty(key);
 }
 
-/** 
+/**
  * @param str string to be trimmed of white spaces and apppostrophes '
  * @return trimmed string
  */
@@ -61,10 +61,10 @@ function trim(str) {
   return (typeof str === 'string') ? str.replace(/^[\s\']+|[\s\']+$/g, '') : '';
 }
 
-/** 
+/**
  * Returns new unique array.
  *
- * @param a array of primitive types 
+ * @param a array of primitive types
  * @return unique array
  */
 function toUniquePrimitiveArray(a) {
@@ -74,7 +74,7 @@ function toUniquePrimitiveArray(a) {
   });
 }
 
-/** 
+/**
  * Returns new array which is filled with object[property] of objects in array.
  *
  * @param array array of objects
@@ -109,7 +109,7 @@ function sort(array, sortProp){
   }
 }
 
-/** 
+/**
  * Checks if obj is error free, error is property which is non empty string.
  *
  * @param obj to be searched for errors
@@ -126,7 +126,7 @@ function isObjErrorFree(obj) {
   return true;
 }
 
-/** 
+/**
  * Moves files depending on a type.
  *  'Rozpis' moves to corresponding year and week folder
  *  'Statistika' and 'Fakturace' moves Storage folder
@@ -182,19 +182,19 @@ function moveFile_(file, type, year, week) {
 }
 
 
-/** 
- * Tries to open spreadsheet 
+/**
+ * Tries to open spreadsheet
  * waits a while if Google service unavailible
  *
  * @param id id of spreadsheet
  * @return opened spreadsheet
  */
-function openSpreadsheet(id){  
+function openSpreadsheet(id){
   try{
     return SpreadsheetApp.openById(id);
   }catch(x){ //Bug  Document 1xx is missing (perhaps it was deleted?)
     Utilities.sleep(manager.sleepConstantForOpenSSBug);
-    return SpreadsheetApp.openById(id); 
+    return SpreadsheetApp.openById(id);
   }
-   
+
 }

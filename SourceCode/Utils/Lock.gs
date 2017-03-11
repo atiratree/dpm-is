@@ -1,9 +1,9 @@
 /**
  * Locks this script.
- * Implements HACK for locking, because of this bug https://code.google.com/p/google-apps-script-issues/issues/detail?id=2274 
+ * Implements HACK for locking, because of this bug https://code.google.com/p/google-apps-script-issues/issues/detail?id=2274
  * It can take 5-15 seconds to lock. Most of the time locks instantly.
  */
-function lock_() { // 
+function lock_() { //
   try {
     LockService.getScriptLock().waitLock(manager.waitForLockTime);
   } catch (x) {
@@ -12,7 +12,7 @@ function lock_() { //
       LockService.getScriptLock().waitLock(manager.waitForLockTime);
     } catch (ex) {
       logError(ex);
-    }    
+    }
   }
 }
 
@@ -30,23 +30,31 @@ function unlock_() {
       LockService.getScriptLock().releaseLock();
     } catch (ex) {
       logError(ex);
-    }    
+    }
   }
 }
 
-/*functions for debugging purposes
+//functions for debugging purposes
 
-function start(name) {
+function startTimer(name) {
   var time = new Date().valueOf();
   setUserProp(name ? 'timerValue' + name : 'timerValue', time);
 }
 
-function stop(name) {
+function stopTimer(name, logging) {
   var init = getUserProp(name ? 'timerValue' + name : 'timerValue')
   var after = new Date().valueOf();
-  var diff = after - init - 30; //timer runtime
+  var diff = after - init;
   var a = name ? name : '';
-  log('Measured time ' + a + ': ' + diff + ' ms');
+  if (logging) {
+    log('Measured time ' + a + ': ' + (diff - 30) + ' ms');// 30 timer runtime
+  }
+
+  return diff;
+}
+
+function destroyTimer(name) {
+  deleteProp(name ? 'timerValue' + name : 'timerValue');
 }
 
 function clearLog_(logSheet) {
@@ -57,8 +65,4 @@ function clearLog_(logSheet) {
 function logDebug(msg) {
   logToSheet_(msg, manager.logSheet, true);
   logToSheet_(msg, manager.errSheet, true);
-  //log(msg);
-  //logError(msg);
 }
-
-*/
