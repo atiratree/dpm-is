@@ -3,24 +3,24 @@
  *
  * @param from from which day stats are going to be created
  * @param to  to which day stats are going to be created
- * @return url of new spreadsheet
+ * @return {string} url of new spreadsheet
  */
 function createStatistics(from, to) {
+  var spreadsheetData = Utils.getAllSpreadSheetData(from, to);
   var ss = Utils.createSpreadsheet({
     type: 'Statistika'
   });
-  var spreadsheetData = Utils.getAllSpreadSheetData(from, to);
   var clientsSheet = ss.getActiveSheet();
   var clientsSheet2 = ss.insertSheet('Klienti Počet návštěv');
   var assistantsSheet = ss.insertSheet('Asistenti');
   var events = Utils.convertObjectsToArrayByProperty(Utils.findEvents(), 'name');
-  
+
   clientsSheet.setName('Klienti');
-  
+
   spreadsheetData = spreadsheetData.filter(function(item) {
      return (events.indexOf(item['event']) < 0);
   });
-  
+
   writeStats(spreadsheetData, clientsSheet, 'event', from, to);
   writeStats(spreadsheetData, clientsSheet2, 'event2', from, to);
   writeStats(spreadsheetData, assistantsSheet, 'employee', from, to);
@@ -49,7 +49,7 @@ function writeStats(spreadsheetData, sheet, type, from, to) {
 
   spreadsheetData.forEach(function(item) {
     var extractObj, monthObj, identifier, month;
-   
+
     if (item[type] && item.tariff) {
 
       if (!result[item[type]]) {
@@ -161,7 +161,7 @@ function writeToCellSpec(sheet, row, col, obj) {
 }
 
 /**
- * Writes data to specific cell 
+ * Writes data to specific cell
  *
  * @param sheet where to write
  * @param row where to write

@@ -15,7 +15,7 @@ $(document).ready(function() {
         resolveDefault(obj);
       }).processForm(this);
     }
-    
+
     return false;
   });
 
@@ -27,7 +27,7 @@ $(document).ready(function() {
 
 function resolveDefault(obj) {
   if (obj.fail) {
-    $('#confirmation').text('Chyba na serveru : zkuste znovu');
+    $('#confirmation').text(obj.failMessage ? obj.failMessage : 'Chyba na serveru : zkuste znovu');
     $('#confirmation-content1').show();
     $('#date-form').slideUp();
   } else if (obj.success) {

@@ -4,13 +4,13 @@
  * @param from from which day bill is going to be created
  * @param to  to which day bill is going to be created
  * @param client name of client
- * @return url of new spreadsheet
+ * @return {string} url of new spreadsheet
  */
 function createBilling(from, to, client) {
+  var spreadsheetData = Utils.getAllSpreadSheetData(from, to);
   var ss = Utils.createSpreadsheet({
     type: 'Fakturace'
   });
-  var spreadsheetData = Utils.getAllSpreadSheetData(from, to);
   var sheet = ss.getActiveSheet();
 
   sheet.setName('Fakturace');

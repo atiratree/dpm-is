@@ -1,8 +1,8 @@
 /**
  * Helper function to create main HTML. It can return html, javascript ot strings we need to include in our page.
  *
- * @param resource string describing wanted resource 
- * @return requested resource or null if resource not found
+ * @param resource string describing wanted resource
+ * @return {Object} requested resource or null if resource not found
  */
 function getResource(resource) {
   switch (getProp('instance')) {
@@ -28,10 +28,10 @@ function getResource(resource) {
 }
 
 /**
- * Creates array of object properties and sortes them 
+ * Creates array of object properties and sortes them
  *
- * @param obj Object with string properties 
- * @return sorted array of obj properties
+ * @param obj Object with string properties
+ * @return {Array<Object>} sorted array of obj properties
  */
 function getSortedObjProps(obj) {
   var keys = [];
@@ -50,7 +50,7 @@ function getSortedObjProps(obj) {
  * Converts duration into time format string
  *
  * @duration miliseconds
- * @return duration in format h:mm:ss:SSS
+ * @return {string} duration in format h:mm:ss:SSS
  */
 function msToTime(duration) {
   var miliseconds = parseInt(duration % 1000);
@@ -69,7 +69,7 @@ function msToTime(duration) {
  * Rounds to two places, "banking format"
  *
  * @num number
- * @return number with two places decimal
+ * @return {number} number with two places decimal
  */
 function roundToTwo(num) {
   return (+(Math.round(num + 'e+2') + 'e-2')).toFixed(2);
@@ -79,14 +79,14 @@ function roundToTwo(num) {
  * Generates HMTL from a file. *just shortcut a for a long command
  *
  * @param filename name of file to be included
- * @return html
+ * @return {string} html
  */
 function include(filename) {
   return HtmlService.createHtmlOutputFromFile(filename).getContent();
 }
 
 /**
- * @return array with name of all clients
+ * @return {Array<Object>} array with name of all clients
  */
 function getClients() {
   return Utils.sort(Utils.convertObjectsToArrayByProperty(Utils.findClients(), 'name'));
@@ -99,7 +99,7 @@ function getClients() {
  * @param content depends on a sourceType, if sourceType isn't string, it includes file with name == content
  * @param sourceType is string indicating values 'string'/'file' for source type, takes file as default for any other value
  * @param title title of a window
- * @return string of html
+ * @return {string} string of html
  */
 function createPresentableHTML(content, sourceType, title) {
   if (title == null) {
@@ -135,16 +135,15 @@ function setProp(prop, value) {
  */
 function setRuntimeProperties(params){
   var renewProps = {};
-  
+
   propItems.forEach(function(prop){
-     var value = (params && params[prop] != null) ? params[prop] : '';     
+     var value = (params && params[prop] != null) ? params[prop] : '';
      renewProps[prop + sessionId] = value;
-     
+
   });
   Utils.setUserProps(renewProps);
 }
- 
+
 /* props settings variables*/
 var propItems = ['instance'];
-var sessionId = 'statsBill';  
-
+var sessionId = 'statsBill';

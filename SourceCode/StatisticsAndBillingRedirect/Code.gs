@@ -1,15 +1,15 @@
 /**
- * Serves HTML and checks user's permissionto view it
+ * Serves HTML and checks user's permission to view it
  *
  * @param e url parameters setting this webapp's beahviour
- * @return HTML page with javascript
+ * @return {Object} HTML page with javascript
  */
 function doGet(e) {
   var html;
 
   try {
-    setRuntimeProperties(e.parameter);  
-    
+    setRuntimeProperties(e.parameter);
+
     if (!e.parameter.instance) {
       html = createPresentableHTML('<p>Authorizace...OK</p>', 'string');
     } else if (Utils.getUserPermission() == 0 || Utils.getUserPermission() == 1 || Utils.getUserPermission() == 2) {
@@ -28,7 +28,7 @@ function doGet(e) {
  * Processes form and returns result.
  *
  * @param formObject Form object
- * @return object which designates success or failure
+ * @return {Object} object which designates success or failure
  */
 function processForm(formObject) {
   try {
@@ -41,6 +41,10 @@ function processForm(formObject) {
         return null;
     }
   } catch (error) {
+    if (error.timeout){
+      return {fail: 'fail', failMessage: 'Čas na spuštění skriptu vypršel. Skuste spustit znovu pro kratší časový interval.'}
+    }
+
     Utils.logError(error);
     return {
       fail: 'fail'

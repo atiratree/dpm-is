@@ -1,5 +1,5 @@
 /**
- * Logs message to Log SpreadSheet 
+ * Logs message to Log SpreadSheet
  *
  * @param msg message to be logged
  */
@@ -11,7 +11,7 @@ function log(msg) {
 }
 
 /**
- * Logs error to Log SpreadSheet 
+ * Logs error to Log SpreadSheet
  *
  * @param msg message to be logged
  */
@@ -22,7 +22,7 @@ function logError(msg) {
 }
 
 /**
- * Logs correction to Log SpreadSheet 
+ * Logs correction to Log SpreadSheet
  *
  * @param msg message to be logged
  */
@@ -33,7 +33,7 @@ function logCorrection(msg) {
 }
 
 /**
- * Appends message to Log SpreadSheet 
+ * Appends message to Log SpreadSheet
  *
  * @param e message to be logged
  * @param sheet sheet to be logged into
@@ -64,7 +64,7 @@ function rollLog_(logSheet) {
   var size = manager.logSize > 0 ? manager.logSize : 1;
   if (sheet.getLastRow() > size) {
     var range = sheet.getRange(1, 1, size);
-    var range2 = sheet.getRange(size > 10 ? Math.ceil(size / 10) : 2, 1, size); // has to be larger than 10 
+    var range2 = sheet.getRange(size > 10 ? Math.ceil(size / 10) : 2, 1, size); // has to be larger than 10
     range2.moveTo(range);
   }
 }

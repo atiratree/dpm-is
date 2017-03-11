@@ -45,33 +45,43 @@ function createSpreadsheet(obj) {
  */
 function getAllSpreadSheetData(from, to) {
   var result = [];
+  try{
+    var TIMER_ID = new Date().toISOString();
+    startTimer(TIMER_ID);
 
-  var files = findFiles([], {
-    type: 'Rozpis'
-  }).filter(function(file) {
-    return isWeekWithinDates(from, to, file.year, file.week);;
-  }).forEach(function(item) {
-    var ss = openSpreadsheet(item.id);
+    findFiles([], {
+      type: 'Rozpis'
+    }).filter(function(file) {
+      return isWeekWithinDates(from, to, file.year, file.week);;
+    }).forEach(function(item) {
+      var ss = openSpreadsheet(item.id);
 
-    var monday = new Date(item.weekStarts);
-    var extractDays = [];
+      var monday = new Date(item.weekStarts);
+      var extractDays = [];
 
-    for (var add = 0; add < 7; add++) {
-      var day = new Date(monday);
+      for (var add = 0; add < 7; add++) {
+        var day = new Date(monday);
 
-      day.setHours(0, 0, 0, 0);
-      day.setDate(day.getDate() + add);
+        day.setHours(0, 0, 0, 0);
+        day.setDate(day.getDate() + add);
 
-      if (compareDates(from, day) >= 0 && compareDates(day, to) >= 0) {
-        extractDays.push({
-          date: day,
-          dayInWeek: (add + 1)
-        });
+        if (compareDates(from, day) >= 0 && compareDates(day, to) >= 0) {
+          extractDays.push({
+            date: day,
+            dayInWeek: (add + 1)
+          });
+        }
       }
-    }
 
-    result.push.apply(result, extractSpreadSheet(ss.getSheetByName('Rozpis'), extractDays));
-  });
+      result.push.apply(result, extractSpreadSheet(ss.getSheetByName('Rozpis'), extractDays));
+
+      if (stopTimer(TIMER_ID) / 1000 > 250){ // more than 250s -- abort - 50 sec left for the rest of the script wchich is billing/stat
+          throw {timeout: true};
+      }
+    });
+  } finally {
+    destroyTimer(TIMER_ID)
+  }
   return result
 }
 
