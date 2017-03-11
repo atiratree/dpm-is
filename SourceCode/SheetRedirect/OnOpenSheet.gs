@@ -2,31 +2,32 @@
  * Reloads data for spreadsheet, generates sheets for assistants and creates menu for admins/leaders
  *
  */
-function onOpenSheet() {  
+function onOpenSheet() {
   try{
-    var spreadSheet = SpreadsheetApp.getActive(); 
-    
+    var spreadSheet = SpreadsheetApp.getActive();
+
     var isLeader = Utils.getUserPermission() == Utils.AccessEnums.ADMIN || Utils.getUserPermission() == Utils.AccessEnums.LEADER;
-    if (isLeader) { 
-      spreadSheet.toast('Načítají se data'); 
+    if (isLeader) {
+      toast(spreadSheet, 'Načítají se data');
       initializeData();
     }
-    
+
     updateSpreadSheet(spreadSheet, isLeader && getParsedScriptProp('integrity'));
-    
+    SpreadsheetApp.flush();
+
     if(getParsedScriptProp('duplicates')){
       checkAssistantDuplicities();
+      Utilities.sleep(2000); // just to see last message
     }
-   
-    SpreadsheetApp.flush();
-    spreadSheet.toast('Hotovo.');     
+
+    toast(spreadSheet, 'Hotovo.');
   }catch(x){
     Utils.logError(x);
   }
 }
 
 /**
- * Reloads data for spreadsheet to use, to user properties. 
+ * Reloads data for spreadsheet to use, to user properties.
  *
  * @param spreadSheet spreadSheet object to reload
  * @return "cached"(we don't have to get them from slow db) data for reusing
@@ -44,15 +45,15 @@ function initializeData() {
     events = Utils.findEvents();
     clients.push.apply(clients, events);
     tariffs = Utils.findTariffs();
-   
+
     actors = getActors(group);
 
     saveScriptData('nicks', Utils.convertObjectsToArrayByProperty(actors, 'nick'));
     saveScriptData('colors', Utils.convertObjectsToArrayByProperty(actors, 'color'));
     saveScriptData('events', Utils.convertObjectsToArrayByProperty(events, 'name'));
     saveScriptData('defaultTariff', getDefaultTariff_(tariffs));
-    
-   
+
+
   } catch (e) {
     Utils.logError(e);
   }
@@ -61,7 +62,7 @@ function initializeData() {
 
 /**
  * @param tariffs all tariffs with its attributes
- * @return returns default tariff
+ * @return {string} returns default tariff
  */
 function getDefaultTariff_(tariffs) {
   for (var i = 0; i < tariffs.length; i++) {
