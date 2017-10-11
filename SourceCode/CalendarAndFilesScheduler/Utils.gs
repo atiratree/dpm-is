@@ -13,7 +13,7 @@ function refreshCalendar(day, till, week) {
   });
   if (events.length == 0) {
     var desc = '<a href="https://script.google.com/a/macros/domovpromne.cz/s/AKfycbzR_O1qVLz5V360merzlzYfSSnfN2TDdSO9-ZI9z44SQWl8fpEk/exec?week=' + week +
-      '&year=' + day.getFullYear() + '">Rozvrh</a>';
+      '&year=' + day.getFullYear() + '">Rozpis</a>';
     var ev = calApp.createEventFromDescription(searchOption + ' ' + Utils.getFormatedDate(day) + '-' + Utils.getFormatedDate(till));
     ev.setDescription(desc);
   }
@@ -27,7 +27,10 @@ function refreshCalendar(day, till, week) {
  * @param week week number to be set in calendar
  */
 function appplyProtections(protection, emails) {
-  emails = Utils.toUniquePrimitiveArray(emails);
+  var emailMap = {}
+  for(var i=0; i < emails.length; i++){
+    emailMap[emails[i]] = null;
+  }
 
   if (protection.canDomainEdit()) {
     protection.setDomainEdit(false);
@@ -35,15 +38,15 @@ function appplyProtections(protection, emails) {
 
   protection.getEditors().forEach(function(user) {
     var email = user.getEmail();
-    var index = emails.indexOf(email);
-    if (index > -1) {
-      emails.splice(index, 1);
+    if (email in emailMap) {
+      delete emailMap[email]
     } else {
       protection.removeEditor(email);
     }
   });
 
-  emails.forEach(function(newActor) {
+
+  Object.keys(emailMap).forEach(function(newActor) {
     try {
       protection.addEditor(newActor);
     } catch (e) {
@@ -60,7 +63,7 @@ function appplyProtections(protection, emails) {
  *
  * @param files all files in db
  * @param obj Object to be checked for
- * @return true if is in DB
+ * @return {boolean} true if is in DB
  */
 function isFileInDB(files, obj) { // faster then calling db to do this
   for (var i = 0; i < files.length; i++) {

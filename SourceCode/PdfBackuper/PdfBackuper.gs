@@ -68,7 +68,7 @@ function backupToPdf(from, to) {
     Drive.Files.remove(tmpSSId);
   }
 
-  if (Utils.AccessEnums.ADMIN == Utils.getUserPermission()) {
+  if (Utils.isSuperAdmin()) {
     var storageFolder = DriveApp.getFolderById(Utils.manager.storageID);
     storageFolder.addFolder(folder);
     DriveApp.getRootFolder().removeFolder(folder);

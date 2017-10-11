@@ -72,6 +72,9 @@ function run_(updateCalendar) {
   }
 }
 
+/**
+ * deletes old triggers of not active users
+ */
 function deleteOldTriggers(){
   var users = Utils.convertObjectsToArrayByProperty(Utils.findEmployees(['email']), 'email');
   var triggers = Utils.convertObjectsToArrayByProperty(Utils.findTriggers(['email']), 'email');
@@ -79,7 +82,7 @@ function deleteOldTriggers(){
   
   triggers.forEach(function(trig){
     if(users.indexOf(trig)  < 0){
-      Utils.deleteTrigger({email:email}, true)
+      Utils.deleteTrigger({email: trig}, true)
     }  
   });
 }

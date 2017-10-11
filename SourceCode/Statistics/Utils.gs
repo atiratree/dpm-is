@@ -1,33 +1,4 @@
 /**
- * Helper function to create main HTML. It can return html, javascript ot strings we need to include in our page.
- *
- * @param resource string describing wanted resource
- * @return {Object} requested resource or null if resource not found
- */
-function getResource(resource) {
-  switch (getProp('instance')) {
-    case 'statistics':
-      switch (resource) {
-        case 'name':
-          return 'Výpis statistik za období';
-        default:
-          return null;
-      }
-    case 'billing':
-      switch (resource) {
-        case 'name':
-          return 'Fakturace za období';
-        case 'dependentJS':
-          return include('billing-js');
-        default:
-          return null;
-      }
-    default:
-      return null;
-  }
-}
-
-/**
  * Creates array of object properties and sortes them
  *
  * @param obj Object with string properties
@@ -86,13 +57,6 @@ function include(filename) {
 }
 
 /**
- * @return {Array<Object>} array with name of all clients
- */
-function getClients() {
-  return Utils.sort(Utils.convertObjectsToArrayByProperty(Utils.findClients(), 'name'));
-}
-
-/**
  * Creates presentable HTML for a browser
  * *cannot be run from library, becaouse of filename
  *
@@ -112,38 +76,3 @@ function createPresentableHTML(content, sourceType, title) {
 
   return HtmlService.createTemplateFromFile(content).evaluate().setSandboxMode(HtmlService.SandboxMode.IFRAME).setTitle(title);
 }
-
-
-/**
- * Wrapper function.
- */
-function getProp(name) {
-  return Utils.getUserProp(name  + sessionId);
-}
-
-/**
- * Wrapper function.
- */
-function setProp(prop, value) {
-  Utils.setUserProp(prop + sessionId, value);
-}
-
-/**
- * Sets runtime properties
- *
- * @param params object with properties to set
- */
-function setRuntimeProperties(params){
-  var renewProps = {};
-
-  propItems.forEach(function(prop){
-     var value = (params && params[prop] != null) ? params[prop] : '';
-     renewProps[prop + sessionId] = value;
-
-  });
-  Utils.setUserProps(renewProps);
-}
-
-/* props settings variables*/
-var propItems = ['instance'];
-var sessionId = 'statsBill';

@@ -8,18 +8,16 @@ function doGet(e) {
   var html;
 
   try {
-    setRuntimeProperties(e.parameter);
-
     if (!e.parameter.instance) {
       html = createPresentableHTML('<p>Authorizace...OK</p>', 'string');
     } else if (Utils.getUserPermission() == 0 || Utils.getUserPermission() == 1 || Utils.getUserPermission() == 2) {
-      html = createPresentableHTML('main', 'file', getProp('instance') == 'statistics' ? 'Generování statistiky' : 'Generování fakturace');
+      html = createPresentableHTML('main', 'file', 'Generování fakturace');
     } else {
       html = createPresentableHTML('<p>NO_PERMISSION</p>', 'string');
     }
   } catch (error) {
     html = createPresentableHTML('<p>SERVER_ERROR</p>', 'string');
-    Utils.logError('[stats/bill] ' + JSON.stringify(error));
+    Utils.logError('[bill] ' + JSON.stringify(error));
   }
   return html;
 }
@@ -32,14 +30,7 @@ function doGet(e) {
  */
 function processForm(formObject) {
   try {
-    switch (getProp('instance')) {
-      case 'statistics':
-        return processStatOrBillObj(formObject);
-      case 'billing':
-        return processStatOrBillObj(formObject, true);
-      default:
-        return null;
-    }
+    return process(formObject);
   } catch (error) {
     if (error.timeout){
       return {fail: 'fail', failMessage: 'Čas na spuštění skriptu vypršel. Skuste spustit znovu pro kratší časový interval.'}

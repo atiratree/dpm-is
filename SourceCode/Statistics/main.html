@@ -1,9 +1,9 @@
-<!-- This is template page with form for choosing Statistics or Billing, code is inserted through GAS functions -->
+<!-- This is page form for choosing Statistics, code is inserted through GAS functions -->
 
 <?!= include('css'); ?>
 <div id='mainDiv'>
   <p>
-    <label><?!= getResource('name')?></label>
+    <label>Výpis statistik za období</label>
   </p>
   <div id='form-content'>
       <form id='date-form'>
@@ -19,14 +19,6 @@
           <input id='toBox' type='date' name='toBox' min='1900-01-01' required='true' >
           <label id='toErr' class='error' for='toBox' hidden='true'></label>
         </p>
-        <? if(getProp('instance') == 'billing'){?>
-        <p>
-          <label for='selectBox'>Klient</label>
-          <br>
-          <select id='selectBox' name='selectBox' required='true'></select>
-          <label id='selectErr' class='error' for='selectBox'  hidden='true'></label>
-        </p>
-        <? } ?>
         <p id='submit'>
           <input class='button' type='submit' value='Zpracuj'>
         </p>
@@ -42,8 +34,7 @@
       </p>
   </div>
   <div id='confirmation-content2' class='clearDiv' hidden='true'>
-    <a class='button' target="_blank" id='confirmationButton' href=''>Výsledný dokument</a>
+    <a class='button' target="_blank" id='confirmationButton' href=''>Výsledná statistika</a>
   </div>
 </div>
 <?!= include('javascript'); ?>
-<?!= getResource('dependentJS')?>
