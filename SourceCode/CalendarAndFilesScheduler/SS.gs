@@ -20,11 +20,11 @@ function correctProtections() {
 
   var day = new Date();
   day.setMonth(day.getMonth() - numberOfMonthsBackAllowedForEditing); // allow months for editting
-  var accessibleStartYear = day.getFullYear();
+  var accessibleStartYear = Utils.getWeeksYear(day);
   var accessibleStartWeek = Utils.getWeekNumber(day);
 
   day.setMonth(day.getMonth() - (numberOfMonthsBackForRemovingRights - numberOfMonthsBackAllowedForEditing)); // disable sheets gradually over time so we don't need to open all of the older ones
-  var dissableStartYear = day.getFullYear();
+  var dissableStartYear = Utils.getWeeksYear(day);
   var dissableStartWeek = Utils.getWeekNumber(day);
 
   Utils.findFiles([], {

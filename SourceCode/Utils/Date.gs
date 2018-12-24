@@ -19,6 +19,16 @@ function getWeekNumber(dateObj) {
 }
 
 /**
+ * Get year which belongs to dateObj week
+ *
+ * @param dateObj Date
+ */
+function getWeeksYear(dateObj){
+  var fullYear = dateObj.getFullYear()
+  return (dateObj.getMonth() === 11 && getWeekNumber(dateObj) === 1) ? fullYear + 1 : fullYear;
+}
+
+/**
  * Roll backs by number of weeks.
  *
  * @param day year part is parsed from it
@@ -153,12 +163,12 @@ function isWeekWithinDates(from, to, yearToCompare, weekToCompare){
   // TODO: refactor to use weekStarts property
 
   var fromWeek = getWeekNumber(from);
-  var fromYear = from.getFullYear();
+  var fromYear = getWeeksYear(from);
   if (from.getMonth() == 0 && fromWeek > 10) { // if we are ask for a day (in January) which belongs to the week in a last year (larger than  10, i.e. not January)
     fromYear -= 1;
   }
   var toWeek = getWeekNumber(to);
-  var toYear = to.getFullYear();
+  var toYear = getWeeksYear(to);
 
   if (to.getMonth() == 0 && toWeek > 10) { // same
     toYear -= 1;

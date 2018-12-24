@@ -1,10 +1,6 @@
 function backupToPdf(from, to) {
   var time = new Date().toISOString();
   var ROZPIS = 'Rozpis'
-  var startYear = from.getFullYear();
-  var startWeek = Utils.getWeekNumber(from);
-  var endYear = to.getFullYear();
-  var endWeek = Utils.getWeekNumber(to);
 
   var folder = DriveApp.createFolder('Záloha_' + time);
 

@@ -13,7 +13,7 @@ function refreshCalendar(day, till, week) {
   });
   if (events.length == 0) {
     var desc = '<a href="https://script.google.com/a/macros/domovpromne.cz/s/AKfycbzR_O1qVLz5V360merzlzYfSSnfN2TDdSO9-ZI9z44SQWl8fpEk/exec?week=' + week +
-      '&year=' + day.getFullYear() + '">Rozpis</a>';
+      '&year=' + Utils.getWeeksYear(day) + '">Rozpis</a>';
     var ev = calApp.createEventFromDescription(searchOption + ' ' + Utils.getFormatedDate(day) + '-' + Utils.getFormatedDate(till));
     ev.setDescription(desc);
   }
