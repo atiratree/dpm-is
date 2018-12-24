@@ -62,7 +62,7 @@
 <?            var links = getLinks(files, group);
               for (var j = 0; j < links.length; j++) {?>                
                 <tr><td><a class='button blue' onclick='resolveTriggers("<?!= links[j].id ?>")' href='<?!= links[j].url; ?>'><?!= (links[j].owner ? links[j].owner + ' ': '' ) + links[j].type; ?></a></td></tr>   
-                <tr><td><a class='button green'  href='<?!= manager.emailSenderScriptURL + constructUrlParameters({type: 'client', week: week, year: year, group: group, sheetId: links[j].id})?>'>Odeslat klientům</a></td></tr>             
+                <tr><td><a class='button green' target='_blank' href='<?!= manager.emailSenderScriptURL + constructUrlParameters({type: 'client', week: week, year: year, group: group, sheetId: links[j].id})?>'>Odeslat klientům</a></td></tr>
 <?            } ?>
         </table>
 <?        if(i % 4 == 3){?>
@@ -117,7 +117,7 @@
 <?            var links = getLinks(files, group);
               for (var j = 0; j < links.length; j++) {?>
                 <tr><td><a class='button blue' onclick='resolveTriggers("<?!= links[j].id ?>")' href='<?!= links[j].url; ?>'><?!= (links[j].owner ? links[j].owner + ' ': '' ) + links[j].type; ?></a></td></tr>            
-                <tr><td><a class='button green'  href='<?!= manager.emailSenderScriptURL + constructUrlParameters({type: 'client', week: week, year: year, group: group, sheetId: links[j].id})?>'>Odeslat klientům</a></td></tr>               
+                <tr><td><a class='button green' target='_blank' href='<?!= manager.emailSenderScriptURL + constructUrlParameters({type: 'client', week: week, year: year, group: group, sheetId: links[j].id})?>'>Odeslat klientům</a></td></tr>
 <?            } ?>
         </table>
 <?        if(i % 4 == 3){?>
