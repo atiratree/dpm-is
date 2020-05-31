@@ -58,7 +58,6 @@ function processForm(formObject) {
     if (Utils.isObjErrorFree(errorMsg)) {
       errorMsg.success = backupToPdf(from,to);
       Utils.log('Backuped to pdf in time span ' + from + ' - ' + to );
-
     }
 
     return errorMsg;
