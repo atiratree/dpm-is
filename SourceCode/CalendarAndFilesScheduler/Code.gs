@@ -76,13 +76,18 @@ function run_(updateCalendar) {
  * deletes old triggers of not active users
  */
 function deleteOldTriggers(){
-  var users = Utils.convertObjectsToArrayByProperty(Utils.findEmployees(['email']), 'email');
-  var triggers = Utils.convertObjectsToArrayByProperty(Utils.findTriggers(['email']), 'email');
-  triggers = Utils.toUniquePrimitiveArray(triggers);
-  
-  triggers.forEach(function(trig){
-    if(users.indexOf(trig)  < 0){
-      Utils.deleteTrigger({email: trig}, true)
-    }  
-  });
+  try {
+    var users = Utils.convertObjectsToArrayByProperty(Utils.findEmployees(['email']), 'email');
+    var triggers = Utils.convertObjectsToArrayByProperty(Utils.findTriggers(['email']), 'email');
+    triggers = Utils.toUniquePrimitiveArray(triggers);
+
+    triggers.forEach(function(trig){
+      if(users.indexOf(trig)  < 0){
+        Utils.deleteTrigger({email: trig}, true)
+      }
+    });
+  } catch (e) {
+    Utils.logError(e);
+    // not critical error for re-throwing
+  }
 }
