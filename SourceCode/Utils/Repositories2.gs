@@ -23,14 +23,14 @@ function deleteGroup(group) {
  *
  * @param restrictions object of key/value pairs for selecting rows
  * @param limit maximum number of rows to be returned
- * @return array of groups
+ * @return {Array<Object>} array of groups
  */
 function findGroups(restrictions, limit) {
   return repFind_(manager.groupsSh, [], restrictions, limit);
 }
 
 /** 
- * @return all groups as array
+ * @return {Array<Object>} all groups as array
  */
 function findGroupsAsArray() {
   return convertObjectsToArrayByProperty(findGroups(), 'group');
@@ -79,7 +79,7 @@ function updateFile(file) {
  * @param fields fields is array of strings . It assigns these strings as properties to final objects
  * @param restrictions object of key/value pairs for selecting rows
  * @param limit maximum number of rows to be returned
- * @return array of files
+ * @return {Array<Object>} array of files
  */
 function findFiles(fields, restrictions, limit) {
   return repFind_(manager.filesSh, fields, restrictions, limit);
@@ -93,24 +93,27 @@ function findFiles(fields, restrictions, limit) {
  */
 function createTrigger(trigger) {
   lock_();
-  var highestSequence = 0; // 0 .. no triggers installed
-  var triggers = objDB.getRows(manager.myDB, manager.trigSh, ['emailSequence'], {
-    email: trigger.email
-  });
+  try {
+    var highestSequence = 0; // 0 .. no triggers installed
+    var triggers = objDB.getRows(manager.myDB, manager.trigSh, ['emailSequence'], {
+      email: trigger.email
+    });
 
-  triggers.forEach(function(item) {
-    if (item.emailSequence > highestSequence) {
-      highestSequence = item.emailSequence;
+    triggers.forEach(function(item) {
+      if (item.emailSequence > highestSequence) {
+        highestSequence = item.emailSequence;
+      }
+    });
+
+    trigger.emailSequence = highestSequence + 1;
+
+    var num = objDB.insertRow(manager.myDB, manager.trigSh, trigger);
+
+    if (num) {
+      log(trigger.emailSequence + ' ' + trigger.email  + ' added to ' + manager.trigSh);
     }
-  });
-
-  trigger.emailSequence = highestSequence + 1;
-
-  var num = objDB.insertRow(manager.myDB, manager.trigSh, trigger);
-  unlock_();
-
-  if (num) {
-    log(trigger.emailSequence + ' ' + trigger.email + ' added to ' + manager.trigSh);
+  } finally {
+    unlock_();
   }
 }
 
@@ -143,7 +146,7 @@ function updateTrigger(trigger) {
  * @param fields fields is array of strings . It assigns these strings as properties to final objects
  * @param restrictions object of key/value pairs for selecting rows
  * @param limit maximum number of rows to be returned
- * @return array of triggers
+ * @return {Array<Object>} array of triggers
  */
 function findTriggers(fields, restrictions, limit) {
   return repFind_(manager.trigSh, fields, restrictions, limit);
