@@ -5,10 +5,16 @@
  */
 function resolveTriggers(id) {
   try {
-    if (Utils.getUserPermission() == Utils.AccessEnums.ADMIN || Utils.getUserPermission() == Utils.AccessEnums.LEADER) {  
-      var ss = SpreadsheetApp.openById(id);    
-      resolveOnTrigger(ss, 'edit', 'editMainSheet');
-      resolveOnTrigger(ss, 'open', 'onOpenSheet');
+    if (Utils.getUserPermission() == Utils.AccessEnums.ADMIN || Utils.getUserPermission() == Utils.AccessEnums.LEADER) {
+      var myGroupsWithEditAttributs = Utils.getMyGroupsWithEditAtrs();
+      resolveMisplacedTriggers(myGroupsWithEditAttributs, 'edit', 'editMainSheet');
+      resolveMisplacedTriggers(myGroupsWithEditAttributs, 'open', 'onOpenSheet');
+
+      if (Utils.canEditFile(myGroupsWithEditAttributs, id)) {
+        var ss = SpreadsheetApp.openById(id);
+        resolveOnTrigger(ss, 'edit', 'editMainSheet');
+        resolveOnTrigger(ss, 'open', 'onOpenSheet');
+      }
     }
   } catch (x) {
     Utils.logError(x);
@@ -28,8 +34,6 @@ function resolveOnTrigger(ss, type, functionName) {
       sheetId: ss.getId(), 
       type: type
     }, 1);
-    
-    resolveMisplacedTriggers(email, type, functionName); 
     
     if (triggers.length > 0) {
       return;
@@ -60,7 +64,7 @@ function resolveOnTrigger(ss, type, functionName) {
 /**
  * Tries to delete lowest trigger of active user
  *
- * @return number of deleted triggers
+ * @return {number} number of deleted triggers
  */
 function deleteLowestTrigger() {
   var email = Utils.getUserEmail();
@@ -88,15 +92,16 @@ function deleteLowestTrigger() {
   return 0;
 }
 
-
 /**
  * Deletes misplaced triggers of this user. For example if we delete row of a trigger in db, this function deletes it for user.
  *
+ * @param myGroupsWithEditAttributs cached myGroupsWithEditAttributs
  * @param email email of user who owns the triggers
  * @param type type of trigger to resolve
  * @param functionName name of trigger's funtion to resolve
  */
-function resolveMisplacedTriggers(email, type, functionName){ // recover if trigger is deleted from db
+function resolveMisplacedTriggers(myGroupsWithEditAttributs, type, functionName){ // recover if trigger is deleted from db
+  var email = Utils.getUserEmail();
   var fileTriggers = Utils.convertObjectsToArrayByProperty(Utils.findTriggers([], {
     email: email,
     type: type
@@ -108,8 +113,9 @@ function resolveMisplacedTriggers(email, type, functionName){ // recover if trig
     var trig = triggers[j];
    
     if(trig.getHandlerFunction() == functionName && trig.getEventType() == evType) {
-      var index = fileTriggers.indexOf(trig.getTriggerSourceId());
-      if(index < 0) {
+      var fileId = trig.getTriggerSourceId();
+      var index = fileTriggers.indexOf(fileId);
+      if(index < 0 || !Utils.canEditFile(myGroupsWithEditAttributs, fileId)) {
         ScriptApp.deleteTrigger(trig);
       } else {
         fileTriggers.splice(index, 1);
