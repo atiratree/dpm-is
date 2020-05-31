@@ -9,9 +9,11 @@ function getCachedScriptProperties() {
   return {
     Site: 'XXXX-XXXX',
     TimetablesID: 'XXXX-XXXX',
-    ThisPropertiesVersion: '2',
+    ThisPropertiesVersion: '3',
     DatabaseSSid: 'XXXX-XXXX',
-    logSize: '70000',
+    correctionsLogSize: '10000',
+    errorsLogSize: '20000',
+    logSize: '200000',
     LogSSid: 'XXXX-XXXX',
     CacheTime: '300000',
     SpecialResourceID: 'XXXX-XXXX',
