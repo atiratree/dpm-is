@@ -1,9 +1,43 @@
 /**
+ * @return cached ScriptProperties (Might be invalid)
+ *
+ *  31.5.2020 Getting error "Service invoked too many times for one day: properties get." So inlining properties here.
+ *            Cache (this object) needs to be updated manually.
+              Also synchronize ThisPropertiesVersion manually.
+ */
+function getCachedScriptProperties() {
+  return {
+    Site: 'XXXX-XXXX',
+    TimetablesID: 'XXXX-XXXX',
+    ThisPropertiesVersion: '2',
+    DatabaseSSid: 'XXXX-XXXX',
+    logSize: '70000',
+    LogSSid: 'XXXX-XXXX',
+    CacheTime: '300000',
+    SpecialResourceID: 'XXXX-XXXX',
+    storageID: 'XXXX-XXXX',
+  };
+}
+
+/**
+ * Check Validity of Script Properties Cache
+ * Writes error to log if the Cache is invalid
+ */
+function checkCachedPropertiesValidity(){
+  var oldVersion = getCachedScriptProperties()['ThisPropertiesVersion'];
+  var newVersion = PropertiesService.getScriptProperties().getProperty('ThisPropertiesVersion');
+  if (oldVersion < newVersion) {
+    logError("Script Properties Cache Version " + oldVersion + " is invalid! Please update the cache to the newer version of " + newVersion);
+  }
+}
+
+/**
  * @param key key for object in ScriptProperties
  * @return string from ScriptProperties
  */
 function getScriptProp_(key) {
-  return PropertiesService.getScriptProperties().getProperty(key);
+  const property = getCachedScriptProperties()[key];
+  return property == null ? PropertiesService.getScriptProperties().getProperty(key) : property;
 }
 
 /**

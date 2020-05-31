@@ -11,6 +11,7 @@ function runOnceAWeek() {
  */
 function runEverySixHours() {
   run_(false);
+  validations();
 }
 
 /**
@@ -18,7 +19,8 @@ function runEverySixHours() {
  */
 function refreshAll() {
   run_(true);
-  runEveryTwoHours()
+  runEveryTwoHours();
+  validations();
 }
 
 /**
@@ -70,6 +72,10 @@ function run_(updateCalendar) {
     Utils.logError(e);
     throw e;
   }
+}
+
+function validations() {
+  Utils.checkCachedPropertiesValidity();
 }
 
 /**
