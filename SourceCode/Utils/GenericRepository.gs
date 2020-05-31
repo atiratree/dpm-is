@@ -125,11 +125,8 @@ function repFind_(sheet, fields, restrictions, limit) {
   // lock_();
   try{
     rows = objDB.getRows(manager.myDB, sheet, fields, restrictions, limit);
-    if (!rows){
-      throw {};
-    }
   }catch(x){
-    Utilities.sleep(manager.sleepConstantForSSServiceBug)
+    Utilities.sleep(manager.sleepConstantForSSServiceBug);
     rows = objDB.getRows(manager.myDB, sheet, fields, restrictions, limit);
   }
   // unlock_();

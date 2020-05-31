@@ -95,9 +95,18 @@ function createTrigger(trigger) {
   lock_();
   try {
     var highestSequence = 0; // 0 .. no triggers installed
-    var triggers = objDB.getRows(manager.myDB, manager.trigSh, ['emailSequence'], {
-      email: trigger.email
-    });
+
+    var triggers;
+    try {
+      triggers = objDB.getRows(manager.myDB, manager.trigSh, ['emailSequence'], {
+        email: trigger.email
+      });
+    } catch(x) {
+      Utilities.sleep(manager.sleepConstantForSSServiceBug);
+      triggers = objDB.getRows(manager.myDB, manager.trigSh, ['emailSequence'], {
+        email: trigger.email
+      });
+    }
 
     triggers.forEach(function(item) {
       if (item.emailSequence > highestSequence) {
