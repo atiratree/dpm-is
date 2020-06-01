@@ -1,7 +1,7 @@
 /**
  * Gets active User email.
  *
- * @return email of active User.
+ * @return {string} email of active User.
  */
 function getUserEmail() {
   return Session.getActiveUser().getEmail();
@@ -11,7 +11,7 @@ function getUserEmail() {
  * Checks if email is super admin or if active user is (in case email == null).
  *
  * @param email email to be checked or null to check active user
- * @return true if is super admin.
+ * @return {boolean} true if is super admin.
  */
 function isSuperAdmin(email) {
   return manager.superAdminEmail === (email ? email : getUserEmail());
@@ -22,7 +22,7 @@ function isSuperAdmin(email) {
  * Caches userPermission for time which can be set in Script Properties 
  *
  * @param email email to be checked or falsy value to check active user
- * @return user permission
+ * @return {number} user permission
  */
 function getUserPermission(email) {
   var save = false;
@@ -71,7 +71,7 @@ function getUserPermission(email) {
  *
  * @param accessEnumArray resources array to find access for
  * @param permissionType Type of permission for resource we need to know
- * @return true if has access, false otherwise
+ * @return {boolean} true if has access, false otherwise
  */
 function hasAccessToSomeOf(accessEnumArray, permissionType) {
   var rights = getMyAccessRights(permissionType);
@@ -94,7 +94,7 @@ function hasAccessToSomeOf(accessEnumArray, permissionType) {
  *
  * @param accessEnum resource we need to have access
  * @param permissionType Type of permission for resource we need to know
- * @return true if has access, false otherwise
+ * @return {boolean} true if has access, false otherwise
  */
 function hasAccessTo(accessEnum, permissionType) {
   return getMyAccessRights(permissionType).indexOf(accessEnum) > -1;
@@ -104,7 +104,7 @@ function hasAccessTo(accessEnum, permissionType) {
  * Returns all Accesses current user is possesing for permission type.
  *
  * @param type Permission Type  to find
- * @return array of accessable resources
+ * @return {Array<number>} array of accessable resources
  */
 function getMyAccessRights(type) {
   var userPerm = getUserPermission();
@@ -161,7 +161,7 @@ function getMyAccessRights(type) {
 /**
  * Returns names and permission of all users roles active user can edit and create
  *
- * @return array of permissions with names in Czech
+ * @return {Array<Object>} array of permissions with names in Czech
  */
 function getMyAccessRightsNames() {
   var result = [];
@@ -186,7 +186,7 @@ function getMyAccessRightsNames() {
  * Finds all existing groups and adds attributes for adding other users to those groups by user/client or active user (in case user == null). 
  *
  * @param user user/client to be checked or null to check active user
- * @return array of groups with editing attributes
+ * @return {Array<Object>} array of groups with editing attributes
  */
 function getMyGroupsWithEditAtrs(user) {
   var groups, permission, myEmail, groupLeaders;
@@ -211,4 +211,31 @@ function getMyGroupsWithEditAtrs(user) {
     item.isInGroup = user ? user.isInGroups && user.isInGroups.indexOf(item.group) > -1 : false;
     return item;
   });
+}
+
+/**
+ * @param groupsWithEditAttrs cached groupsWithEditAttrs
+ * @param fileId id of Rozpis SpreadSheet
+ * @return true if a user can edit file with this fileId
+ */
+function canEditFile(groupsWithEditAttrs, fileId){
+  try {
+    var sheetRecord = findFiles(['group'], {
+      id: fileId
+    },1)[0];
+    if (sheetRecord) {
+      var group = sheetRecord.group;
+
+      var groupEditAttributes = groupsWithEditAttrs.filter(function(item) {
+        return item.group === group;
+      })[0];
+
+      return !!(groupEditAttributes && groupEditAttributes.editable);
+    }
+
+    return false;
+  } catch (x) {
+    logError(x);
+    return false;
+  }
 }

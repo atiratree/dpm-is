@@ -31,7 +31,7 @@ var ss = function(ssId) {
     try{
       this.ss = SpreadsheetApp.openById(ssId);
     }catch(x){
-      Utilities.sleep(3500);// Bug "Document 1xx is missing (perhaps it was deleted?)"
+      Utilities.sleep(4500);// Bug "Document 1xx is missing (perhaps it was deleted?)"
       this.ss = SpreadsheetApp.openById(ssId);     
     }
     this.cache = {
@@ -110,7 +110,7 @@ ss.prototype.getRows = function(table, columns, cond, limit) {
     return ret;
   } catch (e) {
     logError_(e);
-    return false;
+    throw e;
   }
 }
 

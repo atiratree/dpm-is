@@ -13,6 +13,10 @@ $(document).ready(function() {
         $('#loader').hide();
         $('#submit').show();
         resolveDefault(obj);
+      }).withFailureHandler(function(obj) {
+        $('#loader').hide();
+        $('#submit').show();
+        resolveDefault({ fail: "fail", failMessage: "Možná chyba na serveru: zkontrolujte Google Drive jestli už se objevila složka se zálohami." });
       }).processForm(this);
     }
 

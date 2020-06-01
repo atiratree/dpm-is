@@ -14,11 +14,12 @@ function repCreate_(sheet, obj) {
   lock_()
   try{
     num = objDB.insertRow(manager.myDB, sheet, obj);
-  }catch(x){
+  } catch(x) {
     Utilities.sleep(manager.sleepConstantForSSServiceBug)
     num = objDB.insertRow(manager.myDB, sheet, obj);
-  } 
-  unlock_();
+  } finally {
+    unlock_();
+  }
 
   if (num) {
     var name = obj.name ? obj.name : JSON.stringify(obj);
@@ -44,11 +45,12 @@ function repDelete_(sheet, obj, hasMoreInstances) {
   lock_();
   try{
     num = objDB.deleteRow(manager.myDB, sheet, obj);
-  }catch(x){
+  } catch(x) {
     Utilities.sleep(manager.sleepConstantForSSServiceBug)
     num = objDB.deleteRow(manager.myDB, sheet, obj);
-  } 
-  unlock_();
+  } finally {
+    unlock_();
+  }
 
   if (num) {
     var name = obj.name ? obj.name : JSON.stringify(obj);
@@ -81,8 +83,9 @@ function repUpdate_(sheet, obj, cond) {
   }catch(x){
     Utilities.sleep(manager.sleepConstantForSSServiceBug)
     num = objDB.updateRow(manager.myDB, sheet, obj, cond);
-  } 
-  unlock_();
+  } finally {
+    unlock_();
+  }
 
   if (num) {
     var cond = cond.name ? cond.name : JSON.stringify(cond);
@@ -123,7 +126,7 @@ function repFind_(sheet, fields, restrictions, limit) {
   try{
     rows = objDB.getRows(manager.myDB, sheet, fields, restrictions, limit);
   }catch(x){
-    Utilities.sleep(manager.sleepConstantForSSServiceBug)
+    Utilities.sleep(manager.sleepConstantForSSServiceBug);
     rows = objDB.getRows(manager.myDB, sheet, fields, restrictions, limit);
   }
   // unlock_();

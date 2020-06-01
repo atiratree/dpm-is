@@ -22,6 +22,8 @@ var manager = {
   eventSh: 'Events',
   trigSh: 'Triggers',
   logSize: getScriptProp_('logSize'),
+  errorsLogSize: getScriptProp_('errorsLogSize'),
+  correctionsLogSize: getScriptProp_('correctionsLogSize'),
   superAdminEmail: DriveApp.getFolderById(getScriptProp_('DatabaseSSid')).getOwner().getEmail(),
   cacheTime: parseInt(getScriptProp_('CacheTime'), 10), // should be 3 (180000 ms) min for user permission caching
   waitForLockTime: 10000, // 10 s

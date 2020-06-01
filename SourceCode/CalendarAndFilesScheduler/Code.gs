@@ -11,6 +11,7 @@ function runOnceAWeek() {
  */
 function runEverySixHours() {
   run_(false);
+  validations();
 }
 
 /**
@@ -18,7 +19,8 @@ function runEverySixHours() {
  */
 function refreshAll() {
   run_(true);
-  runEveryTwoHours()
+  runEveryTwoHours();
+  validations();
 }
 
 /**
@@ -72,17 +74,26 @@ function run_(updateCalendar) {
   }
 }
 
+function validations() {
+  Utils.checkCachedPropertiesValidity();
+}
+
 /**
  * deletes old triggers of not active users
  */
 function deleteOldTriggers(){
-  var users = Utils.convertObjectsToArrayByProperty(Utils.findEmployees(['email']), 'email');
-  var triggers = Utils.convertObjectsToArrayByProperty(Utils.findTriggers(['email']), 'email');
-  triggers = Utils.toUniquePrimitiveArray(triggers);
-  
-  triggers.forEach(function(trig){
-    if(users.indexOf(trig)  < 0){
-      Utils.deleteTrigger({email: trig}, true)
-    }  
-  });
+  try {
+    var users = Utils.convertObjectsToArrayByProperty(Utils.findEmployees(['email']), 'email');
+    var triggers = Utils.convertObjectsToArrayByProperty(Utils.findTriggers(['email']), 'email');
+    triggers = Utils.toUniquePrimitiveArray(triggers);
+
+    triggers.forEach(function(trig){
+      if(users.indexOf(trig)  < 0){
+        Utils.deleteTrigger({email: trig}, true)
+      }
+    });
+  } catch (e) {
+    Utils.logError(e);
+    // not critical error for re-throwing
+  }
 }

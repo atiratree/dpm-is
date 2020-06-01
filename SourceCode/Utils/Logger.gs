@@ -6,7 +6,7 @@
 
 function log(msg) {
   try {
-    logToSheet_(msg, manager.logSheet);
+    logToSheet_(msg, manager.logSheet, false, manager.logSize);
   } catch (x) {}
 }
 
@@ -17,7 +17,7 @@ function log(msg) {
  */
 function logError(msg) {
   try {
-    logToSheet_(msg, manager.errSheet);
+    logToSheet_(msg, manager.errSheet, false, manager.errorsLogSize);
   } catch (x) {}
 }
 
@@ -28,7 +28,7 @@ function logError(msg) {
  */
 function logCorrection(msg) {
   try {
-    logToSheet_(msg, manager.correctionSheet);
+    logToSheet_(msg, manager.correctionSheet, false, manager.correctionsLogSize);
   } catch (x) {}
 }
 
@@ -38,8 +38,9 @@ function logCorrection(msg) {
  * @param e message to be logged
  * @param sheet sheet to be logged into
  * @param debug if true turns debugging options which shows formated exceptions
+ * @param logSize maximum allowed size of the sheet (should be larger than 10)
  */
-function logToSheet_(e, sheet, debug) {
+function logToSheet_(e, sheet, debug, logSize) {
   var message = '';
   if (typeof e == 'string' || e instanceof String) {
     message = e;
@@ -52,16 +53,18 @@ function logToSheet_(e, sheet, debug) {
   }
   var value = '[' + new Date().toString().replace(/(.*\d{2}:\d{2}:\d{2}).*/, '$1') + '] [' + getUserEmail() + ']  ' + message;
 
-  rollLog_(sheet);
+  rollLog_(sheet, logSize);
   sheet.appendRow([value]);
 }
 
 /**
  * rolling appender, rolls only last 10 percent for effectivity reasons
+ * @param logSize maximum allowed size of the sheet (should be larger than 10)
  */
-function rollLog_(logSheet) {
+function rollLog_(logSheet, logSize) {
   var sheet = logSheet ? logSheet : manager.errSheet;
-  var size = manager.logSize > 0 ? manager.logSize : 1;
+  var size = logSize > 10 ? logSize : manager.logSize;
+
   if (sheet.getLastRow() > size) {
     var range = sheet.getRange(1, 1, size);
     var range2 = sheet.getRange(size > 10 ? Math.ceil(size / 10) : 2, 1, size); // has to be larger than 10
