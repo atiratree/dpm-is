@@ -15,7 +15,7 @@ function getMetaProp(name) {
 }
 
 function drawTable(bundle) {
-  var data = new google.visualization.DataTable(bundle.data);
+  var data = new google.visualization.DataTable(bundle.data, "0.6");
   var options = {
     title: bundle.title,
     showRowNumber: true,
