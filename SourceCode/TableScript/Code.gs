@@ -1,41 +1,26 @@
-/**
- * Processes data for Awesome Table Gadget.
- * This function is expected to be called from this gadget, if called from different sources then shows authorization confirmation.
- *
- * @param e passed parameters from Awesome Table Gadget, or no parameter for showing authorization confirmation
- * @return object with data for Awesome Table Gadget or shows auth message
- */
-function doGet(e) {
-  var ret = {};
+var allowedInstances = ['clients', 'events', 'employees', 'tarrifs', 'groups'];
+var allowedPages = ['sprava-klientu', 'sprava-udalosti', 'sprava-uzivatelu', 'sprava-cenovych-pasem', 'sprava-skupin'];
 
-  if (!e.parameter.sheet) {
-    return HtmlService.createTemplate('<p>Authorizace...OK</span></p>').evaluate().setSandboxMode(HtmlService.SandboxMode.IFRAME);
+var getInstance = function(e) {
+  var instance = e.parameter.instance;
+  if (instance) {
+    return allowedInstances.indexOf(instance) >= 0 ? instance : '';
+  }
+  var activePage = SitesApp.getActivePage();
+  var activePageName = activePage && activePage.getName();
+  var pageIdx = allowedPages.indexOf(activePageName);
+  return pageIdx >= 0 ? allowedInstances[pageIdx] : '';
+}
+
+function doGet(e) {
+  var instance = getInstance(e)
+
+  if (!instance) {
+    return createPresentableHTML('<p>Authorizace...OK</p>', 'string');
   }
 
   try {
-    switch (e.parameter.sheet) {
-      case 'Clients':
-        ret = getClientsTable();
-        break;
-      case 'Events':
-        ret = getEventsTable();
-        break;
-      case 'Employees':
-        ret = getEmployeesTable();
-        break;
-      case 'Tariffs':
-        ret = getTariffsTable();
-        break;
-      case 'Groups':
-        ret = getGroupsTable();
-        break;
-    }
-
-    var output = e.parameters.callback + '(' + JSON.stringify({
-      dataTable: ret
-    }) + ')';
-
-    return ContentService.createTextOutput(output).setMimeType(ContentService.MimeType.JAVASCRIPT);
+    return createPresentableHTML('main', 'file', getResource(instance, 'title'), { instance: instance });
   } catch (e) {
     Utils.logError(e);
   }

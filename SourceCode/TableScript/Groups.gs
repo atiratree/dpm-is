@@ -5,28 +5,28 @@
  * @return dataTable object or empty object
  */
 function getGroupsTable() {
-  if(!Utils.hasAccessTo(Utils.AccessEnums.GROUP,Utils.PermissionTypes.VIEW)){
+  if (!Utils.hasAccessTo(Utils.AccessEnums.GROUP,Utils.PermissionTypes.VIEW)) {
     return {};
   }
-  
+
   var groups = Utils.sort(Utils.findGroupsAsArray());
   var canDelete = Utils.hasAccessTo(Utils.AccessEnums.GROUP,Utils.PermissionTypes.EDIT);
   var dt = {
     cols:[
-      {id:0, label:'Skupina CategoryFilter', type: 'string', isNumber:false, isDate:false},
-      {id:1, label:'' , type: 'string', isNumber:false, isDate:false}   
+      {id:0, label:'Skupina', type: 'string'},
+      {id:1, label:'' , type: 'string'}
     ],
     rows:[]
   };
-  
-  for(var i = 0; i < groups.length; i++) {   
-      dt.rows.push({
-        c:[
-          {v: groups[i]},
-          {v: canDelete ? getDeleteButtonHtml({instance: 'group',name:groups[i]},500,150) : ''}
-        ]
-      });    
+
+  for(var i = 0; i < groups.length; i++) {
+    dt.rows.push({
+      c:[
+        {v: groups[i]},
+        {v: canDelete ? getDeleteButtonHtml({instance: 'group',name:groups[i]},500,150) : ''}
+      ]
+    });
   }
-  
+
   return dt;
 }

@@ -5,24 +5,24 @@
  * @return dataTable object or empty object
  */
 function getClientsTable() {
-  if(!Utils.hasAccessTo(Utils.AccessEnums.CLIENT,Utils.PermissionTypes.VIEW)){
+  if (!Utils.hasAccessTo(Utils.AccessEnums.CLIENT,Utils.PermissionTypes.VIEW)) {
     return {};
   }
-  
+
   var clients = Utils.sort(Utils.findClients(), 'name');
-  var canEdit = Utils.hasAccessTo(Utils.AccessEnums.CLIENT,Utils.PermissionTypes.EDIT);  
+  var canEdit = Utils.hasAccessTo(Utils.AccessEnums.CLIENT,Utils.PermissionTypes.EDIT);
   var dt = {
     cols:[
-      {id:0, label:'Název StringFilter', type: 'string', isNumber:false, isDate:false},
-      {id:1, label:'Email StringFilter', type: 'string', isNumber:false, isDate:false},
-      {id:2, label:'Náleží do skupin csvFilter', type: 'string', isNumber:false, isDate:false},
-      {id:3, label:'' , type: 'string', isNumber:false, isDate:false},
-      {id:3, label:'' , type: 'string', isNumber:false, isDate:false}
+      {id:0, label:'Název', type: 'string'},
+      {id:1, label:'Email', type: 'string'},
+      {id:2, label:'Náleží do skupin', type: 'string'},
+      {id:3, label:'' , type: 'string'},
+      {id:3, label:'' , type: 'string'}
     ],
     rows:[]
   };
-  
-  for(var i = 0; i < clients.length; i++) {   
+
+  for(var i = 0; i < clients.length; i++) {
     dt.rows.push({
       c:[
         {v: clients[i].name},
@@ -33,6 +33,6 @@ function getClientsTable() {
       ]
     });
   }
-  
+
   return dt;
 }

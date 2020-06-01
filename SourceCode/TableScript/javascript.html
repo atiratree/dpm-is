@@ -1,0 +1,46 @@
+<!-- Javascript which is served with main.html. It's purpose is to call delete, and resolve success or failure  -->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+
+function getMetaProp(name) {
+  const metas = document.getElementsByTagName('meta');
+
+  for (let i = 0; i < metas.length; i++) {
+    if (metas[i].getAttribute('name') === 'dpm:' + name) {
+      return metas[i].getAttribute('content');
+    }
+  }
+
+  return '';
+}
+
+function drawTable(bundle) {
+  var data = new google.visualization.DataTable(bundle.data);
+  var options = {
+    title: bundle.title,
+    showRowNumber: true,
+    allowHtml: true,
+    width: '100%',
+    height: '100%',
+    page: true,
+    pageSize: 20
+  };
+
+  var table = new google.visualization.Table(document.getElementById('main-content'));
+
+  table.draw(data, options);
+}
+
+
+(function() {
+  var instance = getMetaProp('instance');
+  google.charts.load('current', {'packages':['table']});
+
+  google.script.run.withSuccessHandler(function(data) {
+    google.charts.setOnLoadCallback(function() {
+      drawTable(data);
+    });
+  }).getTableData(instance);
+})();
+
+</script>
