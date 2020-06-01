@@ -44,7 +44,7 @@ Notes 2:
 				 storageID: *ID of folder Storage,
 				 TimetablesID: *ID of folder Timetables,
 				 LogSSid: *ID of spreadsheet Log }
-			  - IMPORTANT! files with * will be mentioned later. You can change script properties later anytime			  
+			  - IMPORTANT! files with * will be mentioned later. ~~You can change script properties later anytime~~ Script properties are chached now and should be versioned and each new version coppied to getCachedScriptProperties function in Utils#Utils
 			  
 	Do this for the rest of the scripts
 		- todo	
@@ -67,15 +67,8 @@ Notes 2:
 6. Create pages. Structure of them and it's content will be described here
 	Inserting scripts is done this ways: sites ide -> edit page ->  insert -> apps script
 	
-	Inserting awesome table is done this way: sites ide -> edit page ->  insert -> more gadgets -> awesome table
-	Set up awesome tables with these values:
-	   {Googgle Sheet URL: *ID of spreadsheet Database,
-		Sheet name: *name of required sheet,
-		Range: *anything,
-		Width: 100 percent,
-		Height: 600 pixels,
-		Caption: insideFilter,
-		Apps Script Proxy URL: published URL of TableScript }		
+	Inserting TableScript is done this way: sites ide -> edit page ->  insert -> Apps Script
+    uncheck and clear all values	
 				
 	All pages should have permission to access decided by top-level page
 	
@@ -100,35 +93,35 @@ Notes 2:
 		
 		A) page Správa cenových pásem (Management of tariffs in Czech)
 			link to pridat-pasmo page
-			awesome table with Sheet name: Tariffs
+			add TableScript here
 			
 			Y) page Přidat pásmo (Add tariff in Czech)
 				add script Create here
 				
 		B) page Správa klientů (Management of clients in Czech)
 			link to pridat-klienta page
-			awesome table with Sheet name: Clients
+			add TableScript here
 			
 			Y) page Přidat klienta (Add client in Czech)
 				add script Create here
 				
 		C) page Správa skupin (Management of groups in Czech)
 			link to pridat-skupinu page
-			awesome table with Sheet name: Groups
+			add TableScript here
 			
 			Y) page Přidat skupinu (Add group in Czech)
 				add script Create here
 				
 		D) page Správa událostí (Management of events in Czech)
 			link to pridat-udalost page
-			awesome table with Sheet name: Events
+			add TableScript here
 			
 			Y) page Přidat událost (Add event in Czech)
 				add script Create here
 				
 		E) page Správa uživatelů (Management of users/employees in Czech)
 			link to pridat-uzivatele page
-			awesome table with Sheet name: Employees
+			add TableScript here
 			
 			Y) page Přidat uživatele (Add user/employee in Czech)
 				add script Create here				
