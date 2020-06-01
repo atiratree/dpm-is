@@ -38,7 +38,7 @@ function getEmployeesTable() {
         {v: employees[i].leadsGroups.join(',')},
         {v: employees[i].isInGroups.join(',')},
         {v: getPositionName_(employees[i],allPermissions)},
-        {v: '<div style="background-color:'+ employees[i].color + '"/>'},
+        {v: '<div style="width:3em;height:1em;background-color:'+ employees[i].color + ';"/>'},
         {v: isEditable_(employees[i],editAccessRights,canEditGroups) ?
               getEditButtonHtml({instance:'user',email:employees[i].email},500,650) : ''},
         {v: isDeletable_(employees[i],editAccessRights) ?
