@@ -32,12 +32,12 @@ function getEmployeesTable() {
   for(var i = 0; i < employees.length; i++) {
     dt.rows.push({
       c:[
-        {v: employees[i].name},
-        {v: employees[i].email},
-        {v: employees[i].nick},
-        {v: employees[i].leadsGroups.join(',')},
-        {v: employees[i].isInGroups.join(',')},
-        {v: getPositionName_(employees[i],allPermissions)},
+        {v: employees[i].name, p: { style: 'width: 12%;' }},
+        {v: employees[i].email, p: { style: 'width: 22%;' }},
+        {v: employees[i].nick, p: { style: 'width: 6%;' }},
+        {v: employees[i].leadsGroups.join(','), p: { style: 'width: 15%;' }},
+        {v: employees[i].isInGroups.join(','), p: { style: 'width: 22%;' }},
+        {v: getPositionName_(employees[i],allPermissions), p: { style: 'width: 8%;' }},
         {v: '<div style="width:3em;height:1em;background-color:'+ employees[i].color + ';"/>'},
         {v: isEditable_(employees[i],editAccessRights,canEditGroups) ?
               getEditButtonHtml({instance:'user',email:employees[i].email},500,650) : ''},

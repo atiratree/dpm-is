@@ -25,9 +25,9 @@ function getClientsTable() {
   for(var i = 0; i < clients.length; i++) {
     dt.rows.push({
       c:[
-        {v: clients[i].name},
-        {v: clients[i].email},
-        {v: clients[i].isInGroups.join(',')},
+        {v: clients[i].name, p: { style: 'width: 30%;' }},
+        {v: clients[i].email, p: { style: 'width: 30%;' }},
+        {v: clients[i].isInGroups.join(','), p: { style: 'width: 20%;' }},
         {v: canEdit ? getEditButtonHtml({instance: ('client'),name:clients[i].name},500,475) : ''},
         {v: canEdit ? getDeleteButtonHtml({instance: ('client'),name:clients[i].name},500,150) : ''}
       ]
