@@ -163,7 +163,7 @@ function drawTable(bundle) {
 
 (function() {
   var instance = getMetaProp('instance');
-  google.charts.load('current', {'packages':['table', 'controls']});
+  google.charts.load('current', {'packages':['table']});
 
   google.script.run.withSuccessHandler(function(data) {
     if (data && data.data && data.data.cols && data.data.rows){
