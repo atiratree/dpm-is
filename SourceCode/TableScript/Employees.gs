@@ -16,12 +16,12 @@ function getEmployeesTable() {
   var allPermissions = Utils.getUserRolesInCzech();
   var dt = {
     cols:[
-      {id:0, label:'Jméno', type: 'string'},
-      {id:1, label:'Email' , type: 'string'},
-      {id:2, label:'Přezdívka', type: 'string'},
-      {id:3, label:'Vede skupiny', type: 'string'},
-      {id:4, label:'Náleží do skupin', type: 'string'},
-      {id:5, label:'Funkce', type: 'string'},
+      {id:0, label:'Jméno', type: 'string', stringFilter: 'true'},
+      {id:1, label:'Email' , type: 'string', stringFilter: 'true'},
+      {id:2, label:'Přezdívka', type: 'string', stringFilter: 'true'},
+      {id:3, label:'Vede skupiny', type: 'string', categoryFilter: 'split'},
+      {id:4, label:'Náleží do skupin', type: 'string', categoryFilter: 'split'},
+      {id:5, label:'Funkce', type: 'string', categoryFilter: 'true'},
       {id:6, label:'', type: 'string'},
       {id:7, label:'' , type: 'string'},
       {id:8, label:'' , type: 'string'},

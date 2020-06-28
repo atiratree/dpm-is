@@ -13,7 +13,7 @@ function getGroupsTable() {
   var canDelete = Utils.hasAccessTo(Utils.AccessEnums.GROUP,Utils.PermissionTypes.EDIT);
   var dt = {
     cols:[
-      {id:0, label:'Skupina', type: 'string'},
+      {id:0, label:'Skupina', type: 'string', stringFilter: 'true'},
       {id:1, label:'' , type: 'string'}
     ],
     rows:[]
