@@ -16,12 +16,12 @@ function getEmployeesTable() {
   var allPermissions = Utils.getUserRolesInCzech();
   var dt = {
     cols:[
-      {id:0, label:'Jméno', type: 'string'},
-      {id:1, label:'Email' , type: 'string'},
-      {id:2, label:'Přezdívka', type: 'string'},
-      {id:3, label:'Vede skupiny', type: 'string'},
-      {id:4, label:'Náleží do skupin', type: 'string'},
-      {id:5, label:'Funkce', type: 'string'},
+      {id:0, label:'Jméno', type: 'string', stringFilter: 'true'},
+      {id:1, label:'Email' , type: 'string', stringFilter: 'true'},
+      {id:2, label:'Přezdívka', type: 'string', stringFilter: 'true'},
+      {id:3, label:'Vede skupiny', type: 'string', categoryFilter: 'split'},
+      {id:4, label:'Náleží do skupin', type: 'string', categoryFilter: 'split'},
+      {id:5, label:'Funkce', type: 'string', categoryFilter: 'true'},
       {id:6, label:'', type: 'string'},
       {id:7, label:'' , type: 'string'},
       {id:8, label:'' , type: 'string'},
@@ -32,12 +32,12 @@ function getEmployeesTable() {
   for(var i = 0; i < employees.length; i++) {
     dt.rows.push({
       c:[
-        {v: employees[i].name},
-        {v: employees[i].email},
-        {v: employees[i].nick},
-        {v: employees[i].leadsGroups.join(',')},
-        {v: employees[i].isInGroups.join(',')},
-        {v: getPositionName_(employees[i],allPermissions)},
+        {v: employees[i].name, p: { style: 'width: 12%;' }},
+        {v: employees[i].email, p: { style: 'width: 22%;' }},
+        {v: employees[i].nick, p: { style: 'width: 6%;' }},
+        {v: employees[i].leadsGroups.join(','), p: { style: 'width: 15%;' }},
+        {v: employees[i].isInGroups.join(','), p: { style: 'width: 22%;' }},
+        {v: getPositionName_(employees[i],allPermissions), p: { style: 'width: 8%;' }},
         {v: '<div style="width:3em;height:1em;background-color:'+ employees[i].color + ';"/>'},
         {v: isEditable_(employees[i],editAccessRights,canEditGroups) ?
               getEditButtonHtml({instance:'user',email:employees[i].email},500,650) : ''},

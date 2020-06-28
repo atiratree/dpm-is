@@ -3,7 +3,7 @@
 <script type="text/javascript">
 
 function getMetaProp(name) {
-  const metas = document.getElementsByTagName('meta');
+  var metas = document.getElementsByTagName('meta');
 
   for (let i = 0; i < metas.length; i++) {
     if (metas[i].getAttribute('name') === 'dpm:' + name) {
@@ -14,8 +14,16 @@ function getMetaProp(name) {
   return '';
 }
 
+var NO_CATEGORY = "-- Prázdné --";
+
+
+function getCategory(v) {
+  var val = v ? v.trim() : v;
+  return !val ? NO_CATEGORY : val;
+}
+
 function drawTable(bundle) {
-  var data = new google.visualization.DataTable(bundle.data, "0.6");
+  var dataTable = new google.visualization.DataTable(bundle.data, "0.6");
   var options = {
     title: bundle.title,
     showRowNumber: true,
@@ -26,20 +34,147 @@ function drawTable(bundle) {
     pageSize: 20
   };
 
-  var table = new google.visualization.Table(document.getElementById('main-content'));
+  var columnFilters = bundle.data.cols.map(function(column, columnIdx) {
+    if (!column.categoryFilter && !column.stringFilter) {
+      return null;
+    }
 
-  table.draw(data, options);
+    var controlWrapper;
+
+    if (column.stringFilter) {
+      controlWrapper =  new google.visualization.ControlWrapper({
+        controlType: 'StringFilter',
+        containerId: 'filter-' + columnIdx,
+        dataTable: dataTable,
+        options: {
+          filterColumnLabel: column.label,
+          matchType: 'any',
+          caseSensitive: false,
+          ui: {
+            label: column.label,
+         }
+        },
+        state: { value: '' }
+      });
+    } else if(column.categoryFilter) {
+      var uniqueValues = {}
+      bundle.data.rows.forEach(function(row){
+        var cell = row.c[columnIdx];
+
+        if (column.categoryFilter === 'split') {
+          cell.v.split(',').forEach(function(val) {
+            uniqueValues[getCategory(val)] = true;
+          });
+        } else {
+          uniqueValues[getCategory(cell.v)] = true;
+        }
+      });
+      var values = Object.keys(uniqueValues);
+      values.sort(function (a, b) {
+        return a.localeCompare(b);
+      });
+
+      controlWrapper =  new google.visualization.ControlWrapper({
+        controlType: 'CategoryFilter',
+        containerId: 'filter-' + columnIdx,
+        dataTable: dataTable,
+        options: {
+          filterColumnLabel: column.label,
+          values: values,
+          ui: {
+            label: '',
+            caption: column.label,
+            allowTyping: false,
+            allowMultiple: true,
+            selectedValuesLayout: 'below'
+         }
+        },
+        state: { selectedValues: [] }
+      });
+    }
+
+    controlWrapper.setControlName(columnIdx);
+
+    return controlWrapper;
+  }).filter(function(columnFilter) {
+    return columnFilter
+  })
+
+  var table = new google.visualization.Table(document.getElementById('table-container'));
+
+
+  function updateView () {
+    var filters = columnFilters.map(function(columnFilter){
+      var state = columnFilter.getState();
+
+      if (columnFilter.getControlType() === 'CategoryFilter') {
+        return {
+          test: function(cellValue) {
+            var selectedValues = state.selectedValues;
+
+            return selectedValues.length === 0 || selectedValues.find(function(filterVal) {
+              if (cellValue) {
+                return cellValue.split(',').find(function(cellValueSegment) {
+                  return cellValueSegment === filterVal;
+                });
+              } else {
+                return filterVal === NO_CATEGORY;
+              }
+            });
+          },
+          column: columnFilter.getControlName()
+        }
+      }
+
+      return {
+        test: function(cellValue) {
+            var selectedValue = state.value;
+            return !selectedValue || !selectedValue.trim() ||  cellValue && cellValue.toLowerCase().indexOf(selectedValue.trim().toLowerCase()) > -1;
+          },
+        column: columnFilter.getControlName()
+      }
+    });
+
+
+    var dataView = new google.visualization.DataView(dataTable);
+    if (filters.length > 0) {
+      dataView.setRows(dataTable.getFilteredRows(filters));
+    }
+    table.draw(dataView, options);
+  }
+
+  updateView();
+
+  var filtersEl = document.getElementById('filters');
+
+  columnFilters.forEach(function(columnFilter){
+    var type = columnFilter.getControlType();
+    var container = document.createElement("div");
+    container.id = columnFilter.getContainerId();
+
+    container.className = 'dpm-' + type.charAt(0).toLowerCase() + type.slice(1);
+    filtersEl.appendChild(container);
+
+    google.visualization.events.addListener(columnFilter, 'statechange', updateView);
+    columnFilter.draw();
+  });
 }
 
 
 (function() {
   var instance = getMetaProp('instance');
-  google.charts.load('current', {'packages':['table']});
+  google.charts.load('current', {'packages':['table', 'controls']});
 
   google.script.run.withSuccessHandler(function(data) {
-    google.charts.setOnLoadCallback(function() {
-      drawTable(data);
-    });
+    if (data && data.data && data.data.cols && data.data.rows){
+      google.charts.setOnLoadCallback(function() {
+        drawTable(data);
+      });
+    } else {
+      var tableEl = document.getElementById('table-container');
+      tableEl.textContent = 'No permission';
+    }
+
   }).getTableData(instance);
 })();
 

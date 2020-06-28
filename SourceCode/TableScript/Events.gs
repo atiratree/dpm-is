@@ -13,7 +13,7 @@ function getEventsTable() {
   var canDelete = Utils.hasAccessTo(Utils.AccessEnums.EVENT,Utils.PermissionTypes.EDIT);
   var dt = {
     cols:[
-      {id:0, label:'Název', type: 'string'},
+      {id:0, label:'Název', type: 'string', stringFilter: 'true'},
       {id:1, label:'' , type: 'string'}
     ],
     rows:[]

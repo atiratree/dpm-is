@@ -13,8 +13,8 @@ function getTariffsTable() {
   var canDeleteAndEdit = Utils.hasAccessTo(Utils.AccessEnums.TARIFF,Utils.PermissionTypes.EDIT);
   var dt = {
     cols:[
-      {id:0, label:'Jméno', type: 'string'},
-      {id:1, label:'Zkratka', type: 'string'},
+      {id:0, label:'Jméno', type: 'string', stringFilter: 'true'},
+      {id:1, label:'Zkratka', type: 'string', stringFilter: 'true'},
       {id:2, label:'Implicitní', type: 'string'},
       {id:2, label:'Kč/h', type: 'number'},
       {id:3, label:'' , type: 'string'},
