@@ -19,6 +19,19 @@ function deleteGroup(group) {
 }
 
 /**
+ * Updates group/s from database based on its properties
+ *
+ * @param group object
+ * @param oldGroupName the original group to update
+ * @return {boolean} indicating success or failure.
+ */
+function updateGroup(group, oldGroupName) {
+  return repUpdate_(manager.groupsSh, group, {
+    group: oldGroupName
+  });
+}
+
+/**
  * Finds groups from database based on restrictions 
  *
  * @param restrictions object of key/value pairs for selecting rows

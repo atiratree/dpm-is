@@ -10,11 +10,9 @@ function getGroupsTable() {
   }
 
   var groups = Utils.sort(Utils.findGroupsAsArray());
-  var canDelete = Utils.hasAccessTo(Utils.AccessEnums.GROUP,Utils.PermissionTypes.EDIT);
   var dt = {
     cols:[
       {id:0, label:'Skupina', type: 'string', stringFilter: 'true'},
-      {id:1, label:'' , type: 'string'}
     ],
     rows:[]
   };
@@ -23,7 +21,6 @@ function getGroupsTable() {
     dt.rows.push({
       c:[
         {v: groups[i]},
-        {v: canDelete ? getDeleteButtonHtml({instance: 'group',name:groups[i]},500,150) : ''}
       ]
     });
   }
