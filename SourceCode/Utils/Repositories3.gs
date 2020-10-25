@@ -20,11 +20,22 @@ function deleteGroupLeader(groupLeader, hasMoreInstances) {
 }
 
 /**
+ * Updates group Leader/s from database based on its properties
+ *
+ * @param oldGroupLeader to use for selection of an update
+ * @param groupLeader update object
+ * @return {boolean} indicating success or failure.
+ */
+function updateGroupLeader(oldGroupLeader, groupLeader) {
+  return repUpdate_(manager.groupLeadSh, groupLeader, oldGroupLeader);
+}
+
+/**
  * Finds group Leaders from database based on restrictions 
  *
  * @param fields fields is array of strings . It assigns these strings as properties to final objects
  * @param restrictions object key/value pairs for selecting rows
- * @return array of group leaders
+ * @return {Array<Object>} array of group leaders
  */
 function findGroupLeaders(fields, restrictions) {
   return repFind_(manager.groupLeadSh, fields, restrictions);
@@ -52,11 +63,22 @@ function deleteGroupActor(groupActor, hasMoreInstances) {
 }
 
 /**
+ * Updates group Actor/s from database based on its properties
+ *
+ * @param oldGroupActor to use for selection of an update
+ * @param groupActor update object
+ * @return {boolean} indicating success or failure.
+ */
+function updateGroupActor(oldGroupActor, groupActor) {
+  return repUpdate_(manager.groupActSh, groupActor, oldGroupActor);
+}
+
+/**
  * Finds group Actors from database based on restrictions 
  *
  * @param fields fields is array of strings . It assigns these strings as properties to final objects
  * @param restrictions object key/value pairs for selecting rows
- * @return array of group Actors
+ * @return {Array<Object>} array of group Actors
  */
 function findGroupActors(fields, restrictions) {
   return repFind_(manager.groupActSh, fields, restrictions);
@@ -65,7 +87,7 @@ function findGroupActors(fields, restrictions) {
 /**
  * Insert Group Client into database
  *
- * @param groupActor object
+ * @param groupClient object
  * @return {boolean} indicating success or failure.
  */
 function createGroupClient(groupClient) {
@@ -75,7 +97,7 @@ function createGroupClient(groupClient) {
 /**
  * Delete group Client/s from database based on its properties
  *
- * @param  groupActor object
+ * @param groupClient object
  * @param hasMoreInstances  if true turns off error logging if object has more instances 
  * @return {boolean} indicating success or failure.
  */
@@ -84,11 +106,22 @@ function deleteGroupClient(groupClient, hasMoreInstances) {
 }
 
 /**
+ * Updates group Client/s from database based on its properties
+ *
+ * @param oldGroupClient to use for selection of an update
+ * @param groupClient update object
+ * @return {boolean} indicating success or failure.
+ */
+function updateGroupClient(oldGroupClient, groupClient) {
+  return repUpdate_(manager.groupClsSh, groupClient, oldGroupClient);
+}
+
+/**
  * Finds group Clients from database based on restrictions 
  *
  * @param fields fields is array of strings . It assigns these strings as properties to final objects
  * @param restrictions object key/value pairs for selecting rows
- * @return array of group Clients
+ * @return {Array<Object>} array of group Clients
  */
 function findGroupClients(fields, restrictions) {
   return repFind_(manager.groupClsSh, fields, restrictions);
@@ -120,7 +153,7 @@ function deleteEvent(event, hasMoreInstances) {
  *
  * @param fields fields is array of strings . It assigns these strings as properties to final objects
  * @param restrictions object key/value pairs for selecting rows
- * @return array of group Events
+ * @return {Array<Object>} array of group Events
  */
 function findEvents(fields, restrictions) {
   return repFind_(manager.eventSh, fields, restrictions);
