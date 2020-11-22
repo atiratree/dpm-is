@@ -111,12 +111,12 @@ function createTrigger(trigger) {
 
     var triggers;
     try {
-      triggers = objDB.getRows(manager.myDB, manager.trigSh, ['emailSequence'], {
+      triggers = ObjDB.getRows(manager.myDB, manager.trigSh, ['emailSequence'], {
         email: trigger.email
       });
     } catch(x) {
       Utilities.sleep(manager.sleepConstantForSSServiceBug);
-      triggers = objDB.getRows(manager.myDB, manager.trigSh, ['emailSequence'], {
+      triggers = ObjDB.getRows(manager.myDB, manager.trigSh, ['emailSequence'], {
         email: trigger.email
       });
     }
@@ -129,7 +129,7 @@ function createTrigger(trigger) {
 
     trigger.emailSequence = highestSequence + 1;
 
-    var num = objDB.insertRow(manager.myDB, manager.trigSh, trigger);
+    var num = ObjDB.insertRow(manager.myDB, manager.trigSh, trigger);
 
     if (num) {
       log(trigger.emailSequence + ' ' + trigger.email  + ' added to ' + manager.trigSh);

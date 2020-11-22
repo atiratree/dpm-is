@@ -14,10 +14,10 @@ function repCreate_(sheet, obj, disableLogging) {
 
   lock_()
   try{
-    num = objDB.insertRow(manager.myDB, sheet, obj);
+    num = ObjDB.insertRow(manager.myDB, sheet, obj);
   } catch(x) {
     Utilities.sleep(manager.sleepConstantForSSServiceBug)
-    num = objDB.insertRow(manager.myDB, sheet, obj);
+    num = ObjDB.insertRow(manager.myDB, sheet, obj);
   } finally {
     unlock_();
   }
@@ -46,10 +46,10 @@ function repDelete_(sheet, obj, hasMoreInstances, disableLogging) {
 
   lock_();
   try{
-    num = objDB.deleteRow(manager.myDB, sheet, obj);
+    num = ObjDB.deleteRow(manager.myDB, sheet, obj);
   } catch(x) {
     Utilities.sleep(manager.sleepConstantForSSServiceBug)
-    num = objDB.deleteRow(manager.myDB, sheet, obj);
+    num = ObjDB.deleteRow(manager.myDB, sheet, obj);
   } finally {
     unlock_();
   }
@@ -82,10 +82,10 @@ function repUpdate_(sheet, obj, cond, disableLogging) {
 
   lock_();
   try{
-    num = objDB.updateRow(manager.myDB, sheet, obj, cond);
+    num = ObjDB.updateRow(manager.myDB, sheet, obj, cond);
   }catch(x){
     Utilities.sleep(manager.sleepConstantForSSServiceBug)
-    num = objDB.updateRow(manager.myDB, sheet, obj, cond);
+    num = ObjDB.updateRow(manager.myDB, sheet, obj, cond);
   } finally {
     unlock_();
   }
@@ -127,10 +127,10 @@ function repFind_(sheet, fields, restrictions, limit) {
 
   // lock_();
   try{
-    rows = objDB.getRows(manager.myDB, sheet, fields, restrictions, limit);
+    rows = ObjDB.getRows(manager.myDB, sheet, fields, restrictions, limit);
   }catch(x){
     Utilities.sleep(manager.sleepConstantForSSServiceBug);
-    rows = objDB.getRows(manager.myDB, sheet, fields, restrictions, limit);
+    rows = ObjDB.getRows(manager.myDB, sheet, fields, restrictions, limit);
   }
   // unlock_();
 

@@ -5,9 +5,13 @@
       {
         "userSymbol": "Utils",
         "libraryId": "1WquYtBor0ObwHMo1oIhKnCgboR5zBx2wjh5Hu-rbb0oSA5cY0d2PM6dZ",
-        "version": 2
+        "version": 6
       }
     ]
+  },
+  "webapp": {
+    "access": "DOMAIN",
+    "executeAs": "USER_DEPLOYING"
   },
   "exceptionLogging": "STACKDRIVER",
   "runtimeVersion": "V8"

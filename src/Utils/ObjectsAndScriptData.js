@@ -17,6 +17,22 @@ function getUtilsProp_(key) {
   return getUtilsProperties()[key];
 }
 
+/**
+ * Tries to open spreadsheet
+ * waits a while if Google service unavailible
+ *
+ * @param id id of spreadsheet
+ * @return opened spreadsheet
+ */
+function openSpreadsheet(id){
+  try{
+    return SpreadsheetApp.openById(id);
+  }catch(x){ //Bug  Document 1xx is missing (perhaps it was deleted?)
+    Utilities.sleep(3000);
+    return SpreadsheetApp.openById(id);
+  }
+}
+
 /* Manager for storing important data scripts might need*/
 var manager = {
   dbID: getUtilsProp_('DatabaseSSid'), // used in TableScript
@@ -24,7 +40,7 @@ var manager = {
   storageID: getUtilsProp_('storageID'),
   specialResourceID: getUtilsProp_('SpecialResourceID'),
   logId: getUtilsProp_('LogSSid'),
-  myDB: objDB.open(getUtilsProp_('DatabaseSSid')),
+  myDB: ObjDB.open(getUtilsProp_('DatabaseSSid')),
   site: getUtilsProp_('Site'),
   errSheet: openSpreadsheet(getUtilsProp_('LogSSid')).getSheetByName('errors'),
   logSheet: openSpreadsheet(getUtilsProp_('LogSSid')).getSheetByName('log'), //LogSSid
@@ -48,7 +64,6 @@ var manager = {
   waitForLockTime: 10000, // 10 s
   sleepConstantForLockBug: 5000, // 5 s
   sleepConstantForUnlockBug: 3000, // 3 s
-  sleepConstantForOpenSSBug: 3000, // 3 s
   sleepConstantForSSServiceBug: 5000, // 5 s // 30.5.2016 changed from 3s -> 5s
   admin: {
     "permission": 0,

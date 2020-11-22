@@ -135,20 +135,3 @@ function moveFile_(file, type, year, week) {
   }
   DriveApp.getRootFolder().removeFile(file);
 }
-
-
-/**
- * Tries to open spreadsheet
- * waits a while if Google service unavailible
- *
- * @param id id of spreadsheet
- * @return opened spreadsheet
- */
-function openSpreadsheet(id){
-  try{
-    return SpreadsheetApp.openById(id);
-  }catch(x){ //Bug  Document 1xx is missing (perhaps it was deleted?)
-    Utilities.sleep(manager.sleepConstantForOpenSSBug);
-    return SpreadsheetApp.openById(id);
-  }
-}

@@ -11,7 +11,7 @@ function leave() {
 }
 
 
-ONLY_CHANGES=${ONLY_CHANGES:-false}
+FORCE=${FORCE:-false}
 
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 REPO_DIR="$(realpath "${SCRIPT_DIR}/..")"
@@ -39,7 +39,7 @@ visit "${REPO_DIR}/src"
           done
         fi
         if ! git diff --quiet HEAD  -- .; then
-          if [ "${ONLY_CHANGES}" == 'false' ] || ! git diff --quiet  -- .; then
+          if [ "${FORCE}" == 'true' ] || ! git diff --quiet  -- .; then
             git add .
             gclasp push -f
             gclasp deploy
