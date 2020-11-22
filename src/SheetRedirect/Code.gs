@@ -16,7 +16,7 @@ function doGet(e) {
       html = createPresentableHTML('<p>Authorizace...OK</p>', 'string');
     }
   } catch (error) {
-    Utils.logError('[sheets redirect] ' + JSON.stringify(error));
+    Utils.logError('[sheets redirect] ' + error);
     html = createPresentableHTML('<p>Server je zaneprázdněn (mohlo dojít k dosáhnutí limitu u Google služby). Chvíly počkejte a zkuste znovu.</p>', 'string');
   }
   return html;

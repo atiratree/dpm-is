@@ -1,12 +1,13 @@
 /**
  * Helper function to create main HTML. It can return html, javascript or string we need, to include in our page.
  *
- * @param resource string describing wanted resource 
+ * @param resource string describing wanted resource
+ * @param instance
  * @return requested resource or null if resource not found
  */
-function getResource(resource) {
-  switch (manager.pageName) {
-    case 'pridat-klienta':
+function getResource(instance, resource) {
+  switch (instance) {
+    case 'client':
       switch (resource) {
         case 'nextActionString':
           return 'Přidej dalšího klienta';
@@ -17,7 +18,7 @@ function getResource(resource) {
         default:
           return null;
       }
-    case 'pridat-udalost':
+    case 'event':
       switch (resource) {
         case 'nextActionString':
           return 'Přidej další událost';
@@ -26,7 +27,7 @@ function getResource(resource) {
         default:
           return null;
       }
-    case 'pridat-uzivatele':
+    case 'employee':
       switch (resource) {
         case 'nextActionString':
           return 'Přidej dalšího uživatele';
@@ -37,7 +38,7 @@ function getResource(resource) {
         default:
           return null;
       }
-    case 'pridat-pasmo':
+    case 'tarrif':
       switch (resource) {
         case 'nextActionString':
           return 'Přidej další pásmo';
@@ -46,7 +47,7 @@ function getResource(resource) {
         default:
           return null;
       }
-    case 'pridat-skupinu':
+    case 'group':
       switch (resource) {
         case 'nextActionString':
           return 'Přidej další skupinu';
@@ -71,26 +72,6 @@ function include(filename) {
 }
 
 /**
- * It is not possible to use url parameters aproach so we identify script by pageName. Bug - (https://code.google.com/p/google-apps-script-issues/issues/detail?id=535)
- *
- * @return name of Page in Sites or null if no active Sites found
- */
-// 
-function getPageName() {
-  var pg = SitesApp.getActivePage();
-  if (pg !== null) {
-    return pg.getName();
-  } else {
-    return null
-  }
-}
-
-// saves page name so we don't have to call gerPageName() all over again
-var manager = {
-  pageName: getPageName()
-}
-
-/**
  * Wrapper function.
  */
 function getMyAccessRightsNames() {
@@ -104,23 +85,36 @@ function findAllGroups(user) {
   return Utils.getMyGroupsWithEditAtrs();
 }
 
-/*
+
+/**
  * Creates presentable HTML for a browser
  * *cannot be run from library, becaouse of filename
  *
  * @param content depends on a sourceType, if sourceType isn't string, it includes file with name == content
  * @param sourceType is string indicating values 'string'/'file' for source type, takes file as default for any other value
  * @param title title of a window
- * @return string of html
+ * @param properties to be stored in metatags
+ * @return {Object} html object
  */
-function createPresentableHTML(content, sourceType, title) {
+function createPresentableHTML(content, sourceType, title, properties) {
   if (title == null) {
     title = '';
   }
 
   if (sourceType === 'string') {
-    return HtmlService.createTemplate(content).evaluate().setSandboxMode(HtmlService.SandboxMode.IFRAME).setTitle(title);
+    return HtmlService.createTemplate(content)
+      .evaluate()
+      .setTitle(title);
   }
 
-  return HtmlService.createTemplateFromFile(content).evaluate().setSandboxMode(HtmlService.SandboxMode.IFRAME).setTitle(title);
+  var html = HtmlService.createTemplateFromFile(content);
+
+  if(properties){
+    Object.keys(properties).forEach(function(key){
+      html[key] = properties[key];
+    });
+  }
+
+  return html.evaluate()
+      .setTitle(title);
 }

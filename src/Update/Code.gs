@@ -36,7 +36,7 @@ function doGet(e) {
 
     return createPresentableHTML('main', 'file', 'Editace', opts);
   } catch (error) {
-    Utils.logError('[update] ' + JSON.stringify(error));
+    Utils.logError('[update] ' + error);
     return createPresentableHTML('<p>SERVER_ERROR</p>', 'string');
 
   }

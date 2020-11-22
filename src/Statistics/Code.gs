@@ -17,7 +17,7 @@ function doGet(e) {
     }
   } catch (error) {
     html = createPresentableHTML('<p>SERVER_ERROR</p>', 'string');
-    Utils.logError('[stats] ' + JSON.stringify(error));
+    Utils.logError('[stats] ' + error);
   }
   return html;
 }

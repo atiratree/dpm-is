@@ -17,7 +17,7 @@ function doGet(e) {
     }
   } catch (error) {
     html = createPresentableHTML('<p>SERVER_ERROR</p>', 'string');
-    Utils.logError('[BackupToPdf] ' + JSON.stringify(error));
+    Utils.logError('[BackupToPdf] ' + error);
   }
   return html;
 }

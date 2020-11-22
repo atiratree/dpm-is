@@ -1,14 +1,25 @@
+var allowedInstances = ['client', 'event', 'employee', 'tarrif', 'group'];
+
+var getInstance = function(e) {
+  var instance = e.parameter.instance;
+  if (instance) {
+    return allowedInstances.indexOf(instance) >= 0 ? instance : '';
+  }
+  return '';
+}
+
 /**
  * Serves HTML according to the Sites page it is embedded in.
  *
  * @return HTML page with javascript
  */
-function doGet() {
+function doGet(e) {
+  var instance = getInstance(e)
   var html;
   try {
-    html = resolvePermissionAndGetHTML();
+    html = resolvePermissionAndGetHTML(instance);
   } catch (error) {
-    Utils.logError('[create] ' + JSON.stringify(error));
+    Utils.logError('[create] ' + error);
     html = createPresentableHTML('<p>SERVER_ERROR</p>', 'string');
   }
   return html;
@@ -17,32 +28,33 @@ function doGet() {
 /**
  * Checks access rights for page we are serving and denies access accordingly.
  *
+ * @param instance
  * @return html page with javascript
  */
-function resolvePermissionAndGetHTML() {
-  switch (manager.pageName) {
-    case 'pridat-klienta':
+function resolvePermissionAndGetHTML(instance) {
+  switch (instance) {
+    case 'client':
       if (!Utils.hasAccessTo(Utils.AccessEnums.CLIENT, Utils.PermissionTypes.EDIT)) {
         return getNoPermissionHTML_();
       }
       break;
-    case 'pridat-udalost':
+    case 'event':
       if (!Utils.hasAccessTo(Utils.AccessEnums.EVENT, Utils.PermissionTypes.EDIT)) {
         return getNoPermissionHTML_();
       }
       break;
-    case 'pridat-uzivatele':
+    case 'employee':
       if (!Utils.hasAccessToSomeOf([Utils.AccessEnums.ADMIN, Utils.AccessEnums.LEADER, Utils.AccessEnums.ADMINISTRATIVE, Utils.AccessEnums.ASSISTANT], Utils.PermissionTypes
           .EDIT)) {
         return getNoPermissionHTML_();
       }
       break;
-    case 'pridat-pasmo':
+    case 'tarrif':
       if (!Utils.hasAccessTo(Utils.AccessEnums.TARIFF, Utils.PermissionTypes.EDIT)) {
         return getNoPermissionHTML_();
       }
       break;
-    case 'pridat-skupinu':
+    case 'group':
       if (!Utils.hasAccessTo(Utils.AccessEnums.GROUP, Utils.PermissionTypes.EDIT)) {
         return getNoPermissionHTML_();
       }
@@ -51,7 +63,7 @@ function resolvePermissionAndGetHTML() {
       return createPresentableHTML('<p>Authorizace...OK</p>', 'string');
       break;
   }
-  return createPresentableHTML('main', 'file', 'Správa dat: přidání');
+  return createPresentableHTML('main', 'file', 'Správa dat: přidání', { instance: instance });
 }
 
 /**
@@ -70,16 +82,18 @@ function getNoPermissionHTML_() {
  */
 function processForm(formObject) {
   try {
-    switch (manager.pageName) {
-      case 'pridat-klienta':
+    var opts = JSON.parse(formObject.opts);
+    delete formObject.opts;
+    switch (opts.instance) {
+      case 'client':
         return processClientObj(formObject);
-      case 'pridat-udalost':
+      case 'event':
         return processEventObj(formObject);
-      case 'pridat-uzivatele':
+      case 'employee':
         return processUserObj(formObject);
-      case 'pridat-pasmo':
+      case 'tarrif':
         return processTariffObj(formObject);
-      case 'pridat-skupinu':
+      case 'group':
         return processGroupObj(formObject);
       default:
         return null;
