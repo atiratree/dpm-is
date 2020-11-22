@@ -1,12 +1,12 @@
-/** 
- * Runs actions on input in received order and sets errors accordingly 
+/**
+ * Runs actions on input in received order and sets errors accordingly
  *
  * Valid actions are strings:
  * trim : trims(' counts as space) object and sets input as trimmed input
  * notNull : checks if input is not null or empty string
  * unique : checks if input is unique between array passed in processObj.actionObjs.uniqueArray
  * length : checks if input has length maximally long as defined in passed processObj.actionObjs.length
- * canEdit : checks if active user can edited resource specified in input 
+ * canEdit : checks if active user can edited resource specified in input
  * isColor : checks if input is valid hex colour string
  * isNonNegativeNumber : checks if input isnNon negative number
  * isNotDatabaseOwner : check if input is not email of database owner
@@ -18,10 +18,10 @@
  *
  * @param errorResult reference to Object in which properties will be set defined errors if inout found nonvalid
  * @param input input to be processed
- * @param processObj  processObj is object of 3 arrays defined as 
- *    {actions:['action'], actionObjs:[{}], actionErrors:[{error:'didn't validate'}]} 
+ * @param processObj  processObj is object of 3 arrays defined as
+ *    {actions:['action'], actionObjs:[{}], actionErrors:[{error:'didn't validate'}]}
  *    Each action, coresponding actionObj and actionError should be on same index in array
- * @return validated and processed input
+ * @return {Object} validated and processed input
  */
 function validate(errorResult, input, processObj) {
   var actions = processObj.actions;
@@ -104,20 +104,20 @@ function validate(errorResult, input, processObj) {
 
 /**
  * Checks if we have permision to change users groups which are defined in formObject.
- * sets error messages to errorMsg object if we try to edit groups which we are not authorized to 
- * 
+ * sets error messages to errorMsg object if we try to edit groups which we are not authorized to
+ *
  * @param formObject object representing form in javascript i.e. new user
  * @param errorMsg object to be set if groups are set invalidly
  * @param type object  which can be either 'groupLeader' or 'isInGroup' and switches validation
  * @param oldUser object representing users groups before editation
- * @return array of validated groups
+ * @return {Array<Object>} array of validated groups
  */
 function validateGroups(formObject, errorMsg, type, oldUser) {
   var editableGroups = convertObjectsToArrayByProperty(getMyGroupsWithEditAtrs().filter(function(item) {
     return item.editable == true
   }), 'group');
   var oldGroups = oldUser ? (oldUser[type === 'groupLeader' ? 'leadsGroups' : 'isInGroups']) : [];
-  var objects = formObject[''] ? (formObject[''] instanceof Array ? formObject[''] : [formObject['']]) : [];
+  var objects = formObject[''] ? (Array.isArray(formObject['']) ? formObject[''] : [formObject['']]) : [];
   var resArray = [];
 
   var inputGroups = objects.filter(function(item) { // selected ones
@@ -165,7 +165,7 @@ function validateGroups(formObject, errorMsg, type, oldUser) {
  *  Sets properties of error object to result
  *
  * @param result object to be set
- * @param error object to be coppied 
+ * @param error object to be coppied
  */
 function setError_(result, error) {
   for (var k in error) {
@@ -177,7 +177,7 @@ function setError_(result, error) {
  * checks if text is valid date
  *
  * @param text string to check
- * @return true if is valid date, false otherwise
+ * @return {boolean} true if is valid date, false otherwise
  */
 function isValidDate_(text) {
   if (!(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(text))) {

@@ -1,15 +1,34 @@
+function getUtilsProperties() {
+  return {
+    Site: 'https://sites.google.com/a/domovpromne.cz/rozpisy',
+    TimetablesID: '0B9CMdZXOlRtCNUkxSFZQTS1BWjQ',
+    ThisPropertiesVersion: '3',
+    DatabaseSSid: '1dBq8U83mrkX-iQLi0oKpoSgDkYxvvYABMrefL5IOfYg',
+    correctionsLogSize: '10000',
+    errorsLogSize: '20000',
+    logSize: '200000',
+    LogSSid: '1LvOpxVTLmFBazb4QDOi-0udo4vHGm4JSJTw5yn4OKDw',
+    SpecialResourceID: '1nfy2IZEneHXPesygyh7uReoMc_q-TrKdxBNMtn6Dbgc',
+    storageID: '0B9CMdZXOlRtCfkdpNU1IdUxhZkgyaVRZang2T1ZtbHFTRGdCZXJQTmJNcVZFakM5NEF4OFU',
+  };
+}
+
+function getUtilsProp_(key) {
+  return getUtilsProperties()[key];
+}
+
 /* Manager for storing important data scripts might need*/
 var manager = {
-  dbID: getScriptProp_('DatabaseSSid'), // used in TableScript
-  timetablesID: getScriptProp_('TimetablesID'),
-  storageID: getScriptProp_('storageID'),
-  specialResourceID: getScriptProp_('SpecialResourceID'),
-  logId: getScriptProp_('LogSSid'),
-  myDB: objDB.open(getScriptProp_('DatabaseSSid')),
-  site: getScriptProp_('Site'),
-  errSheet: openSpreadsheet(getScriptProp_('LogSSid')).getSheetByName('errors'),
-  logSheet: openSpreadsheet(getScriptProp_('LogSSid')).getSheetByName('log'), //LogSSid
-  correctionSheet: openSpreadsheet(getScriptProp_('LogSSid')).getSheetByName('corrections'),
+  dbID: getUtilsProp_('DatabaseSSid'), // used in TableScript
+  timetablesID: getUtilsProp_('TimetablesID'),
+  storageID: getUtilsProp_('storageID'),
+  specialResourceID: getUtilsProp_('SpecialResourceID'),
+  logId: getUtilsProp_('LogSSid'),
+  myDB: objDB.open(getUtilsProp_('DatabaseSSid')),
+  site: getUtilsProp_('Site'),
+  errSheet: openSpreadsheet(getUtilsProp_('LogSSid')).getSheetByName('errors'),
+  logSheet: openSpreadsheet(getUtilsProp_('LogSSid')).getSheetByName('log'), //LogSSid
+  correctionSheet: openSpreadsheet(getUtilsProp_('LogSSid')).getSheetByName('corrections'),
   assistSh: 'Assistants',
   employSh: 'Employees',
   clientsSh: 'Clients',
@@ -21,11 +40,11 @@ var manager = {
   groupClsSh: 'GroupClients',
   eventSh: 'Events',
   trigSh: 'Triggers',
-  logSize: getScriptProp_('logSize'),
-  errorsLogSize: getScriptProp_('errorsLogSize'),
-  correctionsLogSize: getScriptProp_('correctionsLogSize'),
-  superAdminEmail: DriveApp.getFolderById(getScriptProp_('DatabaseSSid')).getOwner().getEmail(),
-  cacheTime: parseInt(getScriptProp_('CacheTime'), 10), // should be 3 (180000 ms) min for user permission caching
+  keyStoreSh: 'KeyStore',
+  logSize: getUtilsProp_('logSize'),
+  errorsLogSize: getUtilsProp_('errorsLogSize'),
+  correctionsLogSize: getUtilsProp_('correctionsLogSize'),
+  superAdminEmail: DriveApp.getFolderById(getUtilsProp_('DatabaseSSid')).getOwner().getEmail(),
   waitForLockTime: 10000, // 10 s
   sleepConstantForLockBug: 5000, // 5 s
   sleepConstantForUnlockBug: 3000, // 3 s

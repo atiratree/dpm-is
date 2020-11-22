@@ -2,26 +2,6 @@
      This code serves for loading form with data and binding some actions (behaviour like selecting, changing visible parts of the form) to it. -->
 <script>
 var callbacksToRun = 2;
-$('#submit').hide();
-$('#loader').show();
-
-$('#selectBox').on('change', function(e) {
-  var optionSelected = $('option:selected', this);
-
-  toogleGroupsVisibility(this.value);
-});
-
-google.script.run.withSuccessHandler(function(obj) {
-  var options = $('#selectBox');
-
-  toogleGroupsVisibility(obj[0].permission);
-  $.each(obj, function() {
-    options.append($('<option />').val(this.permission).text(this.name));
-  });
-  checkCallbacksToRun();
-}).getMyAccessRightsNames();
-
-groups();
 
 function groups() {
   google.script.run.withSuccessHandler(function(obj) {
@@ -30,7 +10,7 @@ function groups() {
       $('#isInGroupsOptions').append(getCheckboxDiv(this, 'isInGroup'));
     });
     checkCallbacksToRun();
-  }).findAllGroups();
+  }).findAllGroups(getMetaOpts());
 }
 
 function toogleGroupsVisibility(valueSelected) {
@@ -75,4 +55,29 @@ function checkCallbacksToRun() {
     $('#submit').removeAttr('disabled');
   }
 }
+
+(function() {
+  $('#submit').hide();
+  $('#loader').show();
+
+  $('#selectBox').on('change', function(e) {
+    var optionSelected = $('option:selected', this);
+
+    toogleGroupsVisibility(this.value);
+  });
+
+  google.script.run.withSuccessHandler(function(obj) {
+    var options = $('#selectBox');
+
+    toogleGroupsVisibility(obj[0].permission);
+    $.each(obj, function() {
+      options.append($('<option />').val(this.permission).text(this.name));
+    });
+    checkCallbacksToRun();
+  }).getMyAccessRightsNames(getMetaOpts());
+
+
+  groups();
+})();
+
 </script>

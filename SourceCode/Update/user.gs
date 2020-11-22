@@ -1,80 +1,82 @@
 /**
- * Parses and validates data from formObject, then it updates User. 
+ * Parses and validates data from formObject, then it updates User.
  *
  * @param formObject Object received from client's browser form.
- * @return object which designates success or failure (in a case form had nonvalid data)
+ * @param {Object} opts received URL params and loaded data
+ * @return {Object} object which designates success or failure (in a case form had nonvalid data)
  * @throws Exception if updating User failed
  */
-function processUserObj(formObject) {
-  var errorMsg = {nameErr:'',emailErr:'',nickErr:'',colorErr:'',selectErr:'',groupErr:''};  
-  var oldUser = getData('updateObj');
+function processUserObj(formObject, opts) {
+  var errorMsg = {nameErr:'',emailErr:'',nickErr:'',colorErr:'',selectErr:'',groupErr:''};
+  var oldUser = opts.updateObj;
   var user = {email:oldUser.email,nick:oldUser.nick,leadsGroups:[],isInGroups:[]};
   var fullUpdate = Utils.hasAccessTo(Utils.getUserPermission(user.email), Utils.PermissionTypes.EDIT);
   user.permissionChanged = Utils.hasAccessTo(Utils.AccessEnums.EMPLOYEE, Utils.PermissionTypes.EDIT) && formObject.selectBox !=  oldUser.permission;
-     
+
   if(!fullUpdate || formObject.nameBox ===  user.name ){
     user.name = oldUser.name;
   }else{
     user.name = Utils.validate(errorMsg,formObject.nameBox,{
        actions:['trim','notNull'],
        actionObjs:[{},{}],
-       actionErrors:[{},{nameErr:'*vyplňte jméno'}]     
+       actionErrors:[{},{nameErr:'*vyplňte jméno'}]
     });
-  }  
-  
+  }
+
   if(user.permissionChanged){
     user.permission = Utils.validate(errorMsg,formObject.selectBox,{
        actions:['notNull','canEdit'],
        actionObjs:[{},{}],
-       actionErrors:[{selectErr:'*vyberte typ uživatele'},{selectErr:'*nemáte oprávnění pro tento typ akce'}]     
+       actionErrors:[{selectErr:'*vyberte typ uživatele'},{selectErr:'*nemáte oprávnění pro tento typ akce'}]
     });
-  }else{  
+  }else{
     user.permission = oldUser.permission;
-  }  
-  
+  }
+
   if(!fullUpdate || formObject.colorPicker ===  user.color ){
     user.color = oldUser.color;
-  }else{ 
+  }else{
     user.color = Utils.validate(errorMsg,formObject.colorPicker,{
-       actions:['isColor'],actionObjs:[{}],actionErrors:[{colorErr:'*zadejte barvu (hex)'}]     
-      });  
+       actions:['isColor'],actionObjs:[{}],actionErrors:[{colorErr:'*zadejte barvu (hex)'}]
+      });
   }
- 
+
   switch(parseInt(formObject.selectBox,10)){
-    case Utils.AccessEnums.ADMIN: 
-    case Utils.AccessEnums.LEADER: 
-      user.leadsGroups = Utils.validateGroups(formObject,errorMsg,'groupLeader',oldUser);   
-    case Utils.AccessEnums.ASSISTANT: 
-      user.isInGroups =  Utils.validateGroups(formObject,errorMsg,'isInGroup',oldUser);  
+    case Utils.AccessEnums.ADMIN:
+    case Utils.AccessEnums.LEADER:
+      user.leadsGroups = Utils.validateGroups(formObject,errorMsg,'groupLeader',oldUser);
+    case Utils.AccessEnums.ASSISTANT:
+      user.isInGroups =  Utils.validateGroups(formObject,errorMsg,'isInGroup',oldUser);
       break;
   }
-  
+
   if(Utils.isObjErrorFree(errorMsg)) {
-    if(resolveUpdatability(oldUser,user)){      
-      if(Utils.updateEmployee(user)){ 
+    if(resolveUpdatability(oldUser,user)){
+      if(Utils.updateEmployee(user)){
          errorMsg.success = 'Uživatel uspěšně změněn.';
          if(user.permissionChanged){
             errorMsg.permission = user.permission;// permission message
          }
-        
+
       }else{
         throw {message:'updateEmployee'};
-      }  
+      }
     }else{
       errorMsg.success = 'Uživatel nebyl změněn';
     }
   }
-  
+
   return errorMsg;
 }
 
 /**
  * Returns roles in system I can edit or the role of user being edited.
  *
- * @return array of roles in format {permission:x,name:x};
+ * @param {Object} opts received URL params and loaded data
+ * @return {Array<Object>} array of roles in format {permission:x,name:x};
  */
-function getMyAccessRightsNames() {
-  var updateObj = getData('updateObj');
+function getMyAccessRightsNames(opts) {
+  var updateObj = opts.updateObj;
   var accessRightsNames = [];
 
   if (Utils.getUserPermission() == Utils.AccessEnums.ADMIN) {
@@ -101,7 +103,7 @@ function getMyAccessRightsNames() {
  *
  * @param oldUser oldUser for comparission
  * @param user oldUser wih changes
- * @return true if changes were made to user, false otherwise
+ * @return {boolean} true if changes were made to user, false otherwise
  */
 function resolveUpdatability(oldUser, user) {
   var isUpdatable = !shallowEquals_(oldUser, user);
@@ -121,8 +123,9 @@ function shallowEquals_(obj1, obj2) {
 }
 
 /**
+ * @param {Object} opts received URL params and loaded data
  * Wrapper function.
  */
-function findAllGroups() {
-  return Utils.getMyGroupsWithEditAtrs(getData('updateObj'), getProp('instance'));
+function findAllGroups(opts) {
+  return Utils.getMyGroupsWithEditAtrs(opts.updateObj, opts.instance);
 }

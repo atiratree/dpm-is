@@ -1,22 +1,32 @@
 <!-- This is template page with form, code is inserted through GAS scriptlets -->
+<? var opts = {
+  instance: instance,
+  name: name,
+  email: email,
+  shortcut: shortcut,
+  updateObj: updateObj
+} ?>
 
-<?!= include('css'); ?>
+<head>
+  <meta name="dpm:opts" content="<?!= encodeURIComponent(JSON.stringify(opts)) ?>" />
+  <?!= include('css'); ?>
+  <?!= include('javascript'); ?>
+  <?!= getResource('dependentJS', opts); ?>
+</head>
 <div id='mainDiv'>
   <div id='form-content'>
       <form id='create-form'>
-        <?!= getResource('form') ?>
+        <?!= getResource('form', opts) ?>
         <p id='submit'>
-          <input class='update' type='submit' value='Ulož změny'>     
+          <input class='update' type='submit' value='Ulož změny'>
         </p>
-      </form>   
-  </div> 
+      </form>
+  </div>
   <div id='loading' class='clearDiv'>
     <img id='loader' src='https://6d435c32-a-9809a6ee-s-sites.googlegroups.com/a/domovpromne.cz/rozpisy/loading.gif?attachauth=ANoY7cqOg-5ThZpQYtGVK7N_QZapE3DyACsAQx58jBl_bZSrBiA9Ci-Vro0L6VcqbkEekR4TlTzCkbRFiXISMrGfi50p-WaIjynbNTSTBI4KMuP9Y45rg0uq2fcLtrkRHRgxeUELIzYc-8XFm4cceRBZkcqSTbXEfAXbBVMNDI-Z21zrGYUL_I9x-UDS0B0LGyOn5YyYm_PsQDYCZPO8opla7xLHRWiUNQ%3D%3D&attredirects=0' />
-  </div> 
+  </div>
   <div id='confirmation-content' class='clearDiv' hidden='true'>
-    <span id='confirmation' ></span>    
-    <pre id='confirmationSpecial' ></pre>   
+    <span id='confirmation' ></span>
+    <pre id='confirmationSpecial' ></pre>
   </div>
 </div>
-<?!= include('javascript'); ?>
-<?!= getResource('dependentJS'); ?>

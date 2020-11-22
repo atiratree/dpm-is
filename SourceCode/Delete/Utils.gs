@@ -1,21 +1,22 @@
 /**
  * Helper function to create main HTML. It can return html, javascript or string we need, to include in page.
  *
- * @param resource string describing wanted resource 
- * @return requested resource or null if resource not found
+ * @param resource string describing wanted resource
+ * @param {Object} opts received URL params
+ * @return {Object} requested resource or null if resource not found
  */
-function getResource(resource) {
-  switch (getProp('instance')) {
+function getResource(resource, opts) {
+  switch (opts.instance){
     case 'client':
       switch (resource) {
         case 'deleteButton':
           return 'Smazat Klienta';
         case 'deleteMessage':
-          return 'Opravdu si přejete smazat klienta : ' + getProp('name') + '?';
+          return 'Opravdu si přejete smazat klienta : ' + opts.name + '?';
         case 'accessError':
           return 'Nemáte právo  smazat tohoto klienta.';
         case 'successMessage':
-          return 'Klient ' + getProp('name') + ' byl úspěšně smazán.';
+          return 'Klient ' + opts.name + ' byl úspěšně smazán.';
         case 'failDelete':
           return 'Klient byl již smazán';
         default:
@@ -26,11 +27,11 @@ function getResource(resource) {
         case 'deleteButton':
           return 'Smazat Událost';
         case 'deleteMessage':
-          return 'Opravdu si přejete smazat událost : ' + getProp('name') + '?';
+          return 'Opravdu si přejete smazat událost : ' + opts.name + '?';
         case 'accessError':
           return 'Nemáte právo  smazat tuto událost.';
         case 'successMessage':
-          return 'Událost ' + getProp('name') + ' byla úspěšně smazána.';
+          return 'Událost ' + opts.name + ' byla úspěšně smazána.';
         case 'failDelete':
           return 'Událost byla již smazána';
         default:
@@ -41,7 +42,7 @@ function getResource(resource) {
         case 'deleteButton':
           return 'Smazat Uživatele';
         case 'deleteMessage':
-          return 'Opravdu si přejete smazat uživatele : ' + getProp('name') + '(' + getProp('nick') + ', ' + getProp('email') + ')?';
+          return 'Opravdu si přejete smazat uživatele : ' + opts.name + '(' +  opts.nick + ', ' + opts.email + ')?';
         default:
           return null;
       }
@@ -50,7 +51,7 @@ function getResource(resource) {
         case 'deleteButton':
           return 'Smazat Cenové pásmo';
         case 'deleteMessage':
-          return 'Opravdu si přejete smazat cenové pásmo : ' + getProp('shortcut') + '?';
+          return 'Opravdu si přejete smazat cenové pásmo : ' + opts.shortcut + '?';
         default:
           return null;
       }
@@ -59,7 +60,7 @@ function getResource(resource) {
         case 'deleteButton':
           return 'Smazat Skupinu';
         case 'deleteMessage':
-          return 'Opravdu si přejete smazat skupinu : ' + getProp('name') + '?';
+          return 'Opravdu si přejete smazat skupinu : ' + opts.name + '?';
         default:
           return null;
       }
@@ -83,66 +84,36 @@ function include(filename) {
   return HtmlService.createHtmlOutputFromFile(filename).getContent();
 }
 
-/*
+
+/**
  * Creates presentable HTML for a browser
  * *cannot be run from library, becaouse of filename
  *
  * @param content depends on a sourceType, if sourceType isn't string, it includes file with name == content
  * @param sourceType is string indicating values 'string'/'file' for source type, takes file as default for any other value
  * @param title title of a window
- * @return string of html
+ * @param properties to be stored in metatags
+ * @return {Object} html object
  */
-function createPresentableHTML(content, sourceType, title) {
+function createPresentableHTML(content, sourceType, title, properties) {
   if (title == null) {
     title = '';
   }
 
   if (sourceType === 'string') {
-    return HtmlService.createTemplate(content).evaluate().setSandboxMode(HtmlService.SandboxMode.IFRAME).setTitle(title);
+    return HtmlService.createTemplate(content)
+      .evaluate()
+      .setTitle(title);
   }
 
-  return HtmlService.createTemplateFromFile(content).evaluate().setSandboxMode(HtmlService.SandboxMode.IFRAME).setTitle(title);
-}
+  var html = HtmlService.createTemplateFromFile(content);
 
-/**
- *
- * @return true if we are editing user
- */
-function hasSitesPermission() {
-  return getProp('instance') === 'user';
-}
+  if(properties){
+    Object.keys(properties).forEach(function(key){
+      html[key] = properties[key];
+    });
+  }
 
-
-/**
- * Wrapper function.
- */
-function getProp(name) {
-  return Utils.getUserProp(name  + sessionId);
+  return html.evaluate()
+      .setTitle(title);
 }
-
-/**
- * Wrapper function.
- */
-function setProp(prop, value) {
-  Utils.setUserProp(prop + sessionId, value);
-}
-
-/**
- * Sets runtime properties
- *
- * @param params object with properties to set
- */
-function setRuntimeProperties(params){
-  var renewProps = {};
-  
-  propItems.forEach(function(prop){
-     var value = (params && params[prop] != null) ? params[prop] : '';     
-     renewProps[prop + sessionId] = value;
-     
-  });
-  Utils.setUserProps(renewProps);
-}
- 
-/* props settings variables*/
-var propItems = ['instance', 'email', 'name', 'shortcut', 'nick'];
-var sessionId = 'delete';  

@@ -1,5 +1,5 @@
 /**
- * Gets links for group in format for scriptlets to assemble the page 
+ * Gets links for group in format for scriptlets to assemble the page
  * sets array to user properties
  *
  * @param files all files this function searches in
@@ -18,14 +18,14 @@ function getLinks(files, group, owner) {
 }
 
 /**
- * Wrapper function for saving data associated it with this spreadsheet 
+ * Wrapper function for saving data associated it with this spreadsheet
  */
 function saveScriptData(fieldName, obj) {
   PropertiesService.getDocumentProperties().setProperty(fieldName, JSON.stringify(obj));
 }
 
 /**
- * Wrapper function for getting data associated it with this spreadsheet 
+ * Wrapper function for getting data associated it with this spreadsheet
  */
 function getScriptData(fieldName) {
   var data = PropertiesService.getDocumentProperties().getProperty(fieldName);
@@ -35,88 +35,23 @@ function getScriptData(fieldName) {
 /**
  * Wrapper function.
  */
-function getProp(prop) {
-  return Utils.getUserProp(prop  + sessionId);
-}
-
-/**
- * Wrapper function.
- */
-function getParsedScriptProp(prop) {
-  var obj  = PropertiesService.getScriptProperties().getProperty(prop + sessionId);
-  return obj ? JSON.parse(obj) : '';
-}
-
-/**
- * Wrapper function.
- */
-function setScriptProp(prop, value) {
-  PropertiesService.getScriptProperties().setProperty(prop + sessionId, value);
-  return Utils.getUserObjProp(prop  + sessionId);
+function getBoolProp(prop) {
+  var value = Utils.getProp(prop, userEmail);
+  return !!value && (value === true || value.toLowerCase() === "true");
 }
 
 /**
  * Wrapper function.
  */
 function setProp(prop, value) {
-  Utils.setUserProp(prop + sessionId, value);
+  return Utils.setProp(prop, value, userEmail);
 }
-
-/**
- * Sets runtime properties
- *
- * @param params object with properties to set
- */
-function setRuntimeProperties(params){
-  var renewProps = {};
-  
-  propItems.forEach(function(prop){
-     var value = (params && params[prop] != null) ? params[prop] : '';     
-     renewProps[prop + sessionId] = value;
-     
-  });
-  Utils.setUserProps(renewProps);
-}
-
-/**
- * Checks if props are set corectly
- *
- * @return true if props are correctly set, false otherwise
- */
-function checkIfPropsFull(){
-  var result = true;
-  
-  for(var item in propItems){
-    if(!getProp(item)){
-      result = false;
-      break;
-    }
-  }
-  
-  return result;
-}
-
-
-// log all users except admin, for debugging purposes
-function temporaryTestingLog(email, message){
-  email = email ? email : Utils.getUserEmail();
-  var value =  PropertiesService.getScriptProperties().getProperty('testLog');
-  
-  if(Utils.isSuperAdmin(email)){
-    Utils.log('\n' + value);
-  }else{
-    var msg = '[' + new Date().toString().replace(/(.*\d{2}:\d{2}:\d{2}).*/, '$1') + '] [' + email + ']  week: ' + message + '\n';
-    value = value ? value + msg : msg;
-    PropertiesService.getScriptProperties().setProperty('testLog', value);
-  }  
-}
- 
 
 /**
  * Maps obj properties to string as url parameters.
  *
  * @param obj object to convert
- * @return parameter part of html
+ * @return {string} parameter part of html
  */
 function constructUrlParameters(obj) {
   var value = '';
@@ -136,7 +71,7 @@ function constructUrlParameters(obj) {
  * Encodes URI component.
  *
  * @param str string to encode
- * @return rfc3986 URI component
+ * @return {string} rfc3986 URI component
  */
 function rfc3986EncodeURIComponent(str) {
   var v = '';
@@ -146,17 +81,16 @@ function rfc3986EncodeURIComponent(str) {
     });
   } catch (e) {}
   return v;
-} 
- 
+}
+
 /* props settings variables*/
-var propItems = ['year', 'week'];
-var sessionId = 'sheetsRedirect_' + Utils.getUserEmail(); 
+var userEmail = Utils.getUserEmail();
 
 /* Manager for storing and caching*/
-var manager = { 
+var manager = {
   colors: null,
   nicks: null,
   defaultTariff: null,
   events: null,
   emailSenderScriptURL: 'https://script.google.com/a/macros/domovpromne.cz/s/AKfycbzZMQ21z3CsjzoDGMFNkUMbFFdupbjfqhQX1Cv6n1UiZkxDd1Q/exec'
-}  
+}

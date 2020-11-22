@@ -1,5 +1,5 @@
 <!-- Form insides, which are going to be inserted into main.html -->
-<? var client = getData('updateObj') ?>
+<? var client = updateObj ?>
 <p>
   <label for='nameBox'>Jméno</label>
   <br>
@@ -10,7 +10,7 @@
   <label for='emailBox'>Email</label>
   <br>
   <input id='emailBox' type='email' name='emailBox' value='<?!= client.email ?>' placeholder='Email klienta'>
-  <label id='emailErr' class='error' for='emailBox' hidden='true'></label> 
+  <label id='emailErr' class='error' for='emailBox' hidden='true'></label>
 </p>
 <div id='groups'>
   <div id='isInGroups'>

@@ -1,15 +1,16 @@
 /**
  * Helper function to create main HTML. It can return html, javascript or string we need, to include in our page.
  *
- * @param resource string describing wanted resource 
- * @return requested resource or null if resource not found
+ * @param resource string describing wanted resource
+ * @param {Object} opts received URL params and loaded data
+ * @return {Object} requested resource or null if resource not found
  */
-function getResource(resource) {
-  switch (getProp('instance')) {
+function getResource(resource, opts) {
+  switch (opts.instance) {
     case 'user':
       switch (resource) {
         case 'form':
-          return includeAndEvaluate('user-form');
+          return includeAndEvaluate('user-form', opts);
         case 'dependentJS':
           return include('user-js');
         default:
@@ -18,7 +19,7 @@ function getResource(resource) {
     case 'client':
       switch (resource) {
         case 'form':
-          return includeAndEvaluate('client-form');
+          return includeAndEvaluate('client-form', opts);
         case 'dependentJS':
           return include('client-js');
         default:
@@ -27,7 +28,7 @@ function getResource(resource) {
     case 'tariff':
       switch (resource) {
         case 'form':
-          return includeAndEvaluate('tariff-form');
+          return includeAndEvaluate('tariff-form', opts);
         default:
           return null;
       }
@@ -40,17 +41,17 @@ function getResource(resource) {
  * Evaluates GAS scriptlets and includes HMTL from a file. *just shortcut a for a long command
  *
  * @param filename name of file to be included
- * @return string of result html
+ * @return {string} string of result html
  */
-function includeAndEvaluate(filename) {
-  return HtmlService.createTemplateFromFile(filename).evaluate().getContent();
+function includeAndEvaluate(filename, opts) {
+  return createPresentableHTML(filename,  'file', '', opts).getContent();
 }
 
 /**
  * Includes HMTL from a file. *just shortcut a for a long command
  *
  * @param filename name of file to be included
- * @return string of html
+ * @return {string} string of html
  */
 function include(filename) {
   return HtmlService.createHtmlOutputFromFile(filename).getContent();
@@ -63,64 +64,28 @@ function include(filename) {
  * @param content depends on a sourceType, if sourceType isn't string, it includes file with name == content
  * @param sourceType is string indicating values 'string'/'file' for source type, takes file as default for any other value
  * @param title title of a window
- * @return string of html
+ * @param properties to be stored in metatags
+ * @return {Object} html object
  */
-function createPresentableHTML(content, sourceType, title) {
+function createPresentableHTML(content, sourceType, title, properties) {
   if (title == null) {
     title = '';
   }
 
   if (sourceType === 'string') {
-    return HtmlService.createTemplate(content).evaluate().setSandboxMode(HtmlService.SandboxMode.IFRAME).setTitle(title);
+    return HtmlService.createTemplate(content)
+      .evaluate()
+      .setTitle(title);
   }
 
-  return HtmlService.createTemplateFromFile(content).evaluate().setSandboxMode(HtmlService.SandboxMode.IFRAME).setTitle(title);
-}
+  var html = HtmlService.createTemplateFromFile(content);
 
-/**
- * Wrapper function. 
- */
-function saveData(fieldName, obj) {
-  Utils.setUserObjProp(fieldName  + sessionId, obj);
-}
+  if(properties){
+    Object.keys(properties).forEach(function(key){
+      html[key] = properties[key];
+    });
+  }
 
-/**
- * Wrapper function.
- */
-function getData(fieldName) {
-  return Utils.getUserObjProp(fieldName  + sessionId);
+  return html.evaluate()
+      .setTitle(title);
 }
-
-/**
- * Wrapper function.
- */
-function getProp(name) {
-  return Utils.getUserProp(name  + sessionId);
-}
-
-/**
- * Wrapper function.
- */
-function setProp(prop, value) {
-  Utils.setUserProp(prop + sessionId, value);
-}
-
-/**
- * Sets runtime properties
- *
- * @param params object with properties to set
- */
-function setRuntimeProperties(params){
-  var renewProps = {};
-  
-  propItems.forEach(function(prop){
-     var value = (params && params[prop] != null) ? params[prop] : '';     
-     renewProps[prop + sessionId] = value;
-     
-  });
-  Utils.setUserProps(renewProps);
-}
- 
-/* props settings variables*/
-var propItems = ['instance', 'updateObj', 'email', 'name', 'shortcut'];
-var sessionId = 'update';  

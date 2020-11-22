@@ -3,12 +3,28 @@
 <script type='text/javascript'>
 var submitValid = true;
 
-$(document).ready(function() {  
+function getMetaOpts() {
+  var metas = document.getElementsByTagName('meta');
+  var acc = {};
+
+  for (let i = 0; i < metas.length; i++) {
+    var fullName = metas[i].getAttribute('name');
+    if (metas[i].getAttribute('name') === "dpm:opts") {
+      return JSON.parse(decodeURIComponent(metas[i].getAttribute('content')));
+    }
+  }
+  return null;
+}
+
+$(document).ready(function() {
   $('#create-form').submit(function() {
-    $('#submit').hide();
-    $('#loader').show();
     if(submitValid){
       submitValid = false;
+      $('#submit').hide();
+      $('#loader').show();
+      var input = $("<input>").attr("name", "opts").attr("type", "hidden").val(JSON.stringify(getMetaOpts()));
+      $('#create-form').append($(input));
+
       google.script.run.withSuccessHandler(function(obj) {
         $('#loader').hide();
         $('#submit').show();

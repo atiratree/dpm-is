@@ -7,21 +7,18 @@
 function doGet(e) {
   var html;
   try {
-    setRuntimeProperties(e.parameter);  
-    
     if (e.parameter.year && e.parameter.week) {
-      html = createPresentableHTML('redirect', 'file', 'Výběr rozpisu');
+      html = createPresentableHTML('redirect', 'file', 'Výběr rozpisu', {
+        year: e.parameter.year,
+        week: e.parameter.week
+      } );
     } else {
       html = createPresentableHTML('<p>Authorizace...OK</p>', 'string');
     }
   } catch (error) {
     Utils.logError('[sheets redirect] ' + JSON.stringify(error));
-    if(checkIfPropsFull()){ // pri opakovani F5 dosáhne přístup do properties max limitu     
-      html = createPresentableHTML('<p>Nelze zobrazit rozpisy. 1) Server může být zaneprázdněn, zkuste znovu. 2) Nebo nenáležíte do žádné skupiny</p>', 'string');
-    }else{
-       html = createPresentableHTML('<p>Server je zaneprázdněn (mohlo dojít k dosáhnutí limitu u Google služby). Chvíly počkejte a zkuste znovu.</p>', 'string');
-    }    
-  } 
+    html = createPresentableHTML('<p>Server je zaneprázdněn (mohlo dojít k dosáhnutí limitu u Google služby). Chvíly počkejte a zkuste znovu.</p>', 'string');
+  }
   return html;
 }
 
@@ -60,9 +57,10 @@ function includeAndEvaluate(filename) {
  * @param content depends on a sourceType, if sourceType isn't string, it includes file with name == content
  * @param sourceType is string indicating values 'string'/'file' for source type, takes file as default for any other value
  * @param title title of a window
+ * @param properties to be stored in metatags
  * @return {Object} html object
  */
-function createPresentableHTML(content, sourceType, title) {
+function createPresentableHTML(content, sourceType, title, properties) {
   if (title == null) {
     title = '';
   }
@@ -70,15 +68,17 @@ function createPresentableHTML(content, sourceType, title) {
   if (sourceType === 'string') {
     return HtmlService.createTemplate(content)
       .evaluate()
-      .setSandboxMode(HtmlService.SandboxMode.IFRAME)
-      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)
       .setTitle(title);
   }
 
-  return HtmlService
-    .createTemplateFromFile(content)
-    .evaluate()
-    .setSandboxMode(HtmlService.SandboxMode.IFRAME)
-    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)
-    .setTitle(title);
+  var html = HtmlService.createTemplateFromFile(content);
+
+  if(properties){
+    Object.keys(properties).forEach(function(key){
+      html[key] = properties[key];
+    });
+  }
+
+  return html.evaluate()
+      .setTitle(title);
 }

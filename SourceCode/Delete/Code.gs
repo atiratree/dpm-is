@@ -2,18 +2,22 @@
  * Webapp entry function, returns HTML.
  *
  * @param e url parameters setting this webapp's beahviour
- * @return HTML page with javascript
+ * @return {Object} HTML page with javascript
  */
 function doGet(e) {
   var html;
   try {
-    setRuntimeProperties(e.parameter);
-    
     if (e.parameter.instance) {
-      html = createPresentableHTML('main', 'file', 'Smazání');
-    }else{
+      html = createPresentableHTML('main', 'file', 'Smazání', {
+        instance: e.parameter.instance,
+        name: e.parameter.name,
+        email: e.parameter.email,
+        shortcut: e.parameter.shortcut,
+        nick: e.parameter.nick
+      } );
+    } else {
       html = createPresentableHTML('<p>Authorizace...OK</p>', 'string');
-    }   
+    }
   } catch (error) {
     html = createPresentableHTML('<p>SERVER_ERROR</p>', 'string');
     Utils.logError('[delete] ' + JSON.stringify(error));
@@ -22,23 +26,24 @@ function doGet(e) {
 }
 
 /**
- * Calls delete for object of this instance  
+ * Calls delete for object of this instance
  *
- * @return object which designates success or failure
+ * @param {Object} opts received URL params
+ * @return {Object} object which designates success or failure
  */
-function del() {
+function del(opts) {
   try {
-    switch (getProp('instance')) {
+    switch (opts.instance) {
       case 'client':
-        return deleteClient();
+        return deleteClient(opts);
       case 'event':
-        return deleteEvent();
+        return deleteEvent(opts);
       case 'user':
-        return deleteUser();
+        return deleteUser(opts);
       case 'tariff':
-        return deleteTariff()
+        return deleteTariff(opts)
       case 'group':
-        return deleteGroup()
+        return deleteGroup(opts)
       default:
         return {
           err: 'Script nepovoluje smazání této instance'

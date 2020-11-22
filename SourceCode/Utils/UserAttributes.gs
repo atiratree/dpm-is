@@ -19,36 +19,25 @@ function isSuperAdmin(email) {
 
 /**
  * Finds user permission of email or active user (in case email == null).
- * Caches userPermission for time which can be set in Script Properties 
  *
  * @param email email to be checked or falsy value to check active user
  * @return {number} user permission
  */
 function getUserPermission(email) {
-  var save = false;
   var userPermission;
 
   if (!email) {
-    userPermission = getUserProp('userPermission');
-    var age = getUserProp('userPermissionAge');
-    if (age != null && new Date().valueOf() - age > manager.cacheTime) { // threshold for saving permission in case of changing rigths
-      userPermission = null;
-    }
-
-    if (userPermission == null || isNaN(userPermission)) {
       email = getUserEmail();
-      save = true;
-    }
   }
-  if (userPermission == null || isNaN(userPermission)) {
-    userPermission = findAssistants_(['email'], {
-      email: email
-    }, 1).length == 1 ? AccessEnums.ASSISTANT : findEmployees_(['permission'], {
-      email: email
-    }, 1).shift();
-    if (typeof userPermission === 'object') {
-      userPermission = userPermission.permission;
-    }
+
+  userPermission = findAssistants_(['email'], {
+    email: email
+  }, 1).length == 1 ? AccessEnums.ASSISTANT : findEmployees_(['permission'], {
+    email: email
+  }, 1).shift();
+
+  if (typeof userPermission === 'object') {
+    userPermission = userPermission.permission;
   }
 
   if (userPermission == null || isNaN(userPermission)) {
@@ -56,11 +45,6 @@ function getUserPermission(email) {
     throw {
       message: 'Error : No permission/access'
     }
-  } else if (save) {
-    setUserProps({
-      'userPermission': userPermission,
-      'userPermissionAge': new Date().valueOf()
-    });
   }
 
   return parseInt(userPermission, 10);
@@ -183,7 +167,7 @@ function getMyAccessRightsNames() {
 }
 
 /**
- * Finds all existing groups and adds attributes for adding other users to those groups by user/client or active user (in case user == null). 
+ * Finds all existing groups and adds attributes for adding other users to those groups by user/client or active user (in case user == null).
  *
  * @param user user/client to be checked or null to check active user
  * @return {Array<Object>} array of groups with editing attributes
