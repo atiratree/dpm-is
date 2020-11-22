@@ -45,11 +45,15 @@ function logToSheet_(e, sheet, debug, logSize) {
   if (typeof e == 'string' || e instanceof String) {
     message = e;
   } else {
-    if (debug && e && e.stack) {
-      logToSheet_(e.name + ' in line ' + e.lineNumber + ': ' + e.message, sheet);
-      logToSheet_(e.stack.match(/\([^\)]*\)/g).reverse().join(' > ').replace(/[\(\)]/g, ''), sheet);
+    if (e && e.stack) {
+      if (debug) {
+        logToSheet_(e.name + ' in line ' + e.lineNumber + ': ' + e.message, sheet);
+        logToSheet_(e.stack.match(/\([^\)]*\)/g).reverse().join(' > ').replace(/[\(\)]/g, ''), sheet);
+      }
+      message = e.toString();
+    } else {
+      message = JSON.stringify(e);
     }
-    message = JSON.stringify(e);
   }
   var value = '[' + new Date().toString().replace(/(.*\d{2}:\d{2}:\d{2}).*/, '$1') + '] [' + getUserEmail() + ']  ' + message;
 

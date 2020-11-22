@@ -28,6 +28,7 @@ $(document).ready(function() {
       google.script.run.withSuccessHandler(function(obj) {
         $('#loader').hide();
         $('#submit').show();
+        $(input).remove()
         resolveDefault(obj);
       }).processForm(this);
     }

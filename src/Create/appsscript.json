@@ -1,11 +1,13 @@
 {
   "timeZone": "Europe/Prague",
   "dependencies": {
-    "libraries": [{
-      "userSymbol": "Utils",
-      "libraryId": "1WquYtBor0ObwHMo1oIhKnCgboR5zBx2wjh5Hu-rbb0oSA5cY0d2PM6dZ",
-      "version": "6"
-    }]
+    "libraries": [
+      {
+        "userSymbol": "Utils",
+        "libraryId": "1WquYtBor0ObwHMo1oIhKnCgboR5zBx2wjh5Hu-rbb0oSA5cY0d2PM6dZ",
+        "version": 9
+      }
+    ]
   },
   "webapp": {
     "access": "DOMAIN",

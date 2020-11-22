@@ -61,7 +61,7 @@ function hasAccessToSomeOf(accessEnumArray, permissionType) {
   var rights = getMyAccessRights(permissionType);
   var result = false;
 
-  if (accessEnumArray instanceof Array) {
+  if (Array.isArray(accessEnumArray)) {
     for (var i = 0; i < accessEnumArray.length; i++) {
       if (rights.indexOf(accessEnumArray[i]) > -1) {
         result = true;
