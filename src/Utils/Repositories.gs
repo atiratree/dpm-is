@@ -31,12 +31,12 @@ function updateAssistant_(assistant) {
 }
 
 /**
- * Finds assistants from database based on restrictions 
+ * Finds assistants from database based on restrictions
  *
  * @param fields fields is array of strings . It assigns these strings as properties to final objects
  * @param restrictions object of key/value pairs for selecting rows
  * @param limit maximum number of rows to be returned
- * @return array of assistants
+ * @return {Array<Object>} array of assistants
  */
 function findAssistants_(fields, restrictions, limit) {
   return repFind_(manager.assistSh, fields, restrictions, limit);
@@ -75,12 +75,12 @@ function updateEmployee_(employee) {
 }
 
 /**
- * Finds employees from database based on restrictions 
+ * Finds employees from database based on restrictions
  *
  * @param fields fields is array of strings . It assigns these strings as properties to final objects
  * @param restrictions object of key/value pairs for selecting rows
  * @param limit maximum number of rows to be returned
- * @return array of employees
+ * @return {Array<Object>} array of employees
  */
 function findEmployees_(fields, restrictions, limit) {
   return repFind_(manager.employSh, fields, restrictions, limit);
@@ -139,13 +139,13 @@ function updateClient(client) {
 }
 
 /**
- * Finds clients from database based on restrictions, 
- * each client has attribute with his groups unless group specified 
+ * Finds clients from database based on restrictions,
+ * each client has attribute with his groups unless group specified
  *
  * @param fields fields is array of strings . It assigns these strings as properties to final objects
  * @param restrictions object of key/value pairs for selecting rows
  * @param group group for selecting clients
- * @return array of clients
+ * @return {Array<Object>} array of clients
  */
 function findClients(fields, restrictions, group) {
   var groupSearchCriteria = group ? {group: group} : {};
@@ -164,9 +164,9 @@ function findClients(fields, restrictions, group) {
       var isIn = isInGroups.filter(function(item) {
         return item.name === rows[i].name;
       });
-  
+
       rows[i].isInGroups = convertObjectsToArrayByProperty(isIn, 'group');
-    }    
+    }
   }
 
   return rows;
@@ -205,11 +205,11 @@ function updateTariff(tariff) {
 }
 
 /**
- * Finds tariffs from database based on restrictions 
+ * Finds tariffs from database based on restrictions
  *
  * @param fields fields is array of strings . It assigns these strings as properties to final objects
  * @param restrictions object of key/value pairs for selecting rows
- * @return array of tariffs
+ * @return {Array<Object>} array of tariffs
  */
 function findTariffs(fields, restrictions) {
   return repFind_(manager.tariffsSh, fields, restrictions);

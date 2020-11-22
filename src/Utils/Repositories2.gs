@@ -32,7 +32,7 @@ function updateGroup(group, oldGroupName) {
 }
 
 /**
- * Finds groups from database based on restrictions 
+ * Finds groups from database based on restrictions
  *
  * @param restrictions object of key/value pairs for selecting rows
  * @param limit maximum number of rows to be returned
@@ -42,7 +42,7 @@ function findGroups(restrictions, limit) {
   return repFind_(manager.groupsSh, [], restrictions, limit);
 }
 
-/** 
+/**
  * @return {Array<Object>} all groups as array
  */
 function findGroupsAsArray() {
@@ -50,7 +50,7 @@ function findGroupsAsArray() {
 }
 
 /**
- * Insert file into database with current time 
+ * Insert file into database with current time
  *
  * @param file object
  * @return {boolean} indicating success or failure.
@@ -87,7 +87,7 @@ function updateFile(file) {
 }
 
 /**
- * Finds files from database based on restrictions 
+ * Finds files from database based on restrictions
  *
  * @param fields fields is array of strings . It assigns these strings as properties to final objects
  * @param restrictions object of key/value pairs for selecting rows
@@ -143,7 +143,7 @@ function createTrigger(trigger) {
  * Delete trigger/s from database based on its properties
  *
  * @param trigger object
- * @param hasMoreInstances  if true turns off error logging if object has more instances 
+ * @param hasMoreInstances  if true turns off error logging if object has more instances
  * @return {boolean} indicating success or failure.
  */
 function deleteTrigger(trigger, hasMoreInstances) {
@@ -163,7 +163,7 @@ function updateTrigger(trigger) {
 }
 
 /**
- * Finds triggers from database based on restrictions 
+ * Finds triggers from database based on restrictions
  *
  * @param fields fields is array of strings . It assigns these strings as properties to final objects
  * @param restrictions object of key/value pairs for selecting rows

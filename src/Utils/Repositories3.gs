@@ -12,7 +12,7 @@ function createGroupLeader(groupLeader) {
  * Delete group Leader/s from database based on its properties
  *
  * @param groupLeader object
- * @param hasMoreInstances  if true turns off error logging if object has more instances 
+ * @param hasMoreInstances  if true turns off error logging if object has more instances
  * @return {boolean} indicating success or failure.
  */
 function deleteGroupLeader(groupLeader, hasMoreInstances) {
@@ -31,7 +31,7 @@ function updateGroupLeader(oldGroupLeader, groupLeader) {
 }
 
 /**
- * Finds group Leaders from database based on restrictions 
+ * Finds group Leaders from database based on restrictions
  *
  * @param fields fields is array of strings . It assigns these strings as properties to final objects
  * @param restrictions object key/value pairs for selecting rows
@@ -55,7 +55,7 @@ function createGroupActor(groupActor) {
  * Delete group Actor/s from database based on its properties
  *
  * @param  groupActor object
- * @param hasMoreInstances  if true turns off error logging if object has more instances 
+ * @param hasMoreInstances  if true turns off error logging if object has more instances
  * @return {boolean} indicating success or failure.
  */
 function deleteGroupActor(groupActor, hasMoreInstances) {
@@ -74,7 +74,7 @@ function updateGroupActor(oldGroupActor, groupActor) {
 }
 
 /**
- * Finds group Actors from database based on restrictions 
+ * Finds group Actors from database based on restrictions
  *
  * @param fields fields is array of strings . It assigns these strings as properties to final objects
  * @param restrictions object key/value pairs for selecting rows
@@ -98,7 +98,7 @@ function createGroupClient(groupClient) {
  * Delete group Client/s from database based on its properties
  *
  * @param groupClient object
- * @param hasMoreInstances  if true turns off error logging if object has more instances 
+ * @param hasMoreInstances  if true turns off error logging if object has more instances
  * @return {boolean} indicating success or failure.
  */
 function deleteGroupClient(groupClient, hasMoreInstances) {
@@ -117,7 +117,7 @@ function updateGroupClient(oldGroupClient, groupClient) {
 }
 
 /**
- * Finds group Clients from database based on restrictions 
+ * Finds group Clients from database based on restrictions
  *
  * @param fields fields is array of strings . It assigns these strings as properties to final objects
  * @param restrictions object key/value pairs for selecting rows
@@ -141,7 +141,7 @@ function createEvent(event) {
  * Delete Event/s from database based on its properties
  *
  * @param  groupActor object
- * @param hasMoreInstances  if true turns off error logging if object has more instances 
+ * @param hasMoreInstances  if true turns off error logging if object has more instances
  * @return {boolean} indicating success or failure.
  */
 function deleteEvent(event, hasMoreInstances) {
@@ -149,7 +149,7 @@ function deleteEvent(event, hasMoreInstances) {
 }
 
 /**
- * Finds Events from database based on restrictions 
+ * Finds Events from database based on restrictions
  *
  * @param fields fields is array of strings . It assigns these strings as properties to final objects
  * @param restrictions object key/value pairs for selecting rows
