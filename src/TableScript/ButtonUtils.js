@@ -1,7 +1,7 @@
 // serves as a source for html code snippets inserted into Awesome Table Gadget cell
 var htmlManager = {
   divPart: '<div style="text-align:center"><a  onclick="',
-  deleteScriptUrl: 'https://script.google.com/a/macros/domovpromne.cz/s/AKfycbwJpAcHgi_91zISqleXafAAvXS2KrLfbeuRud21J-CXcF9VmIo/exec',
+  deleteScriptUrl: 'https://script.google.com/a/domovpromne.cz/macros/s/AKfycbwzywIGGArhKU0A7Ts7G8BauQbY6m-aK2vwvTBZSuojJjevQjEL/exec',
   editScriptUrl: 'https://script.google.com/a/macros/domovpromne.cz/s/AKfycbyOxv6MM7opYp1Kwy8dVJdJtpHACC-voNmMhbDUk0M64YQgc2hW/exec',
   deleteButtonStyle: '" style="color:white!important;text-decoration:none;background-color:rgb(209,72,54); \
     background-image:-webkit-linear-gradient(top,rgb(221,75,57),rgb(209,72,54)); \
