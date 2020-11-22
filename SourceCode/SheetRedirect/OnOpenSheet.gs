@@ -12,10 +12,10 @@ function onOpenSheet() {
       initializeData();
     }
 
-    updateSpreadSheet(spreadSheet, isLeader && getParsedScriptProp('integrity'));
+    updateSpreadSheet(spreadSheet, isLeader && getBoolProp('sheets_redirect_integrity'));
     SpreadsheetApp.flush();
 
-    if(getParsedScriptProp('duplicates')){
+    if(getBoolProp('sheets_redirect_duplicates')){
       checkAssistantDuplicities();
       Utilities.sleep(2000); // just to see last message
     }

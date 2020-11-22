@@ -5,7 +5,7 @@
  * @param user User(employee) object
  * @return {boolean} indicating success or failure.
  */
-function createEmployee(user) { // *wrapper function: treats assistant and employee the same 
+function createEmployee(user) { // *wrapper function: treats assistant and employee the same
   var result;
 
   if (user.permission == AccessEnums.ASSISTANT || user.permission == null) {
@@ -14,8 +14,8 @@ function createEmployee(user) { // *wrapper function: treats assistant and emplo
     result = createEmployee_(user);
   }
   if (result) {
-    result = result && refreshUserGroups_(user.leadsGroups, user.email, true);
-    result = result && refreshUserGroups_(user.isInGroups, user.email, false);
+    result = refreshUserGroups_(user.leadsGroups, user.email, true) && result;
+    result = refreshUserGroups_(user.isInGroups, user.email, false) && result;
   }
 
   return result;
@@ -24,11 +24,11 @@ function createEmployee(user) { // *wrapper function: treats assistant and emplo
 /**
  * Delete User(employee)/s from database based on its properties.
  * Also deletes all groups user is in or leads
- 
+
  * @param  user User(employee) object object
  * @return {boolean} indicating success or failure.
  */
-function deleteEmployee(user) { // *wrapper function: treats assistant and employee the same 
+function deleteEmployee(user) { // *wrapper function: treats assistant and employee the same
   var result = deleteEmployee_(user) || deleteAssistant_(user);
 
   if (result) {
@@ -52,7 +52,7 @@ function deleteEmployee(user) { // *wrapper function: treats assistant and emplo
 }
 
 /**
- * Finds users(employees) from database based on restrictions 
+ * Finds users(employees) from database based on restrictions
  * returns them with groups user leads or is in
  *
  * @param fields fields is array of strings . It assigns these strings as properties to final objects
@@ -115,8 +115,11 @@ function updateEmployee(user) {
       result = deleteEmployee_({
         email: email
       });
-      result = result && createAssistant_(user);
-      result = result && deleteGroupLeader({employeeEmail: email}, true);
+      if (!result) {
+        return result;
+      }
+      result = createAssistant_(user);
+      deleteGroupLeader({employeeEmail: email}, true)
     } else {
       result = deleteAssistant_({
         email: email
@@ -125,8 +128,15 @@ function updateEmployee(user) {
     }
   }
 
-  result = result && refreshUserGroups_(user.leadsGroups, email, true);
-  result = result && refreshUserGroups_(user.isInGroups, email, false);
+  if (user.permission == AccessEnums.ADMINISTRATIVE) {
+    deleteGroupActor({employeeEmail: email}, true)
+    deleteGroupLeader({employeeEmail: email}, true)
+  } else {
+    result = refreshUserGroups_(user.leadsGroups, email, true) && result;
+    result = refreshUserGroups_(user.isInGroups, email, false) && result;
+  }
+
+
 
   return result;
 }
@@ -146,27 +156,27 @@ function refreshUserGroups_(groups, email, groupLeader) {
     if (groups[i].isUpdatable) {
       if (groups[i].isInDb) {
         if (groupLeader) {
-          result = result && deleteGroupLeader({
+          result = deleteGroupLeader({
             employeeEmail: email,
             group: groups[i].group
-          });
+          }) && result;
         } else {
-          result = result && deleteGroupActor({
+          result = deleteGroupActor({
             employeeEmail: email,
             group: groups[i].group
-          });
+          })  && result;
         }
       } else {
         if (groupLeader) {
-          result = result && createGroupLeader({
+          result = createGroupLeader({
             employeeEmail: email,
             group: groups[i].group
-          });
+          }) && result;
         } else {
-          result = result && createGroupActor({
+          result = createGroupActor({
             employeeEmail: email,
             group: groups[i].group
-          });
+          }) && result;
         }
       }
     }

@@ -1,14 +1,27 @@
 <!-- This is page for selecting emails -->
-<?!= include('css');?>
+<? var opts = {
+  type: type,
+  year: year,
+  week: week,
+  sheetId: sheetId,
+  group: group
+} ?>
+
+
+<head>
+  <meta name="dpm:opts" content="<?!= encodeURIComponent(JSON.stringify(opts)) ?>" />
+  <?!= include('css'); ?>
+  <?!= include('javascript'); ?>
+</head>
 <div id='mainDiv'>
   <h2>Odeslat rozpis <?!= manager.ss.getName() ?> </h2>
   <hr>
     <div id='form-content'>
       <form id='form'>
         <table >
-           <tr>          
+           <tr>
              <th><p><input type='checkbox' checked='true' id='mainCheckbox'/></p></th>
-             <th><p><label for='mainCheckbox'><?= getProp('type') == 'client' ? 'Klient' : 'Asistent' ?></label></p></th>
+             <th><p><label for='mainCheckbox'><?= opts.type == 'client' ? 'Klient' : 'Asistent' ?></label></p></th>
              <th><p><label for='mainCheckbox'>Email</label></p></th>
            </tr>
 <?         var clients = manager.clients ?>
@@ -16,7 +29,7 @@
 <?           if (clients.hasOwnProperty(email)){ ?>
                <tr>
                  <td>
-                   <input type='checkbox' value='<?= email ?>' id='<?= email ?>' checked='true'/> 
+                   <input type='checkbox' value='<?= email ?>' id='<?= email ?>' checked='true'/>
                  </td>
                  <td>
                    <label for='<?= email ?>'> <?= clients[email].names.join(', ');?></label>
@@ -27,30 +40,29 @@
                </tr>
 <?          } ?>
 <?        } ?>
-        </table>  
-        <p> 
+        </table>
+        <p>
           <label><b>Předmět</b></label>
         </p>
-          <textarea cols='80' rows='1' disabled='true' ><?= 'Rozpis pro týden ' + getProp('week'); ?></textarea>
-        <p> 
+          <textarea cols='80' rows='1' disabled='true' ><?= 'Rozpis pro týden ' + opts.week; ?></textarea>
+        <p>
           <label><b>Zpráva</b></label>
         </p>
-        <textarea name='textArea' id='textArea' cols='80' rows='7'><?= PropertiesService.getScriptProperties().getProperty('defaultMessage_' + sessionId);?></textarea>
+        <textarea name='textArea' id='textArea' cols='80' rows='7'><?= Utils.getProp("email_sender_defaultmessage") || "";?></textarea>
         <p id='submit'>
-          <input class='send' type='submit' value='Odešli rozpisy'>     
+          <input class='send' type='submit' value='Odešli rozpisy'>
         </p>
       </form>
     </div>
     <div id='loading' class='clearDiv'>
       <img id='loader' src='https://6d435c32-a-9809a6ee-s-sites.googlegroups.com/a/domovpromne.cz/rozpisy/loading.gif?attachauth=ANoY7cqOg-5ThZpQYtGVK7N_QZapE3DyACsAQx58jBl_bZSrBiA9Ci-Vro0L6VcqbkEekR4TlTzCkbRFiXISMrGfi50p-WaIjynbNTSTBI4KMuP9Y45rg0uq2fcLtrkRHRgxeUELIzYc-8XFm4cceRBZkcqSTbXEfAXbBVMNDI-Z21zrGYUL_I9x-UDS0B0LGyOn5YyYm_PsQDYCZPO8opla7xLHRWiUNQ%3D%3D&attredirects=0' />
-    </div> 
+    </div>
     <div id='confirmation-content' class='clearDiv' hidden='true'>
-      <p> 
+      <p>
         <b>
           <label id='confirmation'></label>
         </b>
       </p>
-      <pre></pre>  
+      <pre></pre>
     </div>
 </div>
-<?!= include('javascript');?> 

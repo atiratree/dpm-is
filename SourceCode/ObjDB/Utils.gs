@@ -21,3 +21,13 @@ function clearLog_() {
     range2.moveTo(range);
   }
 }
+
+/**
+ * Webapp entry function, returns HTML.
+ *
+ * @param e url parameters setting this webapp's beahviour
+ * @return {Object} HTML page with javascript
+ */
+function doGet(e) {
+  return HtmlService.createTemplate('<p>Authorizace...OK</p>').evaluate();
+}

@@ -67,8 +67,8 @@ function correctDbProtections(employees) {
   var admins = filterByPermission_(employees, Utils.AccessEnums.ADMIN);
   var leaders = filterByPermission_(employees, Utils.AccessEnums.LEADER);
   var administration = filterByPermission_(employees, Utils.AccessEnums.ADMINISTRATIVE);
-  var leadersSheets = ['Assistants', 'GroupActors', 'GroupLeaders', 'Tariffs', 'Clients', 'Triggers', 'GroupClients', 'Events'];
-  var administrationSheets = ['Tariffs'];
+  var leadersSheets = ['Assistants', 'GroupActors', 'GroupLeaders', 'Tariffs', 'Clients', 'Triggers', 'GroupClients', 'Events', 'KeyStore'];
+  var administrationSheets = ['Tariffs', 'KeyStore'];
 
   Utils.openSpreadsheet(Utils.manager.dbID).getSheets().forEach(function(sheet) {
     var sheetName = sheet.getName();

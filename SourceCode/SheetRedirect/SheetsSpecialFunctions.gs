@@ -2,16 +2,16 @@
  * Sets to user prop whether to check integrity of sheet
  * @param bool if true checks integrity
  */
-function setIntegrityCheck(bool) {
-  setScriptProp('integrity', bool);
+function setIntegrityCheck(boolVal) {
+  setProp('sheets_redirect_integrity', boolVal);
 }
 
 /**
  * Sets to user prop whether to check duplicates in sheet
  * @param bool if true checks duplicates
  */
-function setDuplicateCheck(bool) {
-  setScriptProp('duplicates', bool);
+function setDuplicateCheck(boolVal) {
+  setProp('sheets_redirect_duplicates', boolVal);
 }
 
 /**

@@ -1,6 +1,6 @@
 <!-- Form insides, which are going to be inserted into main.html -->
 
-<? var user = getData('updateObj') ?>
+<? var user = updateObj ?>
 <? var fullUpdate = Utils.hasAccessTo(Utils.getUserPermission(user.email), Utils.PermissionTypes.EDIT);?>
 <p>
   <label for='nameBox'>Jméno</label>
@@ -12,24 +12,24 @@
   <label for='emailBox'>Email</label>
   <br>
   <input id='emailBox' type='email' name='emailBox' required='true' value='<?!= user.email ?>' placeholder='Email uživatele' readonly >
-  <label id='emailErr' class='error' for='emailBox'  hidden='true'></label> 
+  <label id='emailErr' class='error' for='emailBox'  hidden='true'></label>
 </p>
 <p>
   <label for='nickBox'>Přezdívka</label>
   <br>
-  <input id='nickBox' type='text' name='nickBox' required='true'  maxlength='4' value='<?!= user.nick ?>' placeholder='Přezdívka uživatele' readonly> 
+  <input id='nickBox' type='text' name='nickBox' required='true'  maxlength='4' value='<?!= user.nick ?>' placeholder='Přezdívka uživatele' readonly>
   <label id='nickErr' class='error' for='nickBox'  hidden='true'></label>
 </p>
 <p>
   <label for='colorPicker'>Barva uživatele</label>
   <br>
-  <input id='colorPicker' type='color' name='colorPicker' value='<?!= user.color ?>' required='true'  <?!= fullUpdate ? '' : 'onclick="return false"'?> > 
-  <label id='colorErr' class='error' for='emailBox'  hidden='true'></label> 
+  <input id='colorPicker' type='color' name='colorPicker' value='<?!= user.color ?>' required='true'  <?!= fullUpdate ? '' : 'onclick="return false"'?> >
+  <label id='colorErr' class='error' for='emailBox'  hidden='true'></label>
 </p>
 <p>
   <label for='selectBox'>Typ uživatele</label>
   <br>
-  <select id='selectBox' name='selectBox' required='true' ></select> 
+  <select id='selectBox' name='selectBox' required='true' ></select>
   <label id='selectErr' class='error' for='selectBox'  hidden='true'></label>
 </p>
 <div id='groups'>
@@ -38,7 +38,7 @@
       <label for='leadsGroupsBox'>Vede skupiny</label>
       <label id='groupLeaderErr' class='error' for='leadsGroupsBox'  hidden='true'></label>
     </p>
-    <div id='leadsGroupsOptions'></div>  
+    <div id='leadsGroupsOptions'></div>
   </div>
   <div id='isInGroups'>
     <p class='clearDiv'>

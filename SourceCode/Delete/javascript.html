@@ -1,28 +1,44 @@
 <!-- Javascript which is served with main.html. It's purpose is to call delete, and resolve success or failure  -->
 <script src='//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js'></script>
 <script>
+function getMetaOpts() {
+  var metas = document.getElementsByTagName('meta');
+  var acc = {};
+
+  for (let i = 0; i < metas.length; i++) {
+    var fullName = metas[i].getAttribute('name');
+    if (fullName && fullName.startsWith("dpm:")) {
+      var name = fullName.slice(4);
+      acc[name] = metas[i].getAttribute('content');
+    }
+  }
+
+  return acc;
+}
+
 $(document).ready(function() {
   $('#submitButton').click(function() {
     $('#bottomDiv').hide();
     $('#loading').show();
 
+    var opts = getMetaOpts();
     google.script.run.withSuccessHandler(function(obj) {
-      resolveResponse(obj);
-    }).del();
+      resolveResponse(obj, opts);
+    }).del(opts);
 
     return false;
   });
 });
 
-function resolveResponse(obj) {
+function resolveResponse(obj, opts) {
   $('#loading').hide();
   if (obj.err) {
     $('#err').text(obj.err);
     $('#errorDiv').show();
   } else {
-    google.script.run.withSuccessHandler(function(obj) {
-      $('#finalMessage').text(obj ? '\nKe zrušení práv uživatele dojde nejzpoději do 2 hodin.\nV akutním případě kontaktujte super admina.\n' : '');
-    }).hasSitesPermission();
+    if (opts.instance === "user") {
+       $('#finalMessage').text(obj ? '\nKe zrušení práv uživatele dojde nejzpoději do 2 hodin.\nV akutním případě kontaktujte super admina.\n' : '');
+    }
     $('#message').text(obj.message);
     $('#bottomDiv').show();
     $('#submitButton').hide();

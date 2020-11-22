@@ -5,7 +5,8 @@
  */
 function resolveTriggers(id) {
   try {
-    if (Utils.getUserPermission() == Utils.AccessEnums.ADMIN || Utils.getUserPermission() == Utils.AccessEnums.LEADER) {
+    var userPerm = Utils.getUserPermission();
+    if (userPerm == Utils.AccessEnums.ADMIN || userPerm == Utils.AccessEnums.LEADER) {
       var myGroupsWithEditAttributs = Utils.getMyGroupsWithEditAtrs();
       resolveMisplacedTriggers(myGroupsWithEditAttributs, 'edit', 'editMainSheet');
       resolveMisplacedTriggers(myGroupsWithEditAttributs, 'open', 'onOpenSheet');

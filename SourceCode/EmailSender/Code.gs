@@ -2,28 +2,34 @@
  * Serves HTML
  *
  * @param e url parameters setting this webapp's beahviour
- * @return HTML page with javascript
+ * @return {Object} HTML page with javascript
  */
 function doGet(e) {
   var html;
   try {
-    setRuntimeProperties(e.parameter);  
-    
-    if (e.parameter.year && e.parameter.week && e.parameter.sheetId) {
+    var opts = {
+      type: e.parameter.type,
+      year: e.parameter.year,
+      week: e.parameter.week,
+      sheetId: e.parameter.sheetId,
+      group: e.parameter.group,
+    };
+
+    if (opts.year && opts.week && opts.sheetId) {
       if (!Utils.hasAccessTo(Utils.AccessEnums.EMAIL_SENDER, Utils.PermissionTypes.VIEW)) {
         html = createPresentableHTML('<p>NO_PERMISSION</p>', 'string');
       }else{
-        initialize();
-        html = createPresentableHTML('main', 'file', 'Výběr emailů');
+        initialize(opts);
+        html = createPresentableHTML('main', 'file', 'Výběr emailů', opts);
       }
     } else {
       html = createPresentableHTML('<p>Authorizace...OK</p>', 'string');
     }
   } catch (error) {
     Utils.logError('[sheets redirect] ' + JSON.stringify(error));
-    html = createPresentableHTML('<p>Server je zaneprázdněn (mohlo dojít k dosáhnutí limitu u Google služby). Chvíly počkejte a zkuste znovu.</p>', 'string');    
-  } 
-  
+    html = createPresentableHTML('<p>Server je zaneprázdněn (mohlo dojít k dosáhnutí limitu u Google služby). Chvíly počkejte a zkuste znovu.</p>', 'string');
+  }
+
   return html;
 }
 
@@ -31,41 +37,44 @@ function doGet(e) {
 /**
  *  Init clients array to manager
  *
+ * @param {Object} opts received URL params
  */
-function initialize(){
-  var map = {}; 
-  var clients = Utils.findClients([], {}, getProp('group')).filter(function(item){
-    return item.email != null && item.email != '';    
+function initialize(opts){
+  var map = {};
+  var clients = Utils.findClients([], {}, opts.group).filter(function(item){
+    return item.email != null && item.email != '';
   });
-  
+
   clients = Utils.sort(clients, 'name');
-  
-  clients.forEach(function(item){   
+
+  clients.forEach(function(item){
     var key = item.email;
     var value = item.name;
-    
+
     if(map[key]){
-      map[key].names.push(value);      
+      map[key].names.push(value);
     }else{
       map[key] = {names: [value]};
     }
-  }); 
-  
-  manager.ss = SpreadsheetApp.openById(getProp('sheetId'));
-  manager.clients = map; 
+  });
+
+  manager.ss = SpreadsheetApp.openById(opts.sheetId);
+  manager.clients = map;
 }
 
 /**
  * Processes form and returns result.
  *
  * @param formObject Form object
- * @return object which designates success or failure
+ * @return {Object} object which designates success or failure
  */
 function processForm(formObject) {
   try {
-    switch (getProp('type')) {
+    var opts = JSON.parse(formObject.opts);
+    delete formObject.opts;
+    switch (opts.type) {
       case 'client':
-        return processClients(formObject);
+        return processClients(formObject, opts);
       default:
         return null;
     }
@@ -76,44 +85,4 @@ function processForm(formObject) {
       message: error.message
     }
   }
-}
-/**
- * Includes HMTL from a file. *just shortcut a for a long command
- *
- * @param filename name of file to be included
- * @return string of html
- */
-function include(filename) {
-  return HtmlService.createHtmlOutputFromFile(filename).getContent();
-}
-
-/**
- * Evaluates GAS scriptlets and includes HMTL from a file. *just shortcut a for a long command
- *
- * @param filename name of file to be included
- * @return string of result html
- */
-function includeAndEvaluate(filename) {
-  return HtmlService.createTemplateFromFile(filename).evaluate().getContent();
-}
-
-/**
- * Creates presentable HTML for a browser
- * *cannot be run from library, becaouse of filename
- *
- * @param content depends on a sourceType, if sourceType isn't string, it includes file with name == content
- * @param sourceType is string indicating values 'string'/'file' for source type, takes file as default for any other value
- * @param title title of a window
- * @return string of html
- */
-function createPresentableHTML(content, sourceType, title) {
-  if (title == null) {
-    title = '';
-  }
-
-  if (sourceType === 'string') {
-    return HtmlService.createTemplate(content).evaluate().setSandboxMode(HtmlService.SandboxMode.IFRAME).setTitle(title);
-  }
-
-  return HtmlService.createTemplateFromFile(content).evaluate().setSandboxMode(HtmlService.SandboxMode.IFRAME).setTitle(title);
 }

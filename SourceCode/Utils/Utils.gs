@@ -1,92 +1,11 @@
 /**
- * @return cached ScriptProperties (Might be invalid)
+ * Webapp entry function, returns HTML.
  *
- *  31.5.2020 Getting error "Service invoked too many times for one day: properties get." So inlining properties here.
- *            Cache (this object) needs to be updated manually.
-              Also synchronize ThisPropertiesVersion manually.
+ * @param e url parameters setting this webapp's beahviour
+ * @return {Object} HTML page with javascript
  */
-function getCachedScriptProperties() {
-  return {
-    Site: 'XXXX-XXXX',
-    TimetablesID: 'XXXX-XXXX',
-    ThisPropertiesVersion: '3',
-    DatabaseSSid: 'XXXX-XXXX',
-    correctionsLogSize: '10000',
-    errorsLogSize: '20000',
-    logSize: '200000',
-    LogSSid: 'XXXX-XXXX',
-    CacheTime: '300000',
-    SpecialResourceID: 'XXXX-XXXX',
-    storageID: 'XXXX-XXXX',
-  };
-}
-
-/**
- * Check Validity of Script Properties Cache
- * Writes error to log if the Cache is invalid
- */
-function checkCachedPropertiesValidity(){
-  var oldVersion = getCachedScriptProperties()['ThisPropertiesVersion'];
-  var newVersion = PropertiesService.getScriptProperties().getProperty('ThisPropertiesVersion');
-  if (oldVersion < newVersion) {
-    logError("Script Properties Cache Version " + oldVersion + " is invalid! Please update the cache to the newer version of " + newVersion);
-  }
-}
-
-/**
- * @param key key for object in ScriptProperties
- * @return string from ScriptProperties
- */
-function getScriptProp_(key) {
-  const property = getCachedScriptProperties()[key];
-  return property == null ? PropertiesService.getScriptProperties().getProperty(key) : property;
-}
-
-/**
- * @param key key of object in UserProperties
- * @return string from UserProperties
- */
-function getUserProp(key) {
-  return PropertiesService.getUserProperties().getProperty(key);
-}
-
-/**
- * @param key key of object in UserProperties
- * @return object from UserProperties
- */
-function getUserObjProp(key) {
-  var obj = PropertiesService.getUserProperties().getProperty(key)
-  return obj ? JSON.parse(obj) : '';
-}
-
-/**
- * @param key key for object to be set in UserProperties
- * @param value string to be set
- */
-function setUserProp(key, value) {
-  PropertiesService.getUserProperties().setProperty(key, value);
-}
-
-/**
- * @param key key for object to be set in UserProperties
- * @param value object to be set
- */
-function setUserObjProp(key, value) {
-  PropertiesService.getUserProperties().setProperty(key, JSON.stringify(value));
-}
-
-/**
- * @param obj object with multiple properties to be set in UserProperties
- */
-function setUserProps(obj) {
-  PropertiesService.getUserProperties().setProperties(obj);
-}
-
-/**
- * @param key of object to delete in UserProperties
- */
-function deleteProp(key) {
-  PropertiesService.getUserProperties().deleteProperty(key);
+function doGet(e) {
+  return HtmlService.createTemplate('<p>Authorizace...OK</p>').evaluate();
 }
 
 /**
@@ -232,5 +151,4 @@ function openSpreadsheet(id){
     Utilities.sleep(manager.sleepConstantForOpenSSBug);
     return SpreadsheetApp.openById(id);
   }
-
 }

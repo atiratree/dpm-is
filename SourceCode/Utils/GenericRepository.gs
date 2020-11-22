@@ -4,11 +4,12 @@
  *
  * @param {string} sheet sheet/table where the object will be stored
  * @param obj object with key/value  pairs that will be inserted to database
+ * @param {boolean} disableLogging
  * @return {boolean} indicating success or failure.
  */
-function repCreate_(sheet, obj) {
+function repCreate_(sheet, obj, disableLogging) {
   var num;
-  
+
   if (sheet == null || obj == null) return false;
 
   lock_()
@@ -21,7 +22,7 @@ function repCreate_(sheet, obj) {
     unlock_();
   }
 
-  if (num) {
+  if (num && !disableLogging) {
     var name = obj.name ? obj.name : JSON.stringify(obj);
     log(name + ' added to ' + sheet);
   }
@@ -35,11 +36,12 @@ function repCreate_(sheet, obj) {
  * @param {string} sheet sheet/table from which the object will be removed
  * @param obj object with key/value  pairs that will be removed from database
  * @param {boolean} hasMoreInstances indicates whether deleted object can have more instances for deletion
+ * @param {boolean} disableLogging
  * @return {boolean} indicating success or failure.
  */
-function repDelete_(sheet, obj, hasMoreInstances) {
+function repDelete_(sheet, obj, hasMoreInstances, disableLogging) {
   var num;
-  
+
   if (sheet == null || obj == null) return false;
 
   lock_();
@@ -52,7 +54,7 @@ function repDelete_(sheet, obj, hasMoreInstances) {
     unlock_();
   }
 
-  if (num) {
+  if (num && !disableLogging) {
     var name = obj.name ? obj.name : JSON.stringify(obj);
     log(name + ' deleted from ' + sheet);
   }
@@ -70,11 +72,12 @@ function repDelete_(sheet, obj, hasMoreInstances) {
  * @param {string} sheet sheet/table where the object is stored
  * @param obj object with key/value  pairs that will be updated in database
  * @param cond object with key/value  pairs that will be used to find columns of database which will be replaced
+ * @param {boolean} disableLogging
  * @return {boolean} indicating success or failure.
  */
-function repUpdate_(sheet, obj, cond) {
+function repUpdate_(sheet, obj, cond, disableLogging) {
   var num;
-  
+
   if (sheet == null || obj == null || cond == null) return false;
 
   lock_();
@@ -87,7 +90,7 @@ function repUpdate_(sheet, obj, cond) {
     unlock_();
   }
 
-  if (num) {
+  if (num && !disableLogging) {
     var cond = cond.name ? cond.name : JSON.stringify(cond);
     log(cond + ' updated to ' + JSON.stringify(obj) + ' in ' + sheet);
   }
@@ -112,16 +115,16 @@ function repUpdate_(sheet, obj, cond) {
  */
 function repFind_(sheet, fields, restrictions, limit) {
   var rows;
-  
+
   if (sheet == null) return [];
 
-  if (!(fields instanceof Array)) {
+  if (!Array.isArray(fields)) {
     fields = [];
   }
   if (restrictions == null) {
     restrictions = {};
   }
-  
+
   // lock_();
   try{
     rows = objDB.getRows(manager.myDB, sheet, fields, restrictions, limit);
