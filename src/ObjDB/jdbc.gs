@@ -245,7 +245,7 @@ jdbc.prototype.deleteRow = function(table, cond) {
   return this.update(query);
 }
 
-/** 
+/**
  *  Convert obj to string for SET query part
  *  @private
  *  @parameter {object} obj object to be converted

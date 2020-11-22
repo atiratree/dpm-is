@@ -32,7 +32,7 @@ var ss = function(ssId) {
       this.ss = SpreadsheetApp.openById(ssId);
     }catch(x){
       Utilities.sleep(4500);// Bug "Document 1xx is missing (perhaps it was deleted?)"
-      this.ss = SpreadsheetApp.openById(ssId);     
+      this.ss = SpreadsheetApp.openById(ssId);
     }
     this.cache = {
       table: [],
@@ -309,8 +309,8 @@ ss.prototype.setRow = function(tData, fields, maxIdx, r) {
 }
 
 /**
- *  Convert cond parameter to list of index/array pairs, 
- *  keys are replaced by index of key in headers and 
+ *  Convert cond parameter to list of index/array pairs,
+ *  keys are replaced by index of key in headers and
  *  values are made arrays, if they are not
  *  @private
  *  @param {object} cond key/values pairs
