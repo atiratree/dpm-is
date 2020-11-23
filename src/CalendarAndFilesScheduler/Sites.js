@@ -4,7 +4,8 @@
  */
 function correctSitesRights(employees) {
   var emails = Utils.convertObjectsToArrayByProperty(employees, 'email');
-  var site = SitesApp.getSiteByUrl(Utils.manager.site);
+  // OLD deprecated site - still refresh permissions
+  var site = SitesApp.getSiteByUrl("https://sites.google.com/a/domovpromne.cz/rozpisy");
 
   site.getOwners().forEach(function(user) {
     emails.splice(emails.indexOf(user.getEmail()), 1);
