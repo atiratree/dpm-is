@@ -13,7 +13,7 @@ function doGet(e) {
     } else if (Utils.getUserPermission() == 0 || Utils.getUserPermission() == 1 || Utils.getUserPermission() == 2) {
       html = createPresentableHTML('main', 'file', 'Generování statistiky');
     } else {
-      html = createPresentableHTML('<p>NO_PERMISSION</p>', 'string');
+      html = createPresentableHTML('<p>Nemáte patřičné oprávnění pro zobrazení této stránky.</p>', 'string');
     }
   } catch (error) {
     html = createPresentableHTML('<p>SERVER_ERROR</p>', 'string');
