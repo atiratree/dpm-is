@@ -1,5 +1,5 @@
 /**
- * Corrects database permissions for all empoyees
+ * Corrects old site permissions for all empoyees
  * @param employees object of all employees
  */
 function correctSitesRights(employees) {
