@@ -72,7 +72,7 @@ function resolvePermissionAndGetHTML(instance) {
  * @return html page with NO PERMISSION message
  */
 function getNoPermissionHTML_() {
-  return createPresentableHTML('<p>NO_PERMISSION</p>', 'string');
+  return createPresentableHTML('<p>Nemáte patřičné oprávnění pro zobrazení této stránky.</p>', 'string');
 }
 
 /**

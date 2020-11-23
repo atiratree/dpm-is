@@ -17,7 +17,7 @@ function doGet(e) {
 
     if (opts.year && opts.week && opts.sheetId) {
       if (!Utils.hasAccessTo(Utils.AccessEnums.EMAIL_SENDER, Utils.PermissionTypes.VIEW)) {
-        html = createPresentableHTML('<p>NO_PERMISSION</p>', 'string');
+        html = createPresentableHTML('<p>Nemáte patřičné oprávnění pro zobrazení této stránky.</p>', 'string');
       }else{
         initialize(opts);
         html = createPresentableHTML('main', 'file', 'Výběr emailů', opts);
