@@ -2,7 +2,7 @@
 var htmlManager = {
   divPart: '<div style="text-align:center"><a  onclick="',
   deleteScriptUrl: 'https://script.google.com/a/domovpromne.cz/macros/s/AKfycbwzywIGGArhKU0A7Ts7G8BauQbY6m-aK2vwvTBZSuojJjevQjEL/exec',
-  editScriptUrl: 'https://script.google.com/a/macros/domovpromne.cz/s/AKfycbyOxv6MM7opYp1Kwy8dVJdJtpHACC-voNmMhbDUk0M64YQgc2hW/exec',
+  editScriptUrl: 'https://script.google.com/a/domovpromne.cz/macros/s/AKfycbxqQmry9tdVC6lC14WjPPaJLSKKsi0XGjkoiOBfp_JiUVNO741n/exec',
   deleteButtonStyle: '" style="color:white!important;text-decoration:none;background-color:rgb(209,72,54); \
     background-image:-webkit-linear-gradient(top,rgb(221,75,57),rgb(209,72,54)); \
     border:1px solid rgba(0,0,0,0);border-radius:2px;display:inline-block;font-size:11px; \

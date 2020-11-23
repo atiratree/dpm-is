@@ -1,6 +1,5 @@
 function getUtilsProperties() {
   return {
-    Site: 'https://sites.google.com/a/domovpromne.cz/rozpisy',
     TimetablesID: '0B9CMdZXOlRtCNUkxSFZQTS1BWjQ',
     ThisPropertiesVersion: '3',
     DatabaseSSid: '1dBq8U83mrkX-iQLi0oKpoSgDkYxvvYABMrefL5IOfYg',
@@ -41,7 +40,6 @@ var manager = {
   specialResourceID: getUtilsProp_('SpecialResourceID'),
   logId: getUtilsProp_('LogSSid'),
   myDB: ObjDB.open(getUtilsProp_('DatabaseSSid')),
-  site: getUtilsProp_('Site'),
   errSheet: openSpreadsheet(getUtilsProp_('LogSSid')).getSheetByName('errors'),
   logSheet: openSpreadsheet(getUtilsProp_('LogSSid')).getSheetByName('log'), //LogSSid
   correctionSheet: openSpreadsheet(getUtilsProp_('LogSSid')).getSheetByName('corrections'),

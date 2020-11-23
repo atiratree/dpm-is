@@ -9,9 +9,10 @@ var getInstance = function(e) {
 }
 
 /**
- * Serves HTML according to the Sites page it is embedded in.
+ * Webapp entry function, returns HTML.
  *
- * @return HTML page with javascript
+ * @param e url parameters setting this webapp's beahviour
+ * @return {Object} HTML page with javascript
  */
 function doGet(e) {
   var instance = getInstance(e)

@@ -9,6 +9,8 @@ function getResource(instance, resource) {
   switch (instance) {
     case 'client':
       switch (resource) {
+        case 'title':
+          return 'Přidat klienta';
         case 'nextActionString':
           return 'Přidej dalšího klienta';
         case 'form':
@@ -20,6 +22,8 @@ function getResource(instance, resource) {
       }
     case 'event':
       switch (resource) {
+        case 'title':
+          return 'Přidat událost';
         case 'nextActionString':
           return 'Přidej další událost';
         case 'form':
@@ -29,6 +33,8 @@ function getResource(instance, resource) {
       }
     case 'employee':
       switch (resource) {
+        case 'title':
+          return 'Přidat uživatele';
         case 'nextActionString':
           return 'Přidej dalšího uživatele';
         case 'form':
@@ -40,6 +46,8 @@ function getResource(instance, resource) {
       }
     case 'tarrif':
       switch (resource) {
+        case 'title':
+          return 'Přidat pásmo';
         case 'nextActionString':
           return 'Přidej další pásmo';
         case 'form':
@@ -49,6 +57,8 @@ function getResource(instance, resource) {
       }
     case 'group':
       switch (resource) {
+        case 'title':
+          return 'Přidat skupinu';
         case 'nextActionString':
           return 'Přidej další skupinu';
         case 'form':

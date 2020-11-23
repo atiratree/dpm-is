@@ -45,6 +45,8 @@ function processUserObj(formObject, opts) {
     case Utils.AccessEnums.ADMIN:
     case Utils.AccessEnums.LEADER:
       user.leadsGroups = Utils.validateGroups(formObject,errorMsg,'groupLeader',oldUser);
+      user.isInGroups =  Utils.validateGroups(formObject,errorMsg,'isInGroup',oldUser);
+      break;
     case Utils.AccessEnums.ASSISTANT:
       user.isInGroups =  Utils.validateGroups(formObject,errorMsg,'isInGroup',oldUser);
       break;

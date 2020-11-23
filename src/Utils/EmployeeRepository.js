@@ -32,12 +32,6 @@ function deleteEmployee(user) { // *wrapper function: treats assistant and emplo
   var result = deleteEmployee_(user) || deleteAssistant_(user);
 
   if (result) {
-    if (isSuperAdmin()) {
-      var site = SitesApp.getSiteByUrl(manager.site);
-      site.removeViewer(user.email);
-      site.removeEditor(user.email);
-    }
-
     deleteGroupLeader({
       employeeEmail: user.email
     });
