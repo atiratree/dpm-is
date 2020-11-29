@@ -58,15 +58,17 @@ function getUserPermission(email) {
  * @return {boolean} true if has access, false otherwise
  */
 function hasAccessToSomeOf(accessEnumArray, permissionType) {
+  if (accessEnumArray == null || !Array.isArray(accessEnumArray) || permissionType == null) {
+    return false;
+  }
+
   var rights = getMyAccessRights(permissionType);
   var result = false;
 
-  if (Array.isArray(accessEnumArray)) {
-    for (var i = 0; i < accessEnumArray.length; i++) {
-      if (rights.indexOf(accessEnumArray[i]) > -1) {
-        result = true;
-        break;
-      }
+  for (var i = 0; i < accessEnumArray.length; i++) {
+    if (rights.indexOf(accessEnumArray[i]) > -1) {
+      result = true;
+      break;
     }
   }
 
@@ -81,6 +83,10 @@ function hasAccessToSomeOf(accessEnumArray, permissionType) {
  * @return {boolean} true if has access, false otherwise
  */
 function hasAccessTo(accessEnum, permissionType) {
+  if (accessEnum == null || permissionType == null) {
+    return false;
+  }
+
   return getMyAccessRights(permissionType).indexOf(accessEnum) > -1;
 }
 
@@ -91,7 +97,13 @@ function hasAccessTo(accessEnum, permissionType) {
  * @return {Array<number>} array of accessable resources
  */
 function getMyAccessRights(type) {
-  var userPerm = getUserPermission();
+  var userPerm;
+
+  try {
+    userPerm = getUserPermission();
+  } catch(ignored) {
+    return [];
+  }
 
   var fullRights = [
     AccessEnums.ADMIN,

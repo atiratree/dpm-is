@@ -92,5 +92,5 @@ var manager = {
   nicks: null,
   defaultTariff: null,
   events: null,
-  emailSenderScriptURL: 'https://script.google.com/a/macros/domovpromne.cz/s/AKfycbzZMQ21z3CsjzoDGMFNkUMbFFdupbjfqhQX1Cv6n1UiZkxDd1Q/exec'
+  emailSenderScriptURL: 'https://script.google.com/a/domovpromne.cz/macros/s/AKfycbwTpo-h0iBzE42XLAGRuzImUYpQecjdbsFPko-rD9JeZMCLYWk/exec'
 }

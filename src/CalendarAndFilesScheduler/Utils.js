@@ -6,13 +6,13 @@
  * @param week week number to be set in calendar
  */
 function refreshCalendar(day, till, week) {
-  var calApp = CalendarApp.getCalendarById('domovpromne.cz_r3otuc5vovmcvu40a35ik8p6gk@group.calendar.google.com');
+  var calApp = CalendarApp.getCalendarById('c_pvp3db1e0e4mi5n3lbmq8im9eo@group.calendar.google.com');
   var searchOption = 'Týden ' + week;
   var events = calApp.getEvents(day, till, {
     search: searchOption
   });
   if (events.length == 0) {
-    var desc = '<a href="https://script.google.com/a/macros/domovpromne.cz/s/AKfycbzR_O1qVLz5V360merzlzYfSSnfN2TDdSO9-ZI9z44SQWl8fpEk/exec?week=' + week +
+    var desc = '<a href="https://script.google.com/a/domovpromne.cz/macros/s/AKfycbwQ1O9TE3MTDQj3P5svSwqOl9bwJwyn0PRac0nirKQJazKeDrU/exec?week=' + week +
       '&year=' + Utils.getWeeksYear(day) + '">Rozpis</a>';
     var ev = calApp.createEventFromDescription(searchOption + ' ' + Utils.getFormatedDate(day) + '-' + Utils.getFormatedDate(till));
     ev.setDescription(desc);

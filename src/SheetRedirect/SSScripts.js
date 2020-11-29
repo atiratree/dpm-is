@@ -19,7 +19,7 @@ function refreshAssistantsSheets(spreadSheet, actors, eventsNames) {
     return;
   }
   actors = actors = Utils.sort(actors,'nick');
-  
+
   actors.forEach(function(item) {
     var sheet = spreadSheet.getSheetByName(item.nick);
     if (sheet == null) {
@@ -34,7 +34,7 @@ function refreshAssistantsSheets(spreadSheet, actors, eventsNames) {
         sheet.deleteRows(61, 1000 - 60);
       } catch (ex) { // if google changed default limits of sheet catch exception
         Utils.logError(ex);
-      }   
+      }
       Utils.prepareSheet(sheet, new Date(sheetRecord.weekStarts), messages);
     }
     Utils.copyDataBetweenSheets(mainSheet, sheet, data, eventsNames, false);

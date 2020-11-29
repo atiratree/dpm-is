@@ -61,6 +61,7 @@ function createDayRange_(sheet, row, block, numberOfRows, weekDayString) {
   var timesRange = sheet.getRange(row + 2, block - 5, numberOfRows, 2);
   var noteRange = sheet.getRange(row + 2 + numberOfRows, block - 5, 1, 6);
 
+  sheet.getRange(row, block - 5, 1, 1).setNumberFormat('@');
   sheet.getRange(row, block - 5, 1, 1).setValue(weekDayString);
   row++;
   sheet.getRange(row, block - 5, 1, 1).setValue('Od');
