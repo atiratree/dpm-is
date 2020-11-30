@@ -1,4 +1,4 @@
-var numberOfWeeksToAdd = 12;
+const numberOfWeeksToAdd = 12;
 /**
  * automatic script which reloads calendar and creates missing Schedule Sheets
  */
@@ -27,6 +27,7 @@ function refreshAll() {
 function runEveryTwoHours() {
   try {
     var employees = Utils.findEmployees(['email', 'permission']);
+    correctDBandLogFileProtections(employees);
     correctDbProtections(employees);
     Utils.logCorrection('Corrected DB protections.');
     correctProtections();

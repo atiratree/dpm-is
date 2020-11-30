@@ -77,7 +77,7 @@ function validate(errorResult, input, processObj) {
         }
         break;
       case 'isNotDatabaseOwner':
-        if (isSuperAdmin(input)) {
+        if (isMainAdmin(input)) {
           setError_(errorResult, actionErrors[i]);
         }
         break;

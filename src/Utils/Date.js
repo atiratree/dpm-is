@@ -195,5 +195,5 @@ function getMonthsNames() {
  * @return {Array<string>} array of ordered string of days in week(starting on monday) in Czech language
  */
 function getWeekDaysNames() {
-  return ['Pondělí', 'Uterý', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota', 'Neděle'];
+  return ['Pondělí', 'Úterý', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota', 'Neděle'];
 }

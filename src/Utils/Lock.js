@@ -34,14 +34,12 @@ function unlock_() {
   }
 }
 
-//functions for debugging purposes
+function measureTime() {
+  const start = new Date().valueOf();
 
-function clearLog_(logSheet) {
-  var sheet = logSheet ? logSheet : manager.errSheet;
-  sheet.clear();
-}
-
-function logDebug(msg) {
-  logToSheet_(msg, manager.logSheet, true, manager.logSize);
-  logToSheet_(msg, manager.errSheet, true, manager.errorsLogSize);
+  return () => {
+    const after = new Date().valueOf();
+    const diff = after - start;
+    return diff;
+  }
 }

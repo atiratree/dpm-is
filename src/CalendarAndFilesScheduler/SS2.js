@@ -3,7 +3,7 @@
  *
  * @param day monday of week to be set
  * @param week week to be refreshed
- * @param data object with data  
+ * @param data object with data
  */
 function refreshSpreadSheet(day, week, data) {
   var files = data.files;
@@ -28,6 +28,7 @@ function refreshSpreadSheet(day, week, data) {
       var sheet = ss.getActiveSheet();
 
       file.setSharing(DriveApp.Access.DOMAIN_WITH_LINK, DriveApp.Permission.EDIT);
+      file.setShareableByEditors(false);
 
       sheet.setName('Rozpis');
       Utils.prepareSheet(sheet, day, ['Rozpis služeb tým ' + group, 'týden č. ' + week, findObj.year]);

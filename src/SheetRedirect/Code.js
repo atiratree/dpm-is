@@ -8,6 +8,11 @@ function doGet(e) {
   var html;
   try {
     if (e.parameter.year && e.parameter.week) {
+      try {
+        Utils.getUserPermission()
+      } catch (ignored) {
+        html = createPresentableHTML('<p>Nemáte patřičné oprávnění pro zobrazení této stránky.</p>', 'string');
+      }
       html = createPresentableHTML('redirect', 'file', 'Výběr rozpisu', {
         year: e.parameter.year,
         week: e.parameter.week

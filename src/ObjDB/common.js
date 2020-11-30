@@ -173,6 +173,4 @@ function deleteRow(handler, table, cond) {
 
 function logError_(e) {
   logException_(e);
-  //Logger.log( '%s in line %s: %s', e.name, e.lineNumber, e.message );
-  //Logger.log( e.stack.match( /\([^\)]*\)/g ).reverse().join(' > ').replace( /[\(\)]/g, ''));
 }

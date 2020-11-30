@@ -1,5 +1,5 @@
 /**
- * Serves HTML of refresh button for super admin only, this script can run only as super admin
+ * Serves HTML of refresh button for main admin only, this script can run only as main admin
  *
  * @return {Object} HTML page with javascript
  */

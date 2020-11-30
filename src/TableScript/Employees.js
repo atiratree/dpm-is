@@ -56,7 +56,7 @@ function getEmployeesTable() {
  * @return true if deletable
  */
 function isDeletable_(employee, accessRights) {
-  return accessRights.indexOf(employee.permission) > -1 && Utils.getUserEmail() !== employee.email && !Utils.isSuperAdmin(employee.email);
+  return accessRights.indexOf(employee.permission) > -1 && Utils.getUserEmail() !== employee.email && !Utils.isMainAdmin(employee.email);
 }
 
 /**
@@ -78,9 +78,9 @@ function isEditable_(employee, accessRights, canEditGroups) {
  * @param allPermissions access rights of active user
  * @return name of employee role
  */
-function getPositionName_(employee, allPermissions) { //Super Admin has same rights as Admin, his only speciality is that he can't be deleted
-  var result = Utils.isSuperAdmin(employee.email) ? [{
-    name: 'Super Admin'
+function getPositionName_(employee, allPermissions) { //Main Admin has same rights as Admin, his only speciality is that he can't be deleted
+  var result = Utils.isMainAdmin(employee.email) ? [{
+    name: 'Main Admin'
   }] : allPermissions.filter(function(obj) {
     return obj.permission == employee.permission;
   });

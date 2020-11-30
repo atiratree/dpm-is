@@ -23,26 +23,26 @@ function resolveTriggers(id) {
 }
 
 /**
- * If spreadsheet doesn't have any triggers assigned, this function assigns trigger to active user. 
+ * If spreadsheet doesn't have any triggers assigned, this function assigns trigger to active user.
  * If trigger capacity reaches maximum, it tries to delete oldest trigger this function assigned.
  *
  * @param ss spreadsheet for setting triggers
  */
-function resolveOnTrigger(ss, type, functionName) { 
+function resolveOnTrigger(ss, type, functionName) {
   try {
     var email = Utils.getUserEmail();
     var triggers = Utils.findTriggers([], {
-      sheetId: ss.getId(), 
+      sheetId: ss.getId(),
       type: type
     }, 1);
-    
+
     if (triggers.length > 0) {
       return;
     }
-    
-    var t = ScriptApp.newTrigger(functionName).forSpreadsheet(ss); 
-    t = (type == 'edit') ? t.onEdit().create() : t.onOpen().create(); 
-    
+
+    var t = ScriptApp.newTrigger(functionName).forSpreadsheet(ss);
+    t = (type == 'edit') ? t.onEdit().create() : t.onOpen().create();
+
     try {
       Utils.createTrigger({
         sheetId: t.getTriggerSourceId(),
@@ -52,8 +52,8 @@ function resolveOnTrigger(ss, type, functionName) {
     } catch (x) {
       Utils.logError(x);
     }
-    
-  } catch (x) { // Script can have only 20 triggers and we don't know, if that changes in the future 
+
+  } catch (x) { // Script can have only 20 triggers and we don't know, if that changes in the future
     if (deleteLowestTrigger() > 0) {
       resolveOnTrigger(ss, type, functionName);
     } else {
@@ -71,12 +71,12 @@ function deleteLowestTrigger() {
   var email = Utils.getUserEmail();
   var triggers = ScriptApp.getProjectTriggers();
   var fileTriggers = Utils.findTriggers([], {
-    email: email    
+    email: email
   });
   var lowestTrigger = {
     sheetId: 0,
     emailSequence: 0
-  }; // 0 if no triggers installed 
+  }; // 0 if no triggers installed
 
   fileTriggers.forEach(function(item) {
     if ((item.emailSequence < lowestTrigger.emailSequence || lowestTrigger.emailSequence == 0) && item.emailSequence != 0) {
@@ -106,13 +106,13 @@ function resolveMisplacedTriggers(myGroupsWithEditAttributs, type, functionName)
   var fileTriggers = Utils.convertObjectsToArrayByProperty(Utils.findTriggers([], {
     email: email,
     type: type
-  }), 'sheetId');  
+  }), 'sheetId');
   var triggers = ScriptApp.getProjectTriggers();
   var evType = (type == 'edit') ? ScriptApp.EventType.ON_EDIT : ScriptApp.EventType.ON_OPEN;
-  
+
   for (var j = 0; j < triggers.length; j++) {
     var trig = triggers[j];
-   
+
     if(trig.getHandlerFunction() == functionName && trig.getEventType() == evType) {
       var fileId = trig.getTriggerSourceId();
       var index = fileTriggers.indexOf(fileId);
@@ -125,5 +125,5 @@ function resolveMisplacedTriggers(myGroupsWithEditAttributs, type, functionName)
   }
   fileTriggers.forEach(function(item) {
     Utils.deleteTrigger({sheetId: item, type: type});
-  });  
+  });
 }
