@@ -6,7 +6,7 @@
 
 function log(msg) {
   try {
-    logToSheet_(msg, manager.logSheet, false, manager.logSize);
+    logToSheet_(msg,  openSpreadsheet(getUtilsProp_('LogSSid')).getSheetByName('log'), false, manager.logSize);
   } catch (x) {}
 }
 
@@ -17,7 +17,7 @@ function log(msg) {
  */
 function logError(msg) {
   try {
-    logToSheet_(msg, manager.errSheet, false, manager.errorsLogSize);
+    logToSheet_(msg, openSpreadsheet(getUtilsProp_('ErrorSSid')).getSheetByName('errors'), false, manager.errorsLogSize);
   } catch (x) {}
 }
 
@@ -28,7 +28,7 @@ function logError(msg) {
  */
 function logCorrection(msg) {
   try {
-    logToSheet_(msg, manager.correctionSheet, false, manager.correctionsLogSize);
+    logToSheet_(msg,  openSpreadsheet(getUtilsProp_('LogSSid')).getSheetByName('corrections'), false, manager.correctionsLogSize);
   } catch (x) {}
 }
 
@@ -66,7 +66,7 @@ function logToSheet_(e, sheet, debug, logSize) {
  * @param logSize maximum allowed size of the sheet (should be larger than 10)
  */
 function rollLog_(logSheet, logSize) {
-  var sheet = logSheet ? logSheet : manager.errSheet;
+  var sheet = logSheet ? logSheet : openSpreadsheet(getUtilsProp_('ErrorSSid')).getSheetByName('errors');
   var size = logSize > 10 ? logSize : manager.logSize;
 
   if (sheet.getLastRow() > size) {

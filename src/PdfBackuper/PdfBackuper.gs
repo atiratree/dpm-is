@@ -9,8 +9,7 @@ function backupToPdf(from, to) {
   var tmpSSAsFile = DriveApp.getFileById(tmpSSId);
 
   try {
-    var TIMER_ID = time;
-    Utils.startTimer(TIMER_ID);
+    const stopTimer = Utils.measureTime();
 
      Utils.findFiles([], {
       type: ROZPIS
@@ -18,7 +17,7 @@ function backupToPdf(from, to) {
        return Utils.isWeekWithinDates(from, to, file.year, file.week);
     }).forEach(function(file) {
 
-      if (Utils.stopTimer(TIMER_ID) / 1000 > 270){ // more than 270s -- abort
+      if (stopTimer() / 1000 > 270){ // more than 270s -- abort
         throw {timeout: true};
       }
 
@@ -60,11 +59,10 @@ function backupToPdf(from, to) {
     folder.setTrashed(true);
     throw error;
   } finally {
-    Utils.destroyTimer(TIMER_ID)
     Drive.Files.remove(tmpSSId);
   }
 
-  if (Utils.isSuperAdmin()) {
+  if (Utils.isMainAdmin()) {
     var storageFolder = DriveApp.getFolderById(Utils.manager.storageID);
     storageFolder.addFolder(folder);
     DriveApp.getRootFolder().removeFolder(folder);

@@ -8,12 +8,12 @@ function getUserEmail() {
 }
 
 /**
- * Checks if email is super admin or if active user is (in case email == null).
+ * Checks if email is main admin or if active user is (in case email == null).
  *
  * @param email email to be checked or null to check active user
- * @return {boolean} true if is super admin.
+ * @return {boolean} true if is main admin.
  */
-function isSuperAdmin(email) {
+function isMainAdmin(email) {
   return manager.superAdminEmail === (email ? email : getUserEmail());
 }
 

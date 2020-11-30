@@ -7,6 +7,7 @@ function getUtilsProperties() {
     errorsLogSize: '20000',
     logSize: '200000',
     LogSSid: '1LvOpxVTLmFBazb4QDOi-0udo4vHGm4JSJTw5yn4OKDw',
+    ErrorSSid: '1DBFMQfLfXl1aWIotXDcGvRJZAVP8DJeOMwiTvdkm5Ko',
     SpecialResourceID: '1nfy2IZEneHXPesygyh7uReoMc_q-TrKdxBNMtn6Dbgc',
     storageID: '0B9CMdZXOlRtCfkdpNU1IdUxhZkgyaVRZang2T1ZtbHFTRGdCZXJQTmJNcVZFakM5NEF4OFU',
   };
@@ -40,9 +41,6 @@ var manager = {
   specialResourceID: getUtilsProp_('SpecialResourceID'),
   logId: getUtilsProp_('LogSSid'),
   myDB: ObjDB.open(getUtilsProp_('DatabaseSSid')),
-  errSheet: openSpreadsheet(getUtilsProp_('LogSSid')).getSheetByName('errors'),
-  logSheet: openSpreadsheet(getUtilsProp_('LogSSid')).getSheetByName('log'), //LogSSid
-  correctionSheet: openSpreadsheet(getUtilsProp_('LogSSid')).getSheetByName('corrections'),
   assistSh: 'Assistants',
   employSh: 'Employees',
   clientsSh: 'Clients',

@@ -42,7 +42,7 @@ visit "${REPO_DIR}/src"
           if [ "${FORCE}" == 'true' ] || ! git diff --quiet  -- .; then
             git add .
             gclasp push -f
-            gclasp deploy
+            gclasp deploy || true # has non fatal errors
           fi
         fi
         # set new version to dependencies
