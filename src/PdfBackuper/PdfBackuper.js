@@ -59,7 +59,7 @@ function backupToPdf(from, to) {
     folder.setTrashed(true);
     throw error;
   } finally {
-    Drive.Files.remove(tmpSSId);
+    tmpSSAsFile.setTrashed(true);
   }
 
   if (Utils.isMainAdmin()) {

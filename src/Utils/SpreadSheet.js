@@ -37,7 +37,7 @@ function createSpreadsheet(obj) {
 }
 
 /**
- * Extracts all valid data from 'Rozpis' files in defined time span
+ * Extracts all valid data from 'Rozpis' files in defined time span.
  *
  * @param from from which date to start extracting
  * @param to to which date extract data
