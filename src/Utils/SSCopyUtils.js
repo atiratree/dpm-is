@@ -39,7 +39,7 @@ function copyDataBetweenSheets(main, secondary, data, eventsNames, clientNames, 
     }
 
     cleanData = cleanData.sort(function(a, b) {
-      return new Date(a.from) - new Date(b.from);
+      return a.fromDate - b.fromDate;
     }).map(function(a) {
       return [a.from, a.to, a.event, a.employee, a.tariff, a.note];
     });
@@ -72,7 +72,7 @@ function copyDayRange(mainSheet, sheet, row, block, numberOfRows, data) {
   var timesRange = sheet.getRange(row, block - 5, numberOfRows, 2);
 
   allRange.setValue('');
-  timesRange.setNumberFormat('HH:mm:ss');
+  timesRange.setNumberFormat('hh:mm:ss');
 
   if (data.length > 0) {
     sheet.getRange(row, block - 5, data.length, 6).setValues(data);

@@ -74,7 +74,7 @@ function getAllSpreadSheetData(from, to) {
     result.push.apply(result, extractSpreadSheet(ss.getSheetByName('Rozpis'), extractDays));
 
     if (stopTimer() / 1000 > 250){ // more than 250s -- abort - 50 sec left for the rest of the script wchich is billing/stat
-        throw {timeout: true};
+      throw {timeout: true};
     }
   });
 
@@ -111,11 +111,13 @@ function extractSpreadSheet(sheet, extractDays) {
 function getDayRange_(sheet, row, column, numberOfRows, width, date) {
   var result = [];
   column = (column * width) - width + 1;
-  var values = sheet.getSheetValues(row, column, numberOfRows, width);
+  const valuesRange = sheet.getRange(row, column, numberOfRows, width);
+  const displayValues = valuesRange.getDisplayValues();
+  const values = valuesRange.getValues();
 
-  values.forEach(function(row) {
-    var from = row[0];
-    var to = row[1];
+  values.forEach(function(valueRow, valueRowIdx) {
+    var from = valueRow[0];
+    var to = valueRow[1];
 
     if (from != '' && to != '') {
       var fromDate = new Date(from);
@@ -123,12 +125,14 @@ function getDayRange_(sheet, row, column, numberOfRows, width, date) {
 
       if (!isNaN(fromDate) && !isNaN(toDate) && toDate.getTime() - fromDate.getTime() > 0) {
         result.push({
-          from: from,
-          to: to,
-          event: row[2],
-          employee: row[3],
-          tariff: row[4],
-          note: row[5],
+          from: displayValues[valueRowIdx][0],
+          to: displayValues[valueRowIdx][1],
+          fromDate: fromDate,
+          toDate: toDate,
+          event: valueRow[2],
+          employee: valueRow[3],
+          tariff: valueRow[4],
+          note: valueRow[5],
           duration: (toDate.getTime() - fromDate.getTime()) % 86400000, // in case dates are different
           date: date
         });
