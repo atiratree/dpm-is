@@ -73,6 +73,8 @@ function createPresentableHTML(content, sourceType, title, properties) {
   if (sourceType === 'string') {
     return HtmlService.createTemplate(content)
       .evaluate()
+      .setSandboxMode(HtmlService.SandboxMode.IFRAME)
+      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)
       .setTitle(title);
   }
 
@@ -85,5 +87,7 @@ function createPresentableHTML(content, sourceType, title, properties) {
   }
 
   return html.evaluate()
+      .setSandboxMode(HtmlService.SandboxMode.IFRAME)
+      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)
       .setTitle(title);
 }
