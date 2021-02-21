@@ -28,12 +28,11 @@ function runEveryTwoHours() {
   try {
     var employees = Utils.findEmployees(['email', 'permission']);
     correctDBandLogFileProtections(employees);
+    Utils.logCorrection('Corrected DB and Log File protections.');
     correctDbProtections(employees);
     Utils.logCorrection('Corrected DB protections.');
     correctProtections();
     Utils.logCorrection('Corrected SpreadSheet protections.');
-    correctSitesRights(employees);
-    Utils.logCorrection('Corrected Sites protections.');
     deleteOldTriggers();
   } catch (e) {
     Utils.logError(e);

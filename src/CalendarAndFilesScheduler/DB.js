@@ -41,11 +41,11 @@ function correctDbProtections(employees) {
         finalEmails.push.apply(finalEmails, admins);
 
         if (leadersSheets.indexOf(sheetName) > -1) {
-        finalEmails.push.apply(finalEmails, leaders);
+            finalEmails.push.apply(finalEmails, leaders);
         }
 
         if (administrationSheets.indexOf(sheetName) > -1) {
-        finalEmails.push.apply(finalEmails, administration);
+            finalEmails.push.apply(finalEmails, administration);
         }
 
         appplyProtections(sheet.protect(), finalEmails);
