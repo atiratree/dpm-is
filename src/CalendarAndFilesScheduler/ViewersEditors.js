@@ -5,7 +5,8 @@
  * @param {Array} viewers
  * @param {Array} editors
  */
-function refreshViewersAndEditors(file, viewers, editors) {
+ function refreshViewersAndEditors(file, viewers, editors) {
+    Utils.logCorrection("refreshViewersAndEditors in " + file.getName());
     const owner = file.getOwner().getEmail();
 
     // do not care about the owner
@@ -24,7 +25,7 @@ function refreshViewersAndEditors(file, viewers, editors) {
                 file.removeViewer(email);
             }
         } catch(e) {
-            catchUserError(user, e);
+            catchUserError("remove excess viewer", user, e);
         }
     });
 
@@ -39,7 +40,7 @@ function refreshViewersAndEditors(file, viewers, editors) {
                 file.removeEditor(email);
             }
         } catch(e) {
-            catchUserError(user, e);
+            catchUserError("remove excess editor", user, e);
         }
     });
 
@@ -49,7 +50,7 @@ function refreshViewersAndEditors(file, viewers, editors) {
             file.addViewer(email);
         } catch (e) {
             Utilities.sleep(1000);
-            Utils.logCorrection(email + ": " + e);
+          Utils.logCorrection("add viewer: " + email + ": " + e);
         }
     });
 
@@ -59,16 +60,24 @@ function refreshViewersAndEditors(file, viewers, editors) {
             file.addEditor(email);
         } catch (e) {
             Utilities.sleep(1000);
-            Utils.logCorrection(email + ": " + e);
+            Utils.logCorrection("add editor: " + email + ": " + e);
         }
     });
 }
 
-const catchUserError = (user, e) => {
+const catchUserError = (note, user, e) => {
     Utilities.sleep(1000);
     let email = ""
+    let name = ""
     try {
         email = user.getEmail()
     } catch(ignored) {}
-    Utils.logCorrection(email + ": " + e);
+    try {
+        name = user.getName()
+    } catch(ignored) {}
+    try {
+        name += "@" + user.getDomain()
+    } catch(ignored) {}
+
+    Utils.logCorrection(note + ": " + email + ": " + name + ":" + e);
 }

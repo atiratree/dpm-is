@@ -24,8 +24,20 @@ function getWeekNumber(dateObj) {
  * @param dateObj Date
  */
 function getWeeksYear(dateObj){
-  var fullYear = dateObj.getFullYear()
-  return (dateObj.getMonth() === 11 && getWeekNumber(dateObj) === 1) ? fullYear + 1 : fullYear;
+  var fullYear = dateObj.getFullYear();
+  var month = dateObj.getMonth();
+  var week = getWeekNumber(dateObj);
+  // resolve weeks overlapping years
+  // if we are ask for a day in December which belongs to the week in the next year (equal to 1, i.e. January)
+  if (month === 11 && week === 1) {
+    return fullYear + 1;
+  }
+  // if we are ask for a day in January which belongs to the week in a last year (larger than  50, i.e. not January)
+  if (month === 0 && week > 50) {
+    return fullYear - 1;
+  }
+
+  return fullYear;
 }
 
 /**
@@ -164,15 +176,8 @@ function isWeekWithinDates(from, to, yearToCompare, weekToCompare){
 
   var fromWeek = getWeekNumber(from);
   var fromYear = getWeeksYear(from);
-  if (from.getMonth() == 0 && fromWeek > 10) { // if we are ask for a day (in January) which belongs to the week in a last year (larger than  10, i.e. not January)
-    fromYear -= 1;
-  }
   var toWeek = getWeekNumber(to);
   var toYear = getWeeksYear(to);
-
-  if (to.getMonth() == 0 && toWeek > 10) { // same
-    toYear -= 1;
-  }
 
   if (yearToCompare < fromYear || (yearToCompare == fromYear && weekToCompare < fromWeek)) { // before
     return false;

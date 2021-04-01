@@ -47,7 +47,7 @@ visit "${REPO_DIR}/src"
         fi
         # set new version to dependencies
         DEP_ID="$(jq -r ".scriptId" .clasp.json)"
-        DEP_VERSION="$(gclasp versions | grep -oE "^[0-9]+" | head -1)"
+        DEP_VERSION="$(gclasp versions | grep -oE "^[0-9]+" | tail -1)"
         DEPENDENCIES["${DEP_ID}"]="${DEP_VERSION}"
       fi
     leave
