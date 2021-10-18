@@ -1,13 +1,15 @@
 {
   "timeZone": "Europe/Prague",
   "dependencies": {
-    "libraries": [
-      {
-        "userSymbol": "ObjDB",
-        "libraryId": "1B-Jb3fqKXP5S7yQ3v2uhqNRWdFVRh_hM0pQGJXlZ4I771qa62YPkmrl9",
-        "version": 12
-      }
-    ]
+    "libraries": [{
+      "userSymbol": "ObjDB",
+      "libraryId": "1B-Jb3fqKXP5S7yQ3v2uhqNRWdFVRh_hM0pQGJXlZ4I771qa62YPkmrl9",
+      "version": "12"
+    }]
+  },
+  "webapp": {
+    "access": "MYSELF",
+    "executeAs": "USER_DEPLOYING"
   },
   "exceptionLogging": "STACKDRIVER",
   "runtimeVersion": "V8"
