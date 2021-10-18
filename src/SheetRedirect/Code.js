@@ -4,27 +4,25 @@
  * @param e url parameters setting this webapp's beahviour
  * @return {Object} HTML page with javascript
  */
-function doGet(e) {
-  var html;
+ function doGet(e) {
   try {
     if (e.parameter.year && e.parameter.week) {
       try {
         Utils.getUserPermission()
-      } catch (ignored) {
-        html = createPresentableHTML('<p>Nemáte patřičné oprávnění pro zobrazení této stránky.</p>', 'string');
+      } catch (err) {
+        Utils.logError('[sheets redirect] ' + JSON.stringify(err));
+        return createPresentableHTML('<p>Nemáte patřičné oprávnění pro zobrazení této stránky.</p>', 'string');
       }
-      html = createPresentableHTML('redirect', 'file', 'Výběr rozpisu', {
+      return createPresentableHTML('redirect', 'file', 'Výběr rozpisu', {
         year: e.parameter.year,
         week: e.parameter.week
       } );
-    } else {
-      html = createPresentableHTML('<p>Authorizace...OK</p>', 'string');
     }
-  } catch (error) {
-    Utils.logError('[sheets redirect] ' + error);
-    html = createPresentableHTML('<p>Server je zaneprázdněn (mohlo dojít k dosáhnutí limitu u Google služby). Chvíly počkejte a zkuste znovu.</p>', 'string');
+  } catch (err) {
+    Utils.logError('[sheets redirect] ' + JSON.stringify(err));
+    return createPresentableHTML('<p>Server je zaneprázdněn (mohlo dojít k dosáhnutí limitu u Google služby). Chvíly počkejte a zkuste znovu.</p>', 'string');
   }
-  return html;
+  return createPresentableHTML('<p>Authorizace...OK</p>', 'string');
 }
 
 /**
