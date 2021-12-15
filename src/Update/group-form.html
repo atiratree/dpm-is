@@ -1,0 +1,21 @@
+<!-- Form insides, which are going to be inserted into main.html -->
+
+<? var group = updateObj ?>
+<p>
+  <label for='groupBox'>Skupina</label>
+  <br>
+  <input id='groupBox' type='text' name='groupBox' required='true' value='<?!= group.group ?>' maxlength='10' placeholder='Jméno Skupiny' readonly>
+  <label id='groupErr' class='error' for='groupBox' hidden='true'></label>
+</p>
+<p>
+  <label for='weekdayRowsBox'>Počet řádků ve všední den</label>
+  <br>
+  <input id='weekdayRowsBox' name='weekdayRowsBox' required='true' type='number' min='1' step='1' value='<?!= group.weekdayRows ?>' placeholder='Počet řádků'>
+  <label id='weekdayRowsErr' class='error' for='weekdayRowsBox' hidden='true'></label>
+</p>
+<p>
+  <label for='weekendRowsBox'>Počet řádků o víkendu</label>
+  <br>
+  <input id='weekendRowsBox' name='weekendRowsBox' required='true' type='number' min='1' step='1' value='<?!= group.weekendRows ?>' placeholder='Počet řádků'>
+  <label id='weekendRowsErr' class='error' for='weekendRowsBox' hidden='true'></label>
+</p>
