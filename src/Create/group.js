@@ -6,14 +6,26 @@
  * @throws Exception if creating Group failed
  */
 function processGroupObj(formObject) {
-  var errorMsg = {groupErr:''};
+  var errorMsg = {groupErr:'', weekdayRowsErr: '', weekendRowsErr: ''};
   var groups = Utils.findGroupsAsArray();
   var group = {};
 
-  group.group = Utils.validate(errorMsg,formObject.groupBox,{
+  group.group = Utils.validate(errorMsg, formObject.groupBox, {
      actions:['trim','notNull','unique','length'],
      actionObjs:[{},{},{uniqueArray:groups},{length:10}],
      actionErrors:[{},{groupErr:'*vyplňte skupinu'},{groupErr:'*jméno této skupny není unikátní'},{groupErr:'*tato skupina má více než 10 znaků'}]
+  });
+
+  group.weekdayRows = Utils.validate(errorMsg, formObject.weekdayRowsBox, {
+    actions:['notNull','isPositiveNumber'],
+    actionObjs:[{},{}],
+    actionErrors:[{weekdayRowsErr:'*vyplňte počet řádků'},{weekdayRowsErr:'*vyplňte pozitivní číslo'}]
+  });
+
+  group.weekendRows = Utils.validate(errorMsg, formObject.weekendRowsBox, {
+    actions:['notNull','isPositiveNumber'],
+    actionObjs:[{},{}],
+    actionErrors:[{weekendRowsErr:'*vyplňte počet řádků'},{weekendRowsErr:'*vyplňte pozitivní číslo'}]
   });
 
   Utils.validate(errorMsg,Utils.AccessEnums.GROUP,{

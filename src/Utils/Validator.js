@@ -76,6 +76,11 @@ function validate(errorResult, input, processObj) {
           setError_(errorResult, actionErrors[i]);
         }
         break;
+      case 'isPositiveNumber':
+          if (isNaN(input) || input < 1) {
+            setError_(errorResult, actionErrors[i]);
+          }
+          break;
       case 'isNotDatabaseOwner':
         if (isMainAdmin(input)) {
           setError_(errorResult, actionErrors[i]);

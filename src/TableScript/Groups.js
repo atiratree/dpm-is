@@ -4,15 +4,17 @@
  *
  * @return dataTable object or empty object
  */
-function getGroupsTable() {
+ function getGroupsTable() {
   if (!Utils.hasAccessTo(Utils.AccessEnums.GROUP,Utils.PermissionTypes.VIEW)) {
     return {};
   }
 
-  var groups = Utils.sort(Utils.findGroupsAsArray());
+  var groups = Utils.sort(Utils.findGroups(), 'group');
   var dt = {
     cols:[
       {id:0, label:'Skupina', type: 'string', stringFilter: 'true'},
+      {id:0, label:'Počet řádků ve všední den', type: 'number'},
+      {id:0, label:'Počet řádků o víkendu', type: 'number'},
     ],
     rows:[]
   };
@@ -20,7 +22,9 @@ function getGroupsTable() {
   for(var i = 0; i < groups.length; i++) {
     dt.rows.push({
       c:[
-        {v: groups[i]},
+        {v: groups[i].group},
+        {v: groups[i].weekdayRows},
+        {v: groups[i].weekendRows},
       ]
     });
   }
