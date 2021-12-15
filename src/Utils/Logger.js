@@ -42,6 +42,9 @@ function logCorrection(msg) {
  */
 function logToSheet_(e, sheet, debug, logSize) {
   var message = '';
+  var user = "null"
+  var scriptName = "null"
+
   if (typeof e == 'string' || e instanceof String) {
     message = e;
   } else {
@@ -55,7 +58,21 @@ function logToSheet_(e, sheet, debug, logSize) {
       message = JSON.stringify(e);
     }
   }
-  var value = '[' + new Date().toString().replace(/(.*\d{2}:\d{2}:\d{2}).*/, '$1') + '] [' + getUserEmail() + ']  ' + message;
+
+  try {
+    user = getUserEmail()
+  } catch(ignored) {
+  }
+
+  try {
+    var scriptID = ScriptApp.getScriptId();
+    scriptName = DriveApp.getFileById(scriptID).getName();
+  } catch(ignored) {
+  }
+
+  var date = new Date().toString().replace(/(.*\d{2}:\d{2}:\d{2}).*/, '$1')
+
+  var value = '[' + date + '] [' + user +  '] [' + scriptName + ']  ' + message;
 
   rollLog_(sheet, logSize);
   sheet.appendRow([value]);
