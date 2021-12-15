@@ -16,9 +16,9 @@ function processGroupObj(formObject, opts) {
     group.weekdayRows = oldGroup.weekdayRows;
   } else {
     group.weekdayRows = Utils.validate(errorMsg, formObject.weekdayRowsBox, {
-      actions:['notNull','isPositiveNumber'],
-      actionObjs:[{},{}],
-      actionErrors:[{weekdayRowsErr:'*vyplňte počet řádků'},{weekdayRowsErr:'*vyplňte pozitivní číslo'}]
+      actions:['notNull','isPositiveNumber', 'max'],
+      actionObjs:[{},{},{ max: 150 }],
+      actionErrors:[{weekdayRowsErr:'*vyplňte počet řádků'},{weekdayRowsErr:'*vyplňte pozitivní číslo'}, {weekdayRowsErr:'*počet řádků by neměl převyšovat 150'}]
     });
   }
 
@@ -26,9 +26,9 @@ function processGroupObj(formObject, opts) {
     group.weekendRows = oldGroup.weekendRows;
   } else {
     group.weekendRows = Utils.validate(errorMsg, formObject.weekendRowsBox, {
-      actions:['notNull','isPositiveNumber'],
-      actionObjs:[{},{}],
-      actionErrors:[{weekendRowsErr:'*vyplňte počet řádků'},{weekendRowsErr:'*vyplňte pozitivní číslo'}]
+      actions:['notNull','isPositiveNumber', 'max'],
+      actionObjs:[{},{},{ max: 150 }],
+      actionErrors:[{weekendRowsErr:'*vyplňte počet řádků'},{weekendRowsErr:'*vyplňte pozitivní číslo'}, {weekendRowsErr:'*počet řádků by neměl převyšovat 150'}]
     });
   }
 

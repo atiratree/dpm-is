@@ -10,12 +10,12 @@
 <p>
   <label for='weekdayRowsBox'>Počet řádků ve všední den</label>
   <br>
-  <input id='weekdayRowsBox' name='weekdayRowsBox' required='true' type='number' min='1' step='1' value='<?!= group.weekdayRows ?>' placeholder='Počet řádků'>
+  <input id='weekdayRowsBox' name='weekdayRowsBox' required='true' type='number' min='1' max='150' step='1' value='<?!= group.weekdayRows ?>' placeholder='Počet řádků'>
   <label id='weekdayRowsErr' class='error' for='weekdayRowsBox' hidden='true'></label>
 </p>
 <p>
   <label for='weekendRowsBox'>Počet řádků o víkendu</label>
   <br>
-  <input id='weekendRowsBox' name='weekendRowsBox' required='true' type='number' min='1' step='1' value='<?!= group.weekendRows ?>' placeholder='Počet řádků'>
+  <input id='weekendRowsBox' name='weekendRowsBox' required='true' type='number' min='1' max='150' step='1' value='<?!= group.weekendRows ?>' placeholder='Počet řádků'>
   <label id='weekendRowsErr' class='error' for='weekendRowsBox' hidden='true'></label>
 </p>
