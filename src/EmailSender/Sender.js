@@ -28,7 +28,7 @@ function processClients(formObject, opts) {
   // initialize main sheet
   payloadSheet.setName('Rozpis');
   Utils.prepareSheet(payloadSheet, Utils.findFiles(['weekStarts'], {id:sheetId}, 1).pop()['weekStarts'],
-    ['Rozpis', 'týden č. ' +  opts.week, opts.year], true);
+    ['Rozpis', 'týden č. ' +  opts.week, opts.year], 15, 15, true);
 
   // initialize data
   for (var i = 1; i < 8; i++) {

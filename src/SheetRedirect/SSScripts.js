@@ -35,7 +35,7 @@ function refreshAssistantsSheets(spreadSheet, actors, eventsNames) {
       } catch (ex) { // if google changed default limits of sheet catch exception
         Utils.logError(ex);
       }
-      Utils.prepareSheet(sheet, new Date(sheetRecord.weekStarts), messages);
+      Utils.prepareSheet(sheet, new Date(sheetRecord.weekStarts), messages, 28, 20, false);
     }
     Utils.copyDataBetweenSheets(mainSheet, sheet, data, eventsNames, false);
   });
