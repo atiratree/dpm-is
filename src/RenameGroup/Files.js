@@ -26,6 +26,7 @@ function renameFile(file, newGroupName) {
 
   const header = sheet.getRange(1,1,1,1);
   if (header.getValue() == "" || header.getValue() == `Rozpis služeb tým ${file.group}`) { // no one has changed the default value
+    // can take a long time until the write is through to the spreadsheet
     header.setValue(`Rozpis služeb tým ${newGroupName}`);
   }
 
