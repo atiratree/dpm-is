@@ -37,13 +37,13 @@ function logCorrection(msg) {
  *
  * @param e message to be logged
  * @param sheet sheet to be logged into
- * @param debug if true turns debugging options which shows formated exceptions
+ * @param debug if true turns debugging options which shows formatted exceptions
  * @param logSize maximum allowed size of the sheet (should be larger than 10)
  */
 function logToSheet_(e, sheet, debug, logSize) {
-  var message = '';
-  var user = "null"
-  var scriptName = "null"
+  let message = '';
+  let user = "Undefined"
+  let scriptName = "Undefined"
 
   if (typeof e == 'string' || e instanceof String) {
     message = e;
@@ -65,14 +65,14 @@ function logToSheet_(e, sheet, debug, logSize) {
   }
 
   try {
-    var scriptID = ScriptApp.getScriptId();
+    const scriptID = ScriptApp.getScriptId();
     scriptName = DriveApp.getFileById(scriptID).getName();
   } catch(ignored) {
   }
 
-  var date = new Date().toString().replace(/(.*\d{2}:\d{2}:\d{2}).*/, '$1')
+  const date = new Date().toString().replace(/(.*\d{2}:\d{2}:\d{2}).*/, '$1')
 
-  var value = '[' + date + '] [' + user +  '] [' + scriptName + ']  ' + message;
+  const value = '[' + date + '] [' + user +  '] [' + scriptName + ']  ' + message;
 
   rollLog_(sheet, logSize);
   sheet.appendRow([value]);
@@ -80,15 +80,16 @@ function logToSheet_(e, sheet, debug, logSize) {
 
 /**
  * rolling appender, rolls only last 10 percent for effectivity reasons
+ * @param logSheet which sheet to log to (defaults to errors sheet in Errors spreadsheet)
  * @param logSize maximum allowed size of the sheet (should be larger than 10)
  */
 function rollLog_(logSheet, logSize) {
-  var sheet = logSheet ? logSheet : openSpreadsheet(getUtilsProp_('ErrorSSid')).getSheetByName('errors');
-  var size = logSize > 10 ? logSize : manager.logSize;
+  const sheet = logSheet ? logSheet : openSpreadsheet(getUtilsProp_('ErrorSSid')).getSheetByName('errors');
+  const size = logSize > 10 ? logSize : manager.logSize;
 
   if (sheet.getLastRow() > size) {
-    var range = sheet.getRange(1, 1, size);
-    var range2 = sheet.getRange(size > 10 ? Math.ceil(size / 10) : 2, 1, size); // has to be larger than 10
+    const range = sheet.getRange(1, 1, size);
+    const range2 = sheet.getRange(size > 10 ? Math.ceil(size / 10) : 2, 1, size); // has to be larger than 10
     range2.moveTo(range);
   }
 }
