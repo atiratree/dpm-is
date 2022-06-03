@@ -47,19 +47,21 @@ function toast(spreadsheet,message){
 /**
  * Checks if sheet has duplicates in times for one assistant
  *
+ * @param layoutAndData object contains data and layout
+ *
  */
-function checkAssistantDuplicities(){
+function checkAssistantDuplicities(layoutAndData){
   toast(SpreadsheetApp.getActive(), 'Kontrola duplicit...');
   var sheet = SpreadsheetApp.getActive().getSheetByName('Rozpis');
   var width = 6; // num of columns per day
   var messages = '';
 
   for (var i = 1; i < 6; i++) {
-    messages += checkDayDuplicities(sheet, 4, i, 28,width);
+    messages += checkDayDuplicities(sheet, layoutAndData.weekday.from, i, layoutAndData.weekday.length,width);
   }
 
   for (var i = 1; i < 3; i++) {
-    messages += checkDayDuplicities(sheet, 36, i, 20, width);
+    messages += checkDayDuplicities(sheet,  layoutAndData.weekend.from, i, layoutAndData.weekend.length, width);
   }
 
   if(messages){
@@ -80,11 +82,11 @@ function checkAssistantDuplicities(){
  */
 function checkDayDuplicities(sheet, row, column, numberOfRows, width) {
   var block = column * width;
-  var froms = sheet.getRange(row + 1, block - 5, numberOfRows, 1).getValues().map(function(item){return item[0]});
-  var tos = sheet.getRange(row + 1, block - 4, numberOfRows, 1).getValues().map(function(item){return item[0]});
-  var events = sheet.getRange(row + 1, block - 3, numberOfRows, 1).getValues().map(function(item){return item[0]});
-  var nicks = sheet.getRange(row + 1, block - 2, numberOfRows, 1).getValues().map(function(item){return item[0]});
-  var tariffs = sheet.getRange(row + 1, block - 1, numberOfRows, 1).getValues().map(function(item){return item[0]});
+  var froms = sheet.getRange(row, block - 5, numberOfRows, 1).getValues().map(function(item){return item[0]});
+  var tos = sheet.getRange(row, block - 4, numberOfRows, 1).getValues().map(function(item){return item[0]});
+  var events = sheet.getRange(row, block - 3, numberOfRows, 1).getValues().map(function(item){return item[0]});
+  var nicks = sheet.getRange(row, block - 2, numberOfRows, 1).getValues().map(function(item){return item[0]});
+  var tariffs = sheet.getRange(row, block - 1, numberOfRows, 1).getValues().map(function(item){return item[0]});
 
   var uniqueNicks = Utils.toUniquePrimitiveArray(nicks);
   var index = uniqueNicks.indexOf("");
@@ -102,7 +104,7 @@ function checkDayDuplicities(sheet, row, column, numberOfRows, width) {
         var to = tos[i];
 
         if (from == '' || to == '' || events[i] == '' || nick == '' || tariffs[i] == '') {
-          var range = sheet.getRange(row + i + 1, block - 5, 1, 5);
+          var range = sheet.getRange(row + i, block - 5, 1, 5);
           resultMessages += range.getA1Notation() + ' - nedostatečně vyplněno (Duplicity u ' + nick + ' nebyly zkontrolovány)\n';
           return;
         }
@@ -121,7 +123,7 @@ function checkDayDuplicities(sheet, row, column, numberOfRows, width) {
         var otherDuration = times[j];
 
         if((duration.to > otherDuration.from && duration.from < otherDuration.to)){
-          var range = sheet.getRange(row + 1, block - 5, numberOfRows, 2);
+          var range = sheet.getRange(row, block - 5, numberOfRows, 2);
           resultMessages += range.getA1Notation() + ' - byly nalezeny duplicity u ' + nick + '\n';
           return;
         }

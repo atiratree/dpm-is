@@ -17,23 +17,31 @@ function editMainSheet(e) {
       return;
     }
 
-    for (var j = 0; j < rows; j++) {
-      if ((row + j > 4 && row + j < 33) || (row + j > 36 && row + j < 57)) // select our specified area
-        for (var i = 0; i < cols; i++) { // we can delete more rows at once and keep formating, but we can insert only value to one cell
+    var layout = Utils.extractSpreadsheetData(sheet);
 
-          if (((col + i + 2) % 6 == 0)) {
-            employeeChanged(sheet, row + j, col + i);
+    for (var j = 0; j < rows; j++) {
+      var targetRow = row + j;
+
+      for (var i = 0; i < cols && i < 6 * 5 + 2; i++) { // we can delete more rows at once and keep formating, but we can insert only value to one cell
+        var targetCol = col + i;
+
+        if ((targetRow >= layout.weekday.from && targetRow <= layout.weekday.to && targetCol < 6 * 5 + 1) ||
+          (targetRow >= layout.weekend.from && targetRow <= layout.weekend.to && targetCol < 6 * 2 + 1)) { // select our specified area
+          if (((targetCol + 2) % 6 == 0)) {
+            employeeChanged(sheet, targetRow, targetCol);
           }
-          if (((col + i + 3) % 6 == 0)) {
-            mainEventChanged(e, sheet, row + j, col + i);
+          if (((targetCol + 3) % 6 == 0)) {
+            mainEventChanged(e, sheet, targetRow, targetCol);
           }
-          if (((col + i + 4) % 6 == 0)) {
-            dateChanged(sheet, row + j, col + i - 1);
+          if (((targetCol + 4) % 6 == 0)) {
+            dateChanged(sheet, targetRow, targetCol - 1);
           }
-          if (((col + i + 5) % 6 == 0)) {
-            dateChanged(sheet, row + j, col + i);
+          if (((targetCol + 5) % 6 == 0)) {
+            dateChanged(sheet, targetRow, targetCol);
           }
+        }
       }
+
     }
   }
 }
@@ -64,9 +72,9 @@ function dateChanged(sheet, row, col) {
   var from = sheet.getRange(row, col, 1, 1);
   var to = sheet.getRange(row, col + 1, 1, 1);
 
-  if (from.getValue() != '' && to.getValue() != '' && Utils.compareTimes(from.getValue(), to.getValue()) < 0) {
+  if (from.getValue() != '' && to.getValue() != '' && Utils.compareTimes(from.getValue(), to.getValue()) <= 0) {
     to.setValue('');
-    alertUi(to.getA1Notation() + ': Od je větší než Do !')
+    alertUi(to.getA1Notation() + ': Od musí být menší než Do !')
   }
 }
 

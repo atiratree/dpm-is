@@ -4,6 +4,8 @@
  * @param sheet to be formatted
  * @param day date which is the beginning of week (should be monday)
  * @param messages array of strings of length 3, these strings are going to be shown in a sheet
+ * @param weekdayRows number of rows per weekday
+ * @param weekendRows number of rows per weekend
  * @param smallLayout if true uses small layout
  */
 function prepareSheet(sheet, day, messages, weekdayRows, weekendRows, smallLayout) {
@@ -29,7 +31,6 @@ function prepareSheet(sheet, day, messages, weekdayRows, weekendRows, smallLayou
 
   for (var i = 1; i < firstDays + 1; i++) {
     createDayRange_(sheet, firstRowStart, i * width, firstRows, getWeekDayString_(i, day));
-
 
     sheet.setColumnWidth(i * width - 5, 55);
     sheet.setColumnWidth(i * width - 4, 55);

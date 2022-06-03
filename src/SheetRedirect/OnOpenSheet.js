@@ -12,11 +12,22 @@ function onOpenSheet() {
       initializeData();
     }
 
-    updateSpreadSheet(spreadSheet, isLeader && getBoolProp('sheets_redirect_integrity'));
+    var sheet = spreadSheet.getSheetByName('Rozpis');
+    var layoutAndData = Utils.extractSpreadsheetData(sheet);
+
+    // alert when sheet is in incompatible format
+    if (!layoutAndData.valid) {
+      var dataTmp = layoutAndData.data;
+      layoutAndData.data = [];
+      alertUi('Rozpis je ve špatném formátu a funkcionalita je omezená! Detekovaný formát:' + JSON.stringify(layoutAndData));
+      layoutAndData.data = dataTmp;
+    }
+
+    updateSpreadSheet(spreadSheet, layoutAndData, isLeader && getBoolProp('sheets_redirect_integrity'));
     SpreadsheetApp.flush();
 
     if(getBoolProp('sheets_redirect_duplicates')){
-      checkAssistantDuplicities();
+      checkAssistantDuplicities(layoutAndData);
       Utilities.sleep(2000); // just to see last message
     }
 

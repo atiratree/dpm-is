@@ -15,7 +15,7 @@ function correctProtections() {
   }), 'email');
 
   if (numberOfMonthsBackForRemovingRights < numberOfMonthsBackAllowedForEditing){
-   throw new "numberOfMonthsBackForRemovingRights must be at least as big as numberOfMonthsBackAllowedForEditing"
+    throw new Error("numberOfMonthsBackForRemovingRights must be at least as big as numberOfMonthsBackAllowedForEditing")
   }
 
   var day = new Date();
