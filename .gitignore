@@ -1,1 +1,3 @@
 .idea/
+node_modules
+__tests_/*/*-bundle.js
