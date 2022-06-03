@@ -52,16 +52,21 @@ function toast(spreadsheet,message){
  */
 function checkAssistantDuplicities(layoutAndData){
   toast(SpreadsheetApp.getActive(), 'Kontrola duplicit...');
-  var sheet = SpreadsheetApp.getActive().getSheetByName('Rozpis');
-  var width = 6; // num of columns per day
-  var messages = '';
+  const sheet = SpreadsheetApp.getActive().getSheetByName('Rozpis');
+  const width = 6; // num of columns per day
+  let messages = '';
 
-  for (var i = 1; i < 6; i++) {
-    messages += checkDayDuplicities(sheet, layoutAndData.weekday.from, i, layoutAndData.weekday.length,width);
+
+  if (layoutAndData.weekday.valid) {
+    for (var i = 1; i < 6; i++) {
+      messages += checkDayDuplicities(sheet, layoutAndData.weekday.from, i, layoutAndData.weekday.length,width);
+    }
   }
 
-  for (var i = 1; i < 3; i++) {
-    messages += checkDayDuplicities(sheet,  layoutAndData.weekend.from, i, layoutAndData.weekend.length, width);
+  if (layoutAndData.weekend.valid) {
+    for (var i = 1; i < 3; i++) {
+      messages += checkDayDuplicities(sheet, layoutAndData.weekend.from, i, layoutAndData.weekend.length, width);
+    }
   }
 
   if(messages){
