@@ -34,13 +34,13 @@ function deleteEmployee(user) { // *wrapper function: treats assistant and emplo
   if (result) {
     deleteGroupLeader({
       employeeEmail: user.email
-    });
+    }, true);
     deleteGroupActor({
       employeeEmail: user.email
-    });
+    }, true);
     deleteTrigger({
       email: user.email
-    });
+    }, true);
   }
   return result;
 }
