@@ -1,5 +1,5 @@
-import { ensureString, extractSpreadsheetData, isDayRowByValidation_ } from "./Utils-bundle"
-import { Sheet, TestValidation, TTime } from "./sheet_mock"
+import { extractSpreadsheetData, } from "./Utils-bundle"
+import { Sheet, TTime } from "./sheet_mock"
 
 
 const dayWidth = 6;

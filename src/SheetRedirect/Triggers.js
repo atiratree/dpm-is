@@ -3,7 +3,7 @@
  *
  * @param id id of spreadsheet
  */
-function resolveTriggers(id) {
+function resolveTriggers (id) {
   try {
     var userPerm = Utils.getUserPermission();
     if (userPerm == Utils.AccessEnums.ADMIN || userPerm == Utils.AccessEnums.LEADER) {
@@ -18,7 +18,7 @@ function resolveTriggers(id) {
       }
     }
   } catch (x) {
-    Utils.logError(x);
+    Utils.logError("resolveTriggers on " + id + ": " + JSON.stringify(x));
   }
 }
 
@@ -28,7 +28,7 @@ function resolveTriggers(id) {
  *
  * @param ss spreadsheet for setting triggers
  */
-function resolveOnTrigger(ss, type, functionName) {
+function resolveOnTrigger (ss, type, functionName) {
   try {
     var email = Utils.getUserEmail();
     var triggers = Utils.findTriggers([], {
@@ -67,7 +67,7 @@ function resolveOnTrigger(ss, type, functionName) {
  *
  * @return {number} number of deleted triggers
  */
-function deleteLowestTrigger() {
+function deleteLowestTrigger () {
   var email = Utils.getUserEmail();
   var triggers = ScriptApp.getProjectTriggers();
   var fileTriggers = Utils.findTriggers([], {
@@ -78,7 +78,7 @@ function deleteLowestTrigger() {
     emailSequence: 0
   }; // 0 if no triggers installed
 
-  fileTriggers.forEach(function(item) {
+  fileTriggers.forEach(function (item) {
     if ((item.emailSequence < lowestTrigger.emailSequence || lowestTrigger.emailSequence == 0) && item.emailSequence != 0) {
       lowestTrigger = item;
     }
@@ -101,7 +101,7 @@ function deleteLowestTrigger() {
  * @param type type of trigger to resolve
  * @param functionName name of trigger's funtion to resolve
  */
-function resolveMisplacedTriggers(myGroupsWithEditAttributs, type, functionName){ // recover if trigger is deleted from db
+function resolveMisplacedTriggers (myGroupsWithEditAttributs, type, functionName) { // recover if trigger is deleted from db
   var email = Utils.getUserEmail();
   var fileTriggers = Utils.convertObjectsToArrayByProperty(Utils.findTriggers([], {
     email: email,
@@ -113,17 +113,20 @@ function resolveMisplacedTriggers(myGroupsWithEditAttributs, type, functionName)
   for (var j = 0; j < triggers.length; j++) {
     var trig = triggers[j];
 
-    if(trig.getHandlerFunction() == functionName && trig.getEventType() == evType) {
+    if (trig.getHandlerFunction() == functionName && trig.getEventType() == evType) {
       var fileId = trig.getTriggerSourceId();
       var index = fileTriggers.indexOf(fileId);
-      if(index < 0 || !Utils.canEditFile(myGroupsWithEditAttributs, fileId)) {
+      if (index < 0 || !Utils.canEditFile(myGroupsWithEditAttributs, fileId)) {
         ScriptApp.deleteTrigger(trig);
       } else {
         fileTriggers.splice(index, 1);
       }
     }
   }
-  fileTriggers.forEach(function(item) {
-    Utils.deleteTrigger({sheetId: item, type: type});
+  fileTriggers.forEach(function (item) {
+    Utils.deleteTrigger({
+      sheetId: item,
+      type: type
+    });
   });
 }
