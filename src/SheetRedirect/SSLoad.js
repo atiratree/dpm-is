@@ -29,7 +29,7 @@ function updateSpreadSheet(spreadSheet, layoutAndData, checkIntegrity) {
 
     var rules = makeRules(arrays);
     var width = 6; // num of columns per day
-    var sheet = spreadSheet.getSheetByName('Rozpis');
+    var sheet = spreadSheet.getSheetByName('Rozpis') || spreadSheet.getSheets()[0];
 
 
     if (layoutAndData.weekday.valid) {

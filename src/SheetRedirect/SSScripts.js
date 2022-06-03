@@ -8,7 +8,7 @@
  */
 function refreshAssistantsSheets(spreadSheet, layoutAndData, actors, eventsNames) {
   spreadSheet = spreadSheet ? spreadSheet : SpreadsheetApp.getActiveSpreadsheet();
-  var mainSheet = spreadSheet.getSheetByName('Rozpis');
+  var mainSheet = spreadSheet.getSheetByName('Rozpis') || spreadSheet.getSheets()[0];
   if(actors == null){
     return;
   }

@@ -51,20 +51,21 @@ function toast(spreadsheet,message){
  *
  */
 function checkAssistantDuplicities(layoutAndData){
-  toast(SpreadsheetApp.getActive(), 'Kontrola duplicit...');
-  const sheet = SpreadsheetApp.getActive().getSheetByName('Rozpis');
+  const ss = SpreadsheetApp.getActive()
+  toast(ss, 'Kontrola duplicit...');
+  const sheet = ss.getSheetByName('Rozpis') || ss.getSheets()[0];
   const width = 6; // num of columns per day
   let messages = '';
 
 
   if (layoutAndData.weekday.valid) {
-    for (var i = 1; i < 6; i++) {
+    for (let i = 1; i < 6; i++) {
       messages += checkDayDuplicities(sheet, layoutAndData.weekday.from, i, layoutAndData.weekday.length,width);
     }
   }
 
   if (layoutAndData.weekend.valid) {
-    for (var i = 1; i < 3; i++) {
+    for (let i = 1; i < 3; i++) {
       messages += checkDayDuplicities(sheet, layoutAndData.weekend.from, i, layoutAndData.weekend.length, width);
     }
   }
@@ -72,7 +73,7 @@ function checkAssistantDuplicities(layoutAndData){
   if(messages){
     alertUi('Byly nalezeny tyto nesrovnalosti :\n\n' + messages);
   }else{
-    toast(SpreadsheetApp.getActive(), 'Nenalezeny žádné duplicity.');
+    toast(ss, 'Nenalezeny žádné duplicity.');
   }
 }
 

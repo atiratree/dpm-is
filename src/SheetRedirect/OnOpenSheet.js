@@ -12,7 +12,7 @@ function onOpenSheet() {
       initializeData();
     }
 
-    var sheet = spreadSheet.getSheetByName('Rozpis');
+    var sheet = spreadSheet.getSheetByName('Rozpis') || spreadSheet.getSheets()[0];
     var layoutAndData = Utils.extractSpreadsheetData(sheet);
 
     // alert when sheet is in incompatible format

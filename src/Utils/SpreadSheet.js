@@ -71,7 +71,7 @@ function getAllSpreadSheetData(from, to) {
       }
     }
 
-    result.push.apply(result, extractSpreadSheet(ss.getSheetByName('Rozpis'), extractDays));
+    result.push.apply(result, extractSpreadSheet(ss.getSheetByName('Rozpis') || ss.getSheets()[0], extractDays));
 
     if (stopTimer() / 1000 > 250){ // more than 250s -- abort - 50 sec left for the rest of the script wchich is billing/stat
       throw {timeout: true};

@@ -17,7 +17,7 @@ function processClients(formObject, opts) {
   var body = formObject['textArea'] == null ? '' : formObject['textArea'];
   var sheetId = opts.sheetId;
   var mainSS = SpreadsheetApp.openById(sheetId);
-  var mainSheet = mainSS.getSheetByName('Rozpis');
+  var mainSheet = mainSS.getSheetByName('Rozpis') || mainSS.getSheets()[0];
   var layoutAndData = Utils.extractSpreadsheetData(mainSheet);
 
   var payloadSS = SpreadsheetApp.create(mainSS.getName());

@@ -34,7 +34,8 @@ function correctProtections() {
   }).forEach(function(file) {
     var sheet;
     try {
-      sheet = Utils.openSpreadsheet(file.id).getSheetByName('Rozpis');
+      const ss = Utils.openSpreadsheet(file.id);
+      sheet = ss.getSheetByName('Rozpis') || ss.getSheets()[0];
 
       if (sheet == null) {
         return;
