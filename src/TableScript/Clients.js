@@ -17,7 +17,7 @@ function getClientsTable() {
       {id:1, label:'Email', type: 'string', stringFilter: 'true' },
       {id:2, label:'Náleží do skupin', type: 'string', categoryFilter: 'split' },
       {id:3, label:'' , type: 'string'},
-      {id:3, label:'' , type: 'string'}
+      {id:4, label:'' , type: 'string'}
     ],
     rows:[]
   };

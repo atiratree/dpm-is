@@ -16,9 +16,9 @@ function getTariffsTable() {
       {id:0, label:'Jméno', type: 'string', stringFilter: 'true'},
       {id:1, label:'Zkratka', type: 'string', stringFilter: 'true'},
       {id:2, label:'Implicitní', type: 'string'},
-      {id:2, label:'Kč/h', type: 'number'},
-      {id:3, label:'' , type: 'string'},
-      {id:4, label:'' , type: 'string'}
+      {id:3, label:'Kč/h', type: 'number'},
+      {id:4, label:'' , type: 'string'},
+      {id:5, label:'' , type: 'string'}
     ],
     rows:[]
   };

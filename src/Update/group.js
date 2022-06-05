@@ -32,7 +32,7 @@ function processGroupObj(formObject, opts) {
     });
   }
 
-  Utils.validate(errorMsg,Utils.AccessEnums.GROUP,{
+  Utils.validate(errorMsg,Utils.AccessEnums.GROUP_UPDATE,{
     actions:['canEdit'],
     actionObjs:[{}],
     actionErrors:[{groupErr:'*nemáte oprávnění pro tento typ akce'}]

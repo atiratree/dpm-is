@@ -17,7 +17,7 @@ SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 REPO_DIR="$(realpath "${SCRIPT_DIR}/..")"
 
 # Order of dependencies important!
-DEPENDENCY_NAMES=(ObjDB Utils SheetRedirect)
+DEPENDENCY_NAMES=(ObjDB Utils)
 
 declare -A DEPENDENCIES
 

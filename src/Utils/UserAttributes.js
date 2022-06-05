@@ -115,6 +115,7 @@ function getMyAccessRights(type) {
     AccessEnums.EMPLOYEE,
     AccessEnums.EMPLOYEES_GROUPS,
     AccessEnums.GROUP,
+    AccessEnums.GROUP_UPDATE,
     AccessEnums.SCHEDULE,
     AccessEnums.CLIENT,
     AccessEnums.EVENT,
@@ -137,7 +138,7 @@ function getMyAccessRights(type) {
         case PermissionTypes.VIEW:
           return fullRights;
         case PermissionTypes.EDIT:
-          return [AccessEnums.ASSISTANT, AccessEnums.EMPLOYEES_GROUPS, AccessEnums.CLIENT, AccessEnums.EVENT, AccessEnums.TARIFF, AccessEnums.EMAIL_SENDER];
+          return [AccessEnums.ASSISTANT, AccessEnums.EMPLOYEES_GROUPS, AccessEnums.CLIENT, AccessEnums.EVENT, AccessEnums.TARIFF, AccessEnums.GROUP_UPDATE, AccessEnums.EMAIL_SENDER];
       }
       break;
 

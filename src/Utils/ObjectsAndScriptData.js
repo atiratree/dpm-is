@@ -94,7 +94,8 @@ var AccessEnums = {
   SCHEDULE: 505, // do not change - used by javascript files
   CLIENT: 506,
   EVENT: 507,
-  EMAIL_SENDER: 508
+  EMAIL_SENDER: 508,
+  GROUP_UPDATE: 509
 }
 
 var PermissionTypes = {
