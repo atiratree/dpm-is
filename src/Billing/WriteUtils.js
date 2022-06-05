@@ -7,9 +7,9 @@
  * @param obj obj with input data and its format (as {value: xx, color: xx, isDuration: xx, roundPrice: xx, oneDigitFormat: xx, twoDigitFormat: xx})
  */
 function writeToCellSpec(sheet, row, col, obj) {
-  var cell = sheet.getRange(row, col);
-  var value = obj.value;
-  var color = obj.color;
+  const cell = sheet.getRange(row, col);
+  let value = obj.value;
+  const color = obj.color;
 
   if (obj.isDuration === true) {
     cell.setNumberFormat('[h]:mm:ss');

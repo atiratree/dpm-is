@@ -1,29 +1,29 @@
-function backupToPdf(from, to) {
-  var time = new Date().toISOString();
-  var ROZPIS = 'Rozpis'
+function backupToPdf (from, to) {
+  const time = new Date().toISOString();
+  const ROZPIS = 'Rozpis'
 
-  var folder = DriveApp.createFolder('Záloha_' + time);
+  const folder = DriveApp.createFolder('Záloha_' + time);
 
-  var tmpSS = SpreadsheetApp.create('Tmp');
-  var tmpSSId = tmpSS.getId();
-  var tmpSSAsFile = DriveApp.getFileById(tmpSSId);
+  const tmpSS = SpreadsheetApp.create('Tmp');
+  const tmpSSId = tmpSS.getId();
+  const tmpSSAsFile = DriveApp.getFileById(tmpSSId);
 
   try {
     const stopTimer = Utils.measureTime();
 
-     Utils.findFiles([], {
+    Utils.findFiles([], {
       type: ROZPIS
-    }).filter(function(file) {
-       return Utils.isWeekWithinDates(from, to, file.year, file.week);
-    }).forEach(function(file) {
+    }).filter(function (file) {
+      return Utils.isWeekWithinDates(from, to, file.year, file.week);
+    }).forEach(function (file) {
 
-      if (stopTimer() / 1000 > 270){ // more than 270s -- abort
-        throw {timeout: true};
+      if (stopTimer() / 1000 > 270) { // more than 270s -- abort
+        throw { timeout: true };
       }
 
-      var sourceSS = Utils.openSpreadsheet(file.id);
+      const sourceSS = Utils.openSpreadsheet(file.id);
 
-      var sheet = sourceSS.getSheetByName(ROZPIS);
+      const sheet = sourceSS.getSheetByName(ROZPIS) || sourceSS.getSheets()[0];
 
       if (sheet == null) {
         return;
@@ -33,21 +33,21 @@ function backupToPdf(from, to) {
       tmpSS.getActiveSheet().setName('Sheet1');
       sheet.copyTo(tmpSS).setName(ROZPIS);
 
-      tmpSS.getSheets().forEach(function(tmpSheet) {
-        if (tmpSheet.getName() != ROZPIS) {
+      tmpSS.getSheets().forEach(function (tmpSheet) {
+        if (tmpSheet.getName() !== ROZPIS) {
           tmpSS.deleteSheet(tmpSheet);
         }
       });
 
       SpreadsheetApp.flush();
       // create pdf and move it to the folder
-      var pdf;
+      let pdf;
       try {
         pdf = DriveApp.createFile(tmpSSAsFile.getAs('application/pdf'));
         pdf.setName(sourceSS.getName() + '.pdf');
         folder.addFile(pdf);
         DriveApp.getRootFolder().removeFile(pdf);
-      } catch(e) {
+      } catch (e) {
         // cleanup on error
         if (pdf != null) {
           folder.setTrashed(true);
@@ -55,7 +55,7 @@ function backupToPdf(from, to) {
         throw e;
       }
     });
-  } catch(error) {
+  } catch (error) {
     folder.setTrashed(true);
     throw error;
   } finally {
@@ -63,7 +63,7 @@ function backupToPdf(from, to) {
   }
 
   if (Utils.isMainAdmin()) {
-    var storageFolder = DriveApp.getFolderById(Utils.manager.storageID);
+    const storageFolder = DriveApp.getFolderById(Utils.manager.storageID);
     storageFolder.addFolder(folder);
     DriveApp.getRootFolder().removeFolder(folder);
   }

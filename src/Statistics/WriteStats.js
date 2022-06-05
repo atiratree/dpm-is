@@ -6,24 +6,28 @@
  * @return {string} url of new spreadsheet
  */
 function createStatistics(from, to) {
-  var spreadsheetData = Utils.getAllSpreadSheetData(from, to);
-  var ss = Utils.createSpreadsheet({
+  let spreadsheetData = Utils.extractAllSpreadsheetData(from, to); // can throw timeout
+  const ss = Utils.createSpreadsheet({
     type: 'Statistika'
   });
-  var clientsSheet = ss.getActiveSheet();
-  var clientsSheet2 = ss.insertSheet('Klienti Počet návštěv');
-  var assistantsSheet = ss.insertSheet('Asistenti');
-  var events = Utils.convertObjectsToArrayByProperty(Utils.findEvents(), 'name');
+  const clientsSheet = ss.getActiveSheet();
+  const clientsSheet2 = ss.insertSheet('Klienti Počet návštěv');
+  const assistantsSheet = ss.insertSheet('Asistenti');
+  const events = Utils.convertObjectsToArrayByProperty(Utils.findEvents(), 'name');
+  const eventsMap = {}
+  for (let i = 0; i < events.length; i++) {
+    eventsMap[events[i]] = true
+  }
 
   clientsSheet.setName('Klienti');
 
   spreadsheetData = spreadsheetData.filter(function(item) {
-     return (events.indexOf(item['event']) < 0);
+     return !eventsMap[item['event']];
   });
 
-  writeStats(spreadsheetData, clientsSheet, 'event', from, to);
-  writeStats(spreadsheetData, clientsSheet2, 'event2', from, to);
-  writeStats(spreadsheetData, assistantsSheet, 'employee', from, to);
+  writeStats(spreadsheetData, clientsSheet, 'event', from, to, false);
+  writeStats(spreadsheetData, clientsSheet2, 'event', from, to, true);
+  writeStats(spreadsheetData, assistantsSheet, 'employee', from, to, false);
   return ss.getUrl();
 }
 
@@ -35,58 +39,66 @@ function createStatistics(from, to) {
  * @param type switches writing stats to different modes
  * @param from from which data to write stats
  * @param to to which data to write stats
+ * @param onlyCount measure occurences count instead of duration
  */
-function writeStats(spreadsheetData, sheet, type, from, to) {
-  var sortedExtractObjs, sortedMonths;
-  var extractObjSums = [];
-  var monthsSums = [];
-  var result = {};
-  var allMonths = {};
-  var allExtractObjs = {};
-  var months = Utils.getMonthsNames();
-  var onlyCount = (type == 'event2');
-  type = onlyCount ? 'event' : type;
+function writeStats(spreadsheetData, sheet, type, from, to, onlyCount) {
+  const months = Utils.getMonthsNames();
+  // stats = {
+  //   "John": {
+  //     "202009": {
+  //       "duration": 5
+  //     },
+  //     "202210": {
+  //       "duration": 105791
+  //     }
+  //   }
+  // }
+  const stats = {};
+  const foundMonths = {};
+  const foundNames = {};
 
   spreadsheetData.forEach(function(item) {
-    var extractObj, monthObj, identifier, month;
+    const clientOrEmployeeName = item[type];
 
-    if (item[type] && item.tariff) {
+    if (clientOrEmployeeName && item.tariff) {
+      const monthIdx = item.date.getMonth();
+      const month = monthIdx + 1;
+      const yearMonthID = item.date.getFullYear() + '' + (month < 10 ? '0' + month : month);
 
-      if (!result[item[type]]) {
-        result[item[type]] = {};
+      foundMonths[yearMonthID] = months[monthIdx] + ' ' + item.date.getFullYear();
+      foundNames[clientOrEmployeeName] = true;
+
+      if (!stats[clientOrEmployeeName]) {
+        stats[clientOrEmployeeName] = {};
       }
-      extractObj = result[item[type]];
-
-      month = item.date.getMonth() + 1;
-      identifier = item.date.getFullYear() + '' + (month < 10 ? '0' + month : month);
-
-      allMonths[identifier] = months[month - 1] + ' ' + item.date.getFullYear();
-      allExtractObjs[item[type]] = true;
-
-      if (!extractObj[identifier]) {
-        extractObj[identifier] = {
+      const dataForName = stats[clientOrEmployeeName];
+      if (!dataForName[yearMonthID]) {
+        dataForName[yearMonthID] = {
           duration: onlyCount ? 1 : item.duration
         };
       } else {
-        extractObj[identifier].duration += onlyCount ? 1 : item.duration;
+        dataForName[yearMonthID].duration += onlyCount ? 1 : item.duration;
       }
     }
   });
 
-  sortedExtractObjs = getSortedObjProps(allExtractObjs);
-  sortedMonths = getSortedObjProps(allMonths);
+  const sortedFoundNames = getSortedObjProps(foundNames);
+  const sortedFoundMonths = getSortedObjProps(foundMonths);
 
-  extractObjSums = Array.apply(null, new Array(sortedExtractObjs.length)).map(Number.prototype.valueOf, 0);
-  monthsSums = Array.apply(null, new Array(sortedMonths.length)).map(Number.prototype.valueOf, 0);
+  const foundNamesSums = new Array(sortedFoundNames.length).fill(0);
+  const monthsSums =  new Array(sortedFoundMonths.length).fill(0);
 
-  for (var i = 0; i < sortedMonths.length; i++) {
-    for (var j = 0; j < sortedExtractObjs.length; j++) {
-      var ev = result[sortedExtractObjs[j]][sortedMonths[i]];
-      var duration = 0;
+  // write stat for each name in each month and collect summaries
+  for (let i = 0; i < sortedFoundMonths.length; i++) {
+    const foundMonth = sortedFoundMonths[i];
+    for (let j = 0; j < sortedFoundNames.length; j++) {
+      const foundName = sortedFoundNames[j];
+      let statElement = stats[foundName][foundMonth];
+      let duration = 0;
 
-      if (ev) {
-        duration = ev.duration;
-        extractObjSums[j] += duration;
+      if (statElement) {
+        duration = statElement.duration;
+        foundNamesSums[j] += duration;
         monthsSums[i] += duration;
       }
       writeToCellSpec(sheet, j + 2, i + 2, {
@@ -96,30 +108,32 @@ function writeStats(spreadsheetData, sheet, type, from, to) {
     }
   }
 
-  for (var i = 0; i < sortedExtractObjs.length; i++) {
+  // write names and summaries
+  for (let i = 0; i < sortedFoundNames.length; i++) {
     writeToCellSpec(sheet, i + 2, 1, {
-      value: sortedExtractObjs[i],
+      value: sortedFoundNames[i],
       color: '#FFF2CC'
     });
     writeToCellSpec(sheet, i + 2, monthsSums.length + 2, {
-      value: extractObjSums[i],
+      value: foundNamesSums[i],
       isDuration: !onlyCount,
       color: '#E2F3FF'
     });
   }
 
-  for (var i = 0; i < sortedMonths.length; i++) {
+  // write months header and summaries
+  for (let i = 0; i < sortedFoundMonths.length; i++) {
     writeToCellSpec(sheet, 1, i + 2, {
-      value: allMonths[sortedMonths[i]],
+      value: foundMonths[sortedFoundMonths[i]],
       color: '#FFF2CC'
     });
-    writeToCellSpec(sheet, sortedExtractObjs.length + 2, i + 2, {
+    writeToCellSpec(sheet, sortedFoundNames.length + 2, i + 2, {
       value: monthsSums[i],
       isDuration: !onlyCount,
       color: '#E2F3FF'
     });
   }
-  writeToCell(sheet, sortedExtractObjs.length + 8, 1, '* Statistika v časovém období: ' + Utils.getFormatedDate(from, true) + ' - ' + Utils.getFormatedDate(
+  writeToCell(sheet, sortedFoundNames.length + 8, 1, '* Statistika v časovém období: ' + Utils.getFormatedDate(from, true) + ' - ' + Utils.getFormatedDate(
     to, true));
 }
 
@@ -132,9 +146,9 @@ function writeStats(spreadsheetData, sheet, type, from, to) {
  * @param obj obj with input data and its format (as {value: xx, color: xx, isDuration: xx, roundPrice: xx, oneDigitFormat: xx, twoDigitFormat: xx})
  */
 function writeToCellSpec(sheet, row, col, obj) {
-  var cell = sheet.getRange(row, col);
-  var value = obj.value;
-  var color = obj.color;
+  const cell = sheet.getRange(row, col);
+  let value = obj.value;
+  const color = obj.color;
 
   if (obj.isDuration === true) {
     cell.setNumberFormat('[h]:mm:ss');

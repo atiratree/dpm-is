@@ -10,7 +10,7 @@ function processClients(formObject, opts) {
   emails = emails.filter(function(email){
     return email.indexOf("@") > -1;
   });
-  if(emails.length == 0){
+  if(emails.length === 0){
     return {success: 'Nebyl vybrán žádný email pro odeslání!'};
   }
 

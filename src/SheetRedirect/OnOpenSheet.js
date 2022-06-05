@@ -2,8 +2,8 @@
  * Reloads data for spreadsheet, generates sheets for assistants and creates menu for admins/leaders
  *
  */
-function onOpenSheet() {
-  try{
+function onOpenSheet () {
+  try {
     var spreadSheet = SpreadsheetApp.getActive();
 
     var isLeader = Utils.getUserPermission() == Utils.AccessEnums.ADMIN || Utils.getUserPermission() == Utils.AccessEnums.LEADER;
@@ -19,20 +19,23 @@ function onOpenSheet() {
     if (!layoutAndData.valid) {
       var dataTmp = layoutAndData.data;
       layoutAndData.data = [];
-      alertUi('Rozpis je ve špatném formátu a funkcionalita je omezená! Detekovaný formát:' + JSON.stringify(layoutAndData));
+      Utils.logError(spreadSheet.getName() +': Rozpis je ve špatném formátu a funkcionalita je omezená! Pro správnou funkcionalitu je potřeba opravit. Detekovaný formát: ' + JSON.stringify(layoutAndData));
+      alertUi('Rozpis je ve špatném formátu a funkcionalita je omezená! Pro správnou funkcionalitu je potřeba opravit. Detekovaný formát: ' + JSON.stringify(layoutAndData));
       layoutAndData.data = dataTmp;
     }
 
-    updateSpreadSheet(spreadSheet, layoutAndData, isLeader && getBoolProp('sheets_redirect_integrity'));
-    SpreadsheetApp.flush();
+    if (layoutAndData.valid) {
+      updateSpreadSheet(spreadSheet, layoutAndData, isLeader && getBoolProp('sheets_redirect_integrity'));
+      SpreadsheetApp.flush();
+    }
 
-    if(getBoolProp('sheets_redirect_duplicates')){
+    if (getBoolProp('sheets_redirect_duplicates')) {
       checkAssistantDuplicities(layoutAndData);
       Utilities.sleep(2000); // just to see last message
     }
 
     toast(spreadSheet, 'Hotovo.');
-  }catch(x){
+  } catch (x) {
     Utils.logError(x);
   }
 }
@@ -43,16 +46,16 @@ function onOpenSheet() {
  * @param spreadSheet spreadSheet object to reload
  * @return "cached"(we don't have to get them from slow db) data for reusing
  */
-function initializeData() {
+function initializeData () {
   var clients, tariffs, actors, events, sheetRecord, group;
   var spreadSheet = SpreadsheetApp.getActive();
   try {
     sheetRecord = Utils.findFiles(['group'], {
       id: spreadSheet.getId()
-    },1)[0];
+    }, 1)[0];
     group = sheetRecord.group;
 
-    clients = Utils.findGroupClients(['name'], { group: group});
+    clients = Utils.findGroupClients(['name'], { group: group });
     events = Utils.findEvents();
     clients.push.apply(clients, events);
     tariffs = Utils.findTariffs();
@@ -75,7 +78,7 @@ function initializeData() {
  * @param tariffs all tariffs with its attributes
  * @return {string} returns default tariff
  */
-function getDefaultTariff_(tariffs) {
+function getDefaultTariff_ (tariffs) {
   for (var i = 0; i < tariffs.length; i++) {
     if (tariffs[i]['default'] == 1) {
       return tariffs[i].shortcut;
