@@ -81,6 +81,11 @@ function validate(errorResult, input, processObj) {
             setError_(errorResult, actionErrors[i]);
           }
           break;
+      case 'min':
+        if (isNaN(input) || input < actionObjs[i].min) {
+          setError_(errorResult, actionErrors[i]);
+        }
+        break;
       case 'max':
           if (isNaN(input) || input > actionObjs[i].max) {
             setError_(errorResult, actionErrors[i]);
