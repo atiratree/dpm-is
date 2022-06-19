@@ -1,4 +1,4 @@
-function newSpreadsheetDataResult () {
+function newSpreadsheetDataResult (strategy = '') {
   return {
     weekday: {
       from: -1,
@@ -15,9 +15,16 @@ function newSpreadsheetDataResult () {
     data: [],
     notes: [],
     valid: false,
+    lastDayRow: -1,
+    strategy: strategy, // TODO log in UI non default strategies
   };
 }
 
+const DEFAULT_STRATEGY = "DEFAULT_STRATEGY";
+
+//  best effort and less accurate strategies
+const WEEKEND_HEADER_ONLY_STRATEGY = "WEEKEND_HEADER_ONLY_STRATEGY";
+const LAST_SPACE_BETWEEN_ROWS_STRATEGY = "LAST_SPACE_BETWEEN_ROWS_STRATEGY"; // least accurate
 
 /**
  * Extracts all data and layout of the spreadsheet
@@ -25,6 +32,36 @@ function newSpreadsheetDataResult () {
  * @return {Object} which contains data and layout
  */
 function extractSpreadsheetData (sheet) {
+  // looks for correctly formatted headers
+  let result = extractSpreadsheetDataWithStrategy(sheet, DEFAULT_STRATEGY, {})
+  if (result.valid) {
+    return result;
+  }
+
+  // let's assume there is at least one valid header, expect the header to be weekend and any data before that to be weekday
+  result = extractSpreadsheetDataWithStrategy(sheet, WEEKEND_HEADER_ONLY_STRATEGY, {});
+  if (result.valid) {
+    return result;
+  }
+
+  // just do the data row detection only and do not consider headers , has potential to falsely detect weekend if there are empty rows in it
+  return extractSpreadsheetDataWithStrategy(sheet, LAST_SPACE_BETWEEN_ROWS_STRATEGY, { lastDayRow: result.lastDayRow });
+}
+
+function shouldDetectMetadataRow (strategy, lookForWeekend) {
+  return strategy === DEFAULT_STRATEGY || (strategy === WEEKEND_HEADER_ONLY_STRATEGY && lookForWeekend);
+}
+
+
+/**
+ * Extracts all data and layout of the spreadsheet
+ *
+ * @param sheet sheet
+ * @param strategy strategy to detect the data rows for weekday/weekend
+ * @param opts object which can have properties lastDayRow (applicable for LAST_SPACE_BETWEEN_ROWS_STRATEGY)
+ * @return {Object} which contains data and layout
+ */
+function extractSpreadsheetDataWithStrategy (sheet, strategy, opts) {
   const defaultRowColor = "#fff2cc"; // generated before
   const defaultSecondaryRowColor = "#e2f3ff";
   const maxNumberOfDaysPerRow = 5;
@@ -43,29 +80,31 @@ function extractSpreadsheetData (sheet) {
   const backgrounds = sheet.getRange(1, 1, rowDetectionRange, 2).getBackgrounds();
 
   const colorDistribution = analyzeColorDistribution_(backgrounds, 60);
-  const hasOriginalColors = colorDistribution[defaultRowColor] > 0 && colorDistribution[defaultSecondaryRowColor] > 0 && Object.keys(colorDistribution).length == 2;
+  const hasOriginalColors = colorDistribution[defaultRowColor] > 0 && colorDistribution[defaultSecondaryRowColor] > 0 && Object.keys(colorDistribution).length === 2;
   const rowColor = getMaxKeyFromMap(colorDistribution) || defaultRowColor;
 
   let hasInitializedValidations = false;
+  let lastSeenEmptyRows = [];
 
-  const result = newSpreadsheetDataResult();
+  const result = newSpreadsheetDataResult(strategy);
 
   for (let rowIdx = 0; rowIdx < rowDetectionRange; rowIdx++) {
+    const nextRowValues = rowIdx + 1 < rowDetectionRange ? values[rowIdx + 1] : []
     const rowValues = values[rowIdx];
     const rowDisplayValues = displayValues[rowIdx];
     const rowValidations = validations[rowIdx];
     const rowBackgrounds = backgrounds[rowIdx];
     const row = rowIdx + 1;
+    // first metadata row is recognized if we found a header and have analyzed next two data rows after that (to recognize duplicate headers)
+    let lookForWeekend = result.weekday.from !== -1 && result.weekday.from !== row && result.weekday.from + 1 !== row
     // we always have weekend.to if we have found a weekend.from
-    const maxNumberOfDaysPerThisRow = result.weekend.to !== -1 ? maxNumberOfDaysPerWeekendRow : maxNumberOfDaysPerRow;
-
-    if (isMetadataRow_(rowValues, dayWidth, maxNumberOfDaysPerThisRow)) { // found metadata in this format: Od Do Událost
-      // setup if no header set up, or if repeating headers found
-      if (result.weekday.from === -1 || result.weekday.from === row) {
+    if (shouldDetectMetadataRow(strategy, lookForWeekend) && isMetadataRow_(rowValues, nextRowValues, dayWidth, maxNumberOfDaysPerRow, maxNumberOfDaysPerWeekendRow, lookForWeekend)) { // found metadata in this format: Od Do Událost
+      // setup if no header set up, or if repeating headers found (need two lines to detect that)
+      if (result.weekday.from === -1 || result.weekday.from === row || result.weekday.from + 1 === row) {
         // weekday starts on next row
         result.weekday.from = row + 1;
         result.weekday.to = result.weekday.from;
-      } else if (result.weekend.from === -1 || result.weekend.from === row) {
+      } else if (result.weekend.from === -1 || result.weekend.from === row || result.weekend.from + 1 === row) {
         // weekend starts on next row
         result.weekend.from = row + 1;
         result.weekend.to = result.weekend.from;
@@ -75,6 +114,9 @@ function extractSpreadsheetData (sheet) {
       }
       continue;
     }
+
+    // this is not exactly the sam as lookForWeekend since both are used for detecting layout of different strategies
+    const maxNumberOfDaysPerThisRow = result.weekend.to !== -1 ? maxNumberOfDaysPerWeekendRow : maxNumberOfDaysPerRow;
 
     const daysWithData = detectDaysWithData_(rowValues, rowDisplayValues, dayWidth, maxNumberOfDaysPerThisRow);
 
@@ -91,6 +133,37 @@ function extractSpreadsheetData (sheet) {
     }
 
     if (isDayRow) {
+      // track lastDayRow to use in other strategies
+      result.lastDayRow = row;
+      // try to detect header according to the strategy
+      if (strategy === WEEKEND_HEADER_ONLY_STRATEGY) {
+        if (result.weekday.from === -1) {
+          // expect the existing header to be used for weekend
+          // first day row is weekday row
+          result.weekday.from = row;
+          result.weekday.to = result.weekday.from;
+        }
+      } else if (strategy === LAST_SPACE_BETWEEN_ROWS_STRATEGY) {
+        // use day rows to detect weekday
+        if (result.weekday.from === -1) {
+          result.weekday.from = row;
+          result.weekday.to = result.weekday.from;
+        }
+
+        // now compute weekend once we reach the last day row
+        if (row === opts.lastDayRow && lastSeenEmptyRows.length > 0) {
+          const lastRememberedSeenEmptyRow = lastSeenEmptyRows[0];
+          const lastSeenEmptyRow = lastSeenEmptyRows[lastSeenEmptyRows.length - 1];
+          // only after we have found the week, weekday is not -1
+          if (lastSeenEmptyRow > result.weekday.from) {
+            result.weekday.to = lastRememberedSeenEmptyRow - 1;
+            result.weekend.from = lastSeenEmptyRow + 1;
+            result.weekend.to = row
+          }
+        }
+      }
+
+      // do not care about detecting headers here - just count the dates
       if (result.weekend.to !== -1) {
         // count weekend
         result.weekend.to = row;
@@ -111,6 +184,14 @@ function extractSpreadsheetData (sheet) {
           result.data.push(asDayData(rowValues, rowDisplayValues, dayInWeekIdx, dayWidth));
         }
       });
+    } else {
+      if (strategy === LAST_SPACE_BETWEEN_ROWS_STRATEGY) {
+        if (lastSeenEmptyRows.length > 0 && lastSeenEmptyRows[lastSeenEmptyRows.length - 1] === row - 1) {
+          lastSeenEmptyRows = [lastSeenEmptyRows[0], row - 1, row]
+        } else {
+          lastSeenEmptyRows = [row];
+        }
+      }
     }
 
     if ((result.weekend.to !== -1 && row - result.weekend.to > considerCompleteEmptyRows) && lastDataRow < row) {
@@ -144,7 +225,13 @@ function extractSpreadsheetData (sheet) {
   // compute notes
   if (result.valid) {
     // compute weekday notes
-    if (result.weekend.from - result.weekday.to > 3) { // there has to be at least 3 rows between weekend and weekday block as 2 rows are occupied by metadata and day name
+    // there has to be at least 3 rows between weekend and weekday block as 2 rows are occupied by metadata and day name
+    let minGap = 3;
+    if (strategy === LAST_SPACE_BETWEEN_ROWS_STRATEGY) {
+      // there is no metadata - let's resign to just 1 row gap
+      minGap = 1;
+    }
+    if (result.weekend.from - result.weekday.to > minGap) {
       const weekdayToIdx = result.weekday.to - 1;
       const rowValues = values[weekdayToIdx + 1]; // next row is most likely notes
       const notesWithData = detectNotesWithData_(rowValues, dayWidth, maxNumberOfDaysPerRow);
@@ -164,35 +251,77 @@ function extractSpreadsheetData (sheet) {
   return result;
 }
 
+const rowMetadataDayNames = ['Pondělí', 'Úterý', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota', 'Neděle'];
 const rowMetadataNames = ['Od', 'Do', 'Událost', 'Kdo', 'Pásmo', 'Pozn'];
 
-// finds metadata in this format: Od Do Událost
-function isMetadataRow_ (values, dayWidth, maxNumberOfDaysPerRow) {
-  dayLoop:
-    for (let day = 0; day < maxNumberOfDaysPerRow; day++) {
-      try {
-        const columnStart = day * dayWidth;
+// finds metadata in this format:
+//                      Úterý 31. 5.
+// Od Do Událost
+function isMetadataRow_ (values, nextRowValues, dayWidth, numberOfDaysPerRow, numberOfDaysPerWeekendRow, lookForWeekend) {
+  const maxNumberOfDaysPerRow = lookForWeekend ? numberOfDaysPerWeekendRow : numberOfDaysPerRow;
+  const findMinMetadataDays = lookForWeekend ? 1 : 3;
+  const dayNamesStartIdx = lookForWeekend ? numberOfDaysPerRow : 0;
 
-        let metadataNamesFound = 0;
+  let metadataDaysFound = 0;
+  let nextMetadataDaysFound = 0;
+  let daysFound = 0;
 
-        for (let columnIdx = columnStart; columnIdx < columnStart + dayWidth; columnIdx++) {
-          if (columnIdx >= values.length) {
-            break dayLoop;
-          }
-          const value = values[columnIdx];
-          const expectedMetadataName = rowMetadataNames[columnIdx - columnStart];
-          if (value === expectedMetadataName) {
-            metadataNamesFound += 1;
-          }
-          // find at least 3 occurrences of metadata in a day to classify it as a metadata row
-          if (metadataNamesFound >= 3) {
-            return true;
-          }
+  for (let day = 0; day < maxNumberOfDaysPerRow; day++) {
+    try {
+      const columnStart = day * dayWidth;
+
+      let metadataNamesFound = 0;
+      let nextMetadataNamesFound = 0;
+
+      for (let columnIdx = columnStart; columnIdx < columnStart + dayWidth; columnIdx++) {
+        const expectedMetadataName = rowMetadataNames[columnIdx - columnStart];
+
+        const value = values && columnIdx < values.length ? values[columnIdx] : "";
+        if (value === expectedMetadataName) {
+          metadataNamesFound += 1;
         }
-      } catch (err) {
-        logError('isMetadataRow_: ' + err);
+
+        // if the next row does not have MetadataNames this row is qualified as a MetadataRow if it has dayNames
+        const nextValue = nextRowValues && columnIdx < nextRowValues.length ? nextRowValues[columnIdx] : "";
+        if (nextValue === expectedMetadataName) {
+          nextMetadataNamesFound += 1;
+        }
       }
+      // find at least 3 occurrences of metadata in a day to classify it as a metadata day
+      if (metadataNamesFound >= 3) {
+        metadataDaysFound += 1
+      }
+      if (nextMetadataNamesFound >= 3) {
+        nextMetadataDaysFound += 1
+      }
+
+      // check if this day is the expected day of week
+      const value = values && columnStart < values.length ? values[columnStart] : "";
+      const expectedDay = rowMetadataDayNames[dayNamesStartIdx + day]
+      if (typeof value === 'string' && value.startsWith(expectedDay)) {
+        daysFound += 1
+      }
+    } catch (err) {
+      logError('isMetadataRow_: ' + err);
     }
+  }
+
+
+  // find at least findMinMetadataDays occurrences of metadata in such number of days to classify it as a metadata row
+  if (metadataDaysFound >= findMinMetadataDays) {
+    return true;
+  }
+
+  let isNextRowMetadataRow = false;
+  if (nextMetadataDaysFound >= findMinMetadataDays) {
+    isNextRowMetadataRow = true
+  }
+
+  // find at least 2 description of days in all days to classify it as a metadata row
+  // also the next row should not be metadata row as it will be detected in the next iteration
+  if (daysFound >= 2 && !isNextRowMetadataRow) {
+    return true;
+  }
   return false;
 }
 

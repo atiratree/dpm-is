@@ -138,6 +138,31 @@ export class Sheet {
   }
 
 
+  addDayNameHeader(isWeekend = false) {
+    const rowMetadataDayNames = ['Pondělí 10.2', 'Úterý 11.2', 'Středa 12.2', 'Čtvrtek 13.2', 'Pátek 14.2', 'Sobota 15.2', 'Neděle 16.2'];
+    const days = isWeekend ? 2 : 5;
+    const dayNamesStartIdx = isWeekend ? 5 : 0;
+    const header = [];
+    for (let day = 0; day < days; day++) {
+      header.push(rowMetadataDayNames[dayNamesStartIdx + day], '', '', '', '', '');
+    }
+    this.data.push(header);
+    return this;
+  }
+
+  addCompleteHeader(hasDayHeader, hasHeader, isWeekend = false, numberOfEmptyRows = 1) {
+    if (hasDayHeader) {
+      this.addDayNameHeader(isWeekend)
+    }
+    if (hasHeader) {
+      this.addHeader(isWeekend)
+    } else {
+      this.addEmptyRows(numberOfEmptyRows)
+    }
+    return this
+  }
+
+
   addEmptyRows(numOfRows) {
     for (let newRow = 0; newRow < numOfRows; newRow++) {
       this.data.push([]);
