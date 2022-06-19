@@ -16,11 +16,11 @@ function onOpenSheet () {
     var layoutAndData = Utils.extractSpreadsheetData(sheet);
 
     // alert when sheet is in incompatible format
-    if (!layoutAndData.valid) {
+    if (!layoutAndData.valid || layoutAndData.strategy !== 'DEFAULT_STRATEGY') {
       var dataTmp = layoutAndData.data;
       layoutAndData.data = [];
-      Utils.logError(spreadSheet.getName() +': Rozpis je ve špatném formátu a funkcionalita je omezená! Pro správnou funkcionalitu je potřeba opravit. Detekovaný formát: ' + JSON.stringify(layoutAndData));
-      alertUi('Rozpis je ve špatném formátu a funkcionalita je omezená! Pro správnou funkcionalitu je potřeba opravit. Detekovaný formát: ' + JSON.stringify(layoutAndData));
+      Utils.logError(spreadSheet.getName() +': Rozpis je ve špatném formátu a funkcionalita může být omezená! Pro správnou funkcionalitu je potřeba opravit hlavičky dnů a řádky. Detekovaný formát: ' + JSON.stringify(layoutAndData));
+      alertUi('Rozpis je ve špatném formátu a funkcionalita může být omezená! Pro správnou funkcionalitu je potřeba opravit hlavičky dnů a řádky. Detekovaný formát: ' + JSON.stringify(layoutAndData));
       layoutAndData.data = dataTmp;
     }
 

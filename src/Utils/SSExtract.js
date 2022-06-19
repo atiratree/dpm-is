@@ -16,7 +16,7 @@ function newSpreadsheetDataResult (strategy = '') {
     notes: [],
     valid: false,
     lastDayRow: -1,
-    strategy: strategy, // TODO log in UI non default strategies
+    strategy: strategy,
   };
 }
 
