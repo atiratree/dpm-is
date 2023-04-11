@@ -1,16 +1,14 @@
 import {
-  asNotesData,
   asDayData,
-  detectNotesWithData_,
+  asNotesData,
   detectDaysWithData_,
-  isMetadataRow_,
-  isDayRowByValidation_,
+  detectNotesWithData_,
   isDayRowByBackground_,
+  isDayRowByValidation_,
+  isMetadataRow_,
 } from "./Utils-bundle"
 
-import {
-  TestValidation
-} from "./sheet_mock"
+import {TestValidation} from "./sheet_mock"
 
 const fullDayNotesRow = ["day", "this", 78, "a", "bottom", "note"];
 const expectedFullDayNotesRow = ["day", "this", "78", "a", "bottom", "note"];
@@ -33,6 +31,10 @@ toDate.setSeconds(0);
 
 const dataRow = [fromDate.getTime(), toDate.getTime(), "birthday", "KL", "X", "happy birthday!"];
 const displayDataRow = ["15:30:28", "16:15:00", "birthday", "KL", "X", "happy birthday!"];
+const displayDataRowWithWrongFormat = ["52228000", "54900000", "birthday", "KL", "X", "happy birthday!"];
+
+const dataRowReverse = [toDate.getTime(), fromDate.getTime(), "birthday", "KL", "X", "happy birthday!"];
+const displayDataRowReverse = ["16:15:00", "15:30:28", "birthday", "KL", "X", "happy birthday!"];
 
 test.each([
   [undefined, 0, 6, {
@@ -85,8 +87,12 @@ test('detectNotesWithData_', () => {
   )).toEqual([]);
 });
 
-test('detectDaysWithData_', () => {
+test.each([
+  ["DEFAULT_STRATEGY"],
+  ["LEGACY_STRATEGY"],
+])('detectDaysWithData_', (strategy) => {
   expect(detectDaysWithData_(
+    strategy,
     [...emptyDayRow, ...fullDayNotesRow, ...emptyDayRow, ...sparseDayNotesRow, ...sparseDayNotesRow, ...emptyDayRow, ...emptyDayRow, ...fullDayNotesRow],
     [...emptyDayRow, ...fullDayNotesRow, ...emptyDayRow, ...sparseDayNotesRow, ...sparseDayNotesRow, ...emptyDayRow, ...emptyDayRow, ...fullDayNotesRow],
 
@@ -94,18 +100,40 @@ test('detectDaysWithData_', () => {
   )).toEqual([]);
 
   expect(detectDaysWithData_(
+    strategy,
     [...fullDayNotesRow, ...dataRow, ...emptyDayRow, ...sparseDayNotesRow, ...dataRow],
     [...fullDayNotesRow, ...displayDataRow, ...emptyDayRow, ...sparseDayNotesRow, ...displayDataRow],
     6, 5
   )).toEqual([1, 4]);
 
+
   expect(detectDaysWithData_(
+    strategy,
+    [...fullDayNotesRow, ...dataRowReverse, ...emptyDayRow, ...sparseDayNotesRow, ...dataRow],
+    [...fullDayNotesRow, ...displayDataRowReverse, ...emptyDayRow, ...sparseDayNotesRow, ...displayDataRow],
+    6, 5
+  )).toEqual([4]);
+
+  let expectedDays = [4]
+  if (strategy === "LEGACY_STRATEGY") {
+    expectedDays = [1, 4]
+  }
+  expect(detectDaysWithData_(
+    strategy,
+    [...fullDayNotesRow, ...dataRow, ...emptyDayRow, ...sparseDayNotesRow, ...dataRow],
+    [...fullDayNotesRow, ...displayDataRowWithWrongFormat, ...emptyDayRow, ...sparseDayNotesRow, ...displayDataRow],
+    6, 5
+  )).toEqual(expectedDays);
+
+  expect(detectDaysWithData_(
+    strategy,
     [...fullDayNotesRow, ...dataRow, ...emptyDayRow],
     [...fullDayNotesRow, ...displayDataRow, ...emptyDayRow],
     6, 5
   )).toEqual([1]);
 
-  expect(detectDaysWithData_(null, null, 190, 1789
+  expect(detectDaysWithData_(
+    strategy, null, null, 190, 1789
   )).toEqual([]);
 });
 

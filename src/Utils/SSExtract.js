@@ -1,4 +1,26 @@
-function newSpreadsheetDataResult (strategy = '') {
+function newSpreadsheetDataResult(strategy = '') {
+  if (strategy === LEGACY_STRATEGY) {
+    return {
+      weekday: {
+        from: 5,
+        to: 32,
+        length: 28,
+        valid: true,
+      },
+      weekend: {
+        from: 37,
+        to: 56,
+        length: 20,
+        valid: true,
+      },
+      data: [],
+      notes: [],
+      valid: true,
+      lastDayRow: -1,
+      strategy: strategy,
+    };
+  }
+
   return {
     weekday: {
       from: -1,
@@ -26,12 +48,15 @@ const DEFAULT_STRATEGY = "DEFAULT_STRATEGY";
 const WEEKEND_HEADER_ONLY_STRATEGY = "WEEKEND_HEADER_ONLY_STRATEGY";
 const LAST_SPACE_BETWEEN_ROWS_STRATEGY = "LAST_SPACE_BETWEEN_ROWS_STRATEGY"; // least accurate
 
+// do not use in production, use only for testing
+const LEGACY_STRATEGY = "LEGACY_STRATEGY";
+
 /**
  * Extracts all data and layout of the spreadsheet
  *
  * @return {Object} which contains data and layout
  */
-function extractSpreadsheetData (sheet) {
+function extractSpreadsheetData(sheet) {
   // looks for correctly formatted headers
   let result = extractSpreadsheetDataWithStrategy(sheet, DEFAULT_STRATEGY, {})
   if (result.valid) {
@@ -45,10 +70,10 @@ function extractSpreadsheetData (sheet) {
   }
 
   // just do the data row detection only and do not consider headers , has potential to falsely detect weekend if there are empty rows in it
-  return extractSpreadsheetDataWithStrategy(sheet, LAST_SPACE_BETWEEN_ROWS_STRATEGY, { lastDayRow: result.lastDayRow });
+  return extractSpreadsheetDataWithStrategy(sheet, LAST_SPACE_BETWEEN_ROWS_STRATEGY, {lastDayRow: result.lastDayRow});
 }
 
-function shouldDetectMetadataRow (strategy, lookForWeekend) {
+function shouldDetectMetadataRow(strategy, lookForWeekend) {
   return strategy === DEFAULT_STRATEGY || (strategy === WEEKEND_HEADER_ONLY_STRATEGY && lookForWeekend);
 }
 
@@ -61,7 +86,7 @@ function shouldDetectMetadataRow (strategy, lookForWeekend) {
  * @param opts object which can have properties lastDayRow (applicable for LAST_SPACE_BETWEEN_ROWS_STRATEGY)
  * @return {Object} which contains data and layout
  */
-function extractSpreadsheetDataWithStrategy (sheet, strategy, opts) {
+function extractSpreadsheetDataWithStrategy(sheet, strategy, opts) {
   const defaultRowColor = "#fff2cc"; // generated before
   const defaultSecondaryRowColor = "#e2f3ff";
   const maxNumberOfDaysPerRow = 5;
@@ -114,11 +139,16 @@ function extractSpreadsheetDataWithStrategy (sheet, strategy, opts) {
       }
       continue;
     }
+    let isWeekend = result.weekend.to !== -1
+    // legacy hard codes weekdays and weekends
+    if (strategy === LEGACY_STRATEGY) {
+      isWeekend = result.weekend.from <= row && row <= result.weekend.to;
+    }
 
     // this is not exactly the sam as lookForWeekend since both are used for detecting layout of different strategies
-    const maxNumberOfDaysPerThisRow = result.weekend.to !== -1 ? maxNumberOfDaysPerWeekendRow : maxNumberOfDaysPerRow;
+    const maxNumberOfDaysPerThisRow = isWeekend ? maxNumberOfDaysPerWeekendRow : maxNumberOfDaysPerRow;
 
-    const daysWithData = detectDaysWithData_(rowValues, rowDisplayValues, dayWidth, maxNumberOfDaysPerThisRow);
+    const daysWithData = detectDaysWithData_(strategy, rowValues, rowDisplayValues, dayWidth, maxNumberOfDaysPerThisRow);
 
 
     let isDayRow = daysWithData.length > 0; // check if has valid day data
@@ -130,6 +160,10 @@ function extractSpreadsheetDataWithStrategy (sheet, strategy, opts) {
       } else if (!hasInitializedValidations || hasOriginalColors) {
         isDayRow = isDayRowByBackground_(rowBackgrounds, rowColor); // try detection by color if validations not initialized yet or no color scheme tampering detected
       }
+    }
+    // legacy hard codes day rows
+    if (strategy === LEGACY_STRATEGY) {
+      isDayRow = (result.weekday.from <= row && row <= result.weekday.to) || (result.weekend.from <= row && row <= result.weekend.to)
     }
 
     if (isDayRow) {
@@ -163,21 +197,24 @@ function extractSpreadsheetDataWithStrategy (sheet, strategy, opts) {
         }
       }
 
-      // do not care about detecting headers here - just count the dates
-      if (result.weekend.to !== -1) {
-        // count weekend
-        result.weekend.to = row;
-      } else if (result.weekday.to !== -1) {
-        // count weekday
-        result.weekday.to = row;
-      } else {
-        // find header first
-        continue
+      if (strategy !== LEGACY_STRATEGY) {
+        // do not care about detecting headers here - just count the dates
+        if (result.weekend.to !== -1) {
+          // count weekend
+          result.weekend.to = row;
+          isWeekend = true
+        } else if (result.weekday.to !== -1) {
+          // count weekday
+          result.weekday.to = row;
+        } else {
+          // find header first
+          continue
+        }
       }
 
       daysWithData.forEach(function (day) {
         let dayInWeekIdx = day;
-        if (result.weekend.to !== -1) {
+        if (isWeekend) {
           dayInWeekIdx += 5;
         }
         if (dayInWeekIdx < 7) {
@@ -194,7 +231,7 @@ function extractSpreadsheetDataWithStrategy (sheet, strategy, opts) {
       }
     }
 
-    if ((result.weekend.to !== -1 && row - result.weekend.to > considerCompleteEmptyRows) && lastDataRow < row) {
+    if ((isWeekend && row - result.weekend.to > considerCompleteEmptyRows) && lastDataRow < row) {
       // finish only if
       // - we initialized a valid result
       // - we checked at least 30 rows after a last valid day row
@@ -257,7 +294,7 @@ const rowMetadataNames = ['Od', 'Do', 'Událost', 'Kdo', 'Pásmo', 'Pozn'];
 // finds metadata in this format:
 //                      Úterý 31. 5.
 // Od Do Událost
-function isMetadataRow_ (values, nextRowValues, dayWidth, numberOfDaysPerRow, numberOfDaysPerWeekendRow, lookForWeekend) {
+function isMetadataRow_(values, nextRowValues, dayWidth, numberOfDaysPerRow, numberOfDaysPerWeekendRow, lookForWeekend) {
   const maxNumberOfDaysPerRow = lookForWeekend ? numberOfDaysPerWeekendRow : numberOfDaysPerRow;
   const findMinMetadataDays = lookForWeekend ? 1 : 3;
   const dayNamesStartIdx = lookForWeekend ? numberOfDaysPerRow : 0;
@@ -327,7 +364,7 @@ function isMetadataRow_ (values, nextRowValues, dayWidth, numberOfDaysPerRow, nu
 
 const validTimeRegex_ = new RegExp("^((([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9])|24:00:00)$");
 
-function detectDaysWithData_ (values, displayValues, dayWidth, maxNumberOfDaysPerRow) {
+function detectDaysWithData_(strategy, values, displayValues, dayWidth, maxNumberOfDaysPerRow) {
   const daysWithData = [];
   if (values && displayValues) {
     for (let day = 0; day < maxNumberOfDaysPerRow && day * dayWidth + 1 < values.length && day * dayWidth + 1 < displayValues.length; day++) {
@@ -341,8 +378,16 @@ function detectDaysWithData_ (values, displayValues, dayWidth, maxNumberOfDaysPe
         const fromDate = new Date(values[column]);
         const toDate = new Date(values[column + 1]);
 
-        if (!isNaN(fromDate) && !isNaN(toDate) && toDate.getTime() - fromDate.getTime() > 0 && validTimeRegex_.test(fromDisplayValue) && validTimeRegex_.test(toDisplayValue)) {
-          daysWithData.push(day);
+        if (!isNaN(fromDate) && !isNaN(toDate) && toDate.getTime() - fromDate.getTime() > 0) {
+          // additional validation according to the strategy
+          let accept = validTimeRegex_.test(fromDisplayValue) && validTimeRegex_.test(toDisplayValue)
+          if (strategy === LEGACY_STRATEGY) {
+            accept = true
+          }
+
+          if (accept) {
+            daysWithData.push(day);
+          }
         }
       } catch (err) {
         logError('getDaysWithData: ' + err);
@@ -352,7 +397,7 @@ function detectDaysWithData_ (values, displayValues, dayWidth, maxNumberOfDaysPe
   return daysWithData;
 }
 
-function detectNotesWithData_ (values, dayWidth, maxNumberOfDaysPerRow) {
+function detectNotesWithData_(values, dayWidth, maxNumberOfDaysPerRow) {
   const daysWithNotes = [];
 
   if (values) {
@@ -371,7 +416,7 @@ function detectNotesWithData_ (values, dayWidth, maxNumberOfDaysPerRow) {
 
 // we have a day row if we have an employee cell with validation
 // don't call often due to high cost
-function isDayRowByValidation_ (validations) {
+function isDayRowByValidation_(validations) {
   if (!validations) {
     return false;
   }
@@ -387,11 +432,11 @@ function isDayRowByValidation_ (validations) {
   return false;
 }
 
-function isDayRowByBackground_ (backgrounds, rowColor) {
+function isDayRowByBackground_(backgrounds, rowColor) {
   return !!(backgrounds && rowColor && backgrounds[0] === rowColor && backgrounds[1] === rowColor);
 }
 
-function asDayData (values, displayValues, dayInWeekIdx, dayWidth) {
+function asDayData(values, displayValues, dayInWeekIdx, dayWidth) {
   if (!values) {
     values = [];
   }
@@ -421,7 +466,7 @@ function asDayData (values, displayValues, dayInWeekIdx, dayWidth) {
 }
 
 
-function asNotesData (values, dayInWeekIdx, dayWidth) {
+function asNotesData(values, dayInWeekIdx, dayWidth) {
   const dayIdx = dayInWeekIdx % 5;
   const result = [];
 
@@ -438,14 +483,14 @@ function asNotesData (values, dayInWeekIdx, dayWidth) {
   };
 }
 
-function ensureString (value) {
+function ensureString(value) {
   if (value == null) {
     return ""
   }
   return value + ""
 }
 
-function analyzeColorDistribution_ (backgrounds, maxRowsToAnalyze) {
+function analyzeColorDistribution_(backgrounds, maxRowsToAnalyze) {
   const colors = {};
 
   if (!backgrounds) {
@@ -477,7 +522,7 @@ function analyzeColorDistribution_ (backgrounds, maxRowsToAnalyze) {
   return colors;
 }
 
-function getMaxKeyFromMap (input) {
+function getMaxKeyFromMap(input) {
   let max = -1;
   let result = "";
 

@@ -1,5 +1,5 @@
-import { extractSpreadsheetData, isDayRowByBackground_, } from "./Utils-bundle"
-import { Sheet, TTime } from "./sheet_mock"
+import {extractSpreadsheetData, extractSpreadsheetDataWithStrategy,} from "./Utils-bundle"
+import {Sheet, TTime} from "./sheet_mock"
 
 
 const dayWidth = 6;
@@ -552,5 +552,94 @@ test('recognize notes squised between data (LAST_SPACE_BETWEEN_ROWS_STRATEGY)', 
 });
 
 
+test.each([
+  ["LEGACY_STRATEGY", {}],
+  ["DEFAULT_STRATEGY", {}],
+  ["WEEKEND_HEADER_ONLY_STRATEGY", {}],
+  ["LAST_SPACE_BETWEEN_ROWS_STRATEGY", {lastDayRow: 56}],
+])('extractSpreadsheetDataWithStrategy every strategy should return same results for well formed document', (strategy, strategyOpts) => {
+  const sheet = (new Sheet())
+    .addRow(["Rozpis služeb tým Tým X", "", "", "", "", "", "týden č. 10", "", "", "", "", "2020"])
+    .addEmptyRows(1)
+    .addDayNameHeader(false)
+    .addHeader(false)
+    .addRow([...emptyDaysForRow(1), TTime("15:30:00"), TTime("17:15:00"), "birthday;L", "KL;L", "X;L", "happy birthday!;;happy birthday!"])
+    .addEmptyRows(10)
+    .addRow([...emptyDaysForRow(4), TTime("17:40:54"), TTime("19:00:00"), "client 5;L", "LO;L", "T;L", ""])
+    .addEmptyRows(15)
+    .addRow([TTime("18:00:28"), TTime("19:30:00"), "client 4;L", "GG;L", "T;L", ""])
+    .addRow(["day", "this", "78", "a", "bottom", "note"])
+    .addEmptyRows(1)
+    .addDayNameHeader(true)
+    .addHeader(true)
+    .addRow([...emptyDaysForRow(1), TTime("13:40:50"), TTime("17:00:00"), "client 6;L", "LO;L", "T;L", ""])
+    .addEmptyRows(7)
+    .addRow([TTime("18:40:54"), TTime("20:00:00"), "client 7;L", "K:;L", "T;L", ""])
+    .addEmptyRows(10)
+    .addRow([TTime("11:00:00"), TTime("12:00:00"), "client 8;L", "JJ;L", "Q;L", ""])
+    .addRow(["day", "this", "a", "weekend", "bottom", "note"])
+    .addEmptyRows(50)
 
 
+  const result = extractSpreadsheetDataWithStrategy(sheet, strategy, strategyOpts);
+
+  expect(result.valid).toBe(true);
+  expect(result.weekday.valid).toBe(true);
+  expect(result.weekend.valid).toBe(true);
+  expect(result.strategy).toBe(strategy);
+
+  if (strategy !== "LAST_SPACE_BETWEEN_ROWS_STRATEGY") {
+    // does not test the rest for LAST_SPACE_BETWEEN_ROWS_STRATEGY heurestic as it will be incorrect
+
+    // weekday
+    expect(result.weekday.from).toStrictEqual(5);
+    expect(result.weekday.to).toStrictEqual(32);
+    expect(result.weekday.length).toStrictEqual(28);
+    // weekend
+    expect(result.weekend.from).toStrictEqual(37);
+    expect(result.weekend.to).toStrictEqual(56);
+    expect(result.weekend.length).toStrictEqual(20);
+    // last day row
+    expect(result.lastDayRow).toStrictEqual(56);
+    // notes
+    expect(result.notes).toHaveLength(2);
+    expect(result.notes[0].dayInWeekIdx).toEqual(0);
+    expect(result.notes[0].values).toEqual(["day", "this", "78", "a", "bottom", "note"]);
+    expect(result.notes[1].dayInWeekIdx).toEqual(dayColumnToDayIdx(0, true));
+    expect(result.notes[1].values).toEqual(["day", "this", "a", "weekend", "bottom", "note"]);
+    // data
+    expect(result.data).toHaveLength(6);
+    expect(result.data[0].dayInWeekIdx).toEqual(1);
+    expect(result.data[1].dayInWeekIdx).toEqual(4);
+    expect(result.data[2].dayInWeekIdx).toEqual(0);
+    expect(result.data[3].dayInWeekIdx).toEqual(dayColumnToDayIdx(1, true));
+    expect(result.data[4].dayInWeekIdx).toEqual(dayColumnToDayIdx(0, true));
+    expect(result.data[5].dayInWeekIdx).toEqual(dayColumnToDayIdx(0, true));
+  }
+
+
+  expect(result.data[0]).toEqual({
+    from: "15:30:00",
+    to: "17:15:00",
+    fromDate: new Date(timeStrToIntVal("15:30:00")),
+    toDate: new Date(timeStrToIntVal("17:15:00")),
+    event: "birthday",
+    employee: "KL",
+    tariff: "X",
+    note: "happy birthday!",
+    duration: 105 * 60 * 1000, // 105 minutes
+    dayInWeekIdx: 1,
+  });
+
+  result.data.forEach(day => {
+    expect(day.from).toBeTruthy()
+    expect(day.to).toBeTruthy()
+    expect(day.fromDate).toBeTruthy()
+    expect(day.toDate).toBeTruthy()
+    expect(day.event).toBeTruthy()
+    expect(day.employee).toBeTruthy()
+    expect(day.tariff).toBeTruthy()
+    expect(day.duration).toBeGreaterThan(0)
+    expect(day.dayInWeekIdx).toBeGreaterThanOrEqual(0)
+  })
+});
