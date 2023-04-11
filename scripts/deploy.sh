@@ -41,7 +41,19 @@ visit "${REPO_DIR}/src"
         if [ "${FORCE}" == 'true' ] || ! git diff --quiet  -- .; then
           git add .
           gclasp push -f
-          gclasp deploy || true # has non fatal errors
+          gclasp version "$(date --universal --rfc-3339=seconds)"
+          DEPLOYMENT_ID="$(gclasp deployments | grep "web app" | cut -d' ' -f2)"
+          if [[ -z "${DEPLOYMENT_ID}" ]]; then
+            echo "could not detect a web app deployment: skipping..."
+          else
+            DEPLOYMENT_VERSION="$(gclasp versions | tail -n -1 | grep -o "^[1-9][0-9]*")"
+            if [[ -z "${DEPLOYMENT_VERSION}" ]]; then
+              echo "coud not find deployment version"
+              exit 1
+            fi
+            echo -n "deploying: "
+            gclasp deploy --versionNumber "${DEPLOYMENT_VERSION}" --deploymentId "${DEPLOYMENT_ID}" --description="web app" # || true # has non fatal errors
+          fi
         fi
         # set new version to dependencies
         DEP_ID="$(jq -r ".scriptId" .clasp.json)"
@@ -50,5 +62,4 @@ visit "${REPO_DIR}/src"
       fi
     leave
   done
-
 leave
