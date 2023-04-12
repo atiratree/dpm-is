@@ -362,7 +362,8 @@ function isMetadataRow_(values, nextRowValues, dayWidth, numberOfDaysPerRow, num
   return false;
 }
 
-const validTimeRegex_ = new RegExp("^((([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9])|24:00:00)$");
+const validTimeSecondsRegex_ = new RegExp("^((([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9])|24:00:00)$");
+const validTimeMinutesRegex_ = new RegExp("^((([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9])|24:00)$");
 
 function detectDaysWithData_(strategy, values, displayValues, dayWidth, maxNumberOfDaysPerRow) {
   const daysWithData = [];
@@ -379,8 +380,10 @@ function detectDaysWithData_(strategy, values, displayValues, dayWidth, maxNumbe
         const toDate = new Date(values[column + 1]);
 
         if (!isNaN(fromDate) && !isNaN(toDate) && toDate.getTime() - fromDate.getTime() > 0) {
+          const fromValid = validTimeSecondsRegex_.test(fromDisplayValue) || validTimeMinutesRegex_.test(fromDisplayValue)
+          const toValid = validTimeSecondsRegex_.test(toDisplayValue) || validTimeMinutesRegex_.test(toDisplayValue)
+          let accept = fromValid && toValid
           // additional validation according to the strategy
-          let accept = validTimeRegex_.test(fromDisplayValue) && validTimeRegex_.test(toDisplayValue)
           if (strategy === LEGACY_STRATEGY) {
             accept = true
           }

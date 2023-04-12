@@ -31,6 +31,8 @@ toDate.setSeconds(0);
 
 const dataRow = [fromDate.getTime(), toDate.getTime(), "birthday", "KL", "X", "happy birthday!"];
 const displayDataRow = ["15:30:28", "16:15:00", "birthday", "KL", "X", "happy birthday!"];
+const displayDataRowShort = ["15:30:28", "16:15", "birthday", "KL", "X", "happy birthday!"];
+const displayDataRowShortTwo = ["15:30", "16:15:00", "birthday", "KL", "X", "happy birthday!"];
 const displayDataRowWithWrongFormat = ["52228000", "54900000", "birthday", "KL", "X", "happy birthday!"];
 
 const dataRowReverse = [toDate.getTime(), fromDate.getTime(), "birthday", "KL", "X", "happy birthday!"];
@@ -88,9 +90,17 @@ test('detectNotesWithData_', () => {
 });
 
 test.each([
-  ["DEFAULT_STRATEGY"],
   ["LEGACY_STRATEGY"],
+  ["DEFAULT_STRATEGY"],
+  ["WEEKEND_HEADER_ONLY_STRATEGY"],
+  ["LAST_SPACE_BETWEEN_ROWS_STRATEGY"],
 ])('detectDaysWithData_', (strategy) => {
+  // test empty
+  expect(detectDaysWithData_(
+    strategy, null, null, 190, 1789
+  )).toEqual([]);
+
+  // test invalid
   expect(detectDaysWithData_(
     strategy,
     [...emptyDayRow, ...fullDayNotesRow, ...emptyDayRow, ...sparseDayNotesRow, ...sparseDayNotesRow, ...emptyDayRow, ...emptyDayRow, ...fullDayNotesRow],
@@ -99,6 +109,15 @@ test.each([
     6, 7
   )).toEqual([]);
 
+  // test single
+  expect(detectDaysWithData_(
+    strategy,
+    [...fullDayNotesRow, ...dataRow, ...emptyDayRow],
+    [...fullDayNotesRow, ...displayDataRow, ...emptyDayRow],
+    6, 5
+  )).toEqual([1]);
+
+  // test multiple
   expect(detectDaysWithData_(
     strategy,
     [...fullDayNotesRow, ...dataRow, ...emptyDayRow, ...sparseDayNotesRow, ...dataRow],
@@ -106,7 +125,23 @@ test.each([
     6, 5
   )).toEqual([1, 4]);
 
+  // test from and to dates with a short format
+  expect(detectDaysWithData_(
+    strategy,
+    [...fullDayNotesRow, ...dataRow, ...emptyDayRow, ...sparseDayNotesRow, ...dataRow],
+    [...fullDayNotesRow, ...displayDataRowShort, ...emptyDayRow, ...sparseDayNotesRow, ...displayDataRow],
+    6, 5
+  )).toEqual([1, 4]);
 
+  // test from and to dates with a short format part 2
+  expect(detectDaysWithData_(
+    strategy,
+    [...fullDayNotesRow, ...dataRow, ...emptyDayRow, ...sparseDayNotesRow, ...dataRow],
+    [...fullDayNotesRow, ...displayDataRowShortTwo, ...emptyDayRow, ...sparseDayNotesRow, ...displayDataRow],
+    6, 5
+  )).toEqual([1, 4]);
+
+  // test reverse from and to dates
   expect(detectDaysWithData_(
     strategy,
     [...fullDayNotesRow, ...dataRowReverse, ...emptyDayRow, ...sparseDayNotesRow, ...dataRow],
@@ -114,6 +149,7 @@ test.each([
     6, 5
   )).toEqual([4]);
 
+  // test wrong date format
   let expectedDays = [4]
   if (strategy === "LEGACY_STRATEGY") {
     expectedDays = [1, 4]
@@ -124,17 +160,6 @@ test.each([
     [...fullDayNotesRow, ...displayDataRowWithWrongFormat, ...emptyDayRow, ...sparseDayNotesRow, ...displayDataRow],
     6, 5
   )).toEqual(expectedDays);
-
-  expect(detectDaysWithData_(
-    strategy,
-    [...fullDayNotesRow, ...dataRow, ...emptyDayRow],
-    [...fullDayNotesRow, ...displayDataRow, ...emptyDayRow],
-    6, 5
-  )).toEqual([1]);
-
-  expect(detectDaysWithData_(
-    strategy, null, null, 190, 1789
-  )).toEqual([]);
 });
 
 
