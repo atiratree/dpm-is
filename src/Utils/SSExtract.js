@@ -197,12 +197,14 @@ function extractSpreadsheetDataWithStrategy(sheet, strategy, opts) {
         }
       }
 
-      if (strategy !== LEGACY_STRATEGY) {
+      if (strategy === LEGACY_STRATEGY) {
+        isWeekend = result.weekend.from <= row && row <= result.weekend.to;  // in case it was unexpectedly changed since last assignment
+      } else {
         // do not care about detecting headers here - just count the dates
         if (result.weekend.to !== -1) {
           // count weekend
           result.weekend.to = row;
-          isWeekend = true
+          isWeekend = true // other strategies can unexpectedly set this
         } else if (result.weekday.to !== -1) {
           // count weekday
           result.weekday.to = row;

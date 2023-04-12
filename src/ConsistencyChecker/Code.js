@@ -13,6 +13,9 @@ const check = () => {
 // prints out a diff in a following format where - are missing entries in DEFAULT_STRATEGY and + are missing entries in LEGACY_STRATEGY
 // - 2017-08-03 06:00:00 08:00:00 client2 Z AB note
 // + 2017-08-04 12:00:00 08:00:00 client1 Z AB note
+//
+// - can suggest there is a regression, but it can also mean a weekend entry was recognized as a weekday entry by LEGACY_STRATEGY
+// + suggests that the layout was tampered with and data was incorrectly detected by LEGACY_STRATEGY
 const compareGatheredDataByStrategies = (fromYear, fromWeek) => {
   let files = Utils.findFiles([], {
     type: 'Rozpis'
@@ -38,10 +41,6 @@ const compareGatheredDataByStrategies = (fromYear, fromWeek) => {
       const legacyLayoutAndData = Utils.extractSpreadsheetDataWithStrategy(sheet, "LEGACY_STRATEGY", {});
 
       const {missingInData, missingInLegacyData} = computeDiff(file, layoutAndData, legacyLayoutAndData)
-
-      if (missingInData.length > 0) {
-        Utils.logError(`FAILED_REGRESSION: ${processingID}: ${file.url} : ${JSON.stringify(layoutAndData.strategy)} : ${JSON.stringify(layoutAndData)}`)
-      }
 
       // test both diff and JSON serialization
       if (missingInData.length > 0 || missingInLegacyData.length > 0 || JSON.stringify(layoutAndData.data) !== JSON.stringify(legacyLayoutAndData.data)) {
@@ -78,10 +77,14 @@ const humanReadable = (file, data) => {
 
 const dayDataToString = (file, dayData) => {
   const monday = new Date(file.weekStarts)
-  const day = new Date(monday)
-  day.setHours(0, 0, 0, 0)
-  day.setDate(day.getDate() + dayData.dayInWeekIdx) // rollovers to the next month if necessary
-  const readableDate = day.toISOString().slice(0, 10)
+  const target = new Date(monday)
 
-  return `${readableDate} ${dayData.from} ${dayData.to} ${dayData.event} ${dayData.employee} ${dayData.tariff} ${dayData.note}`
+  target.setHours(0, 0, 0, 0)
+  target.setDate(target.getDate() + dayData.dayInWeekIdx) // rollovers to the next month if necessary
+  const year = target.toLocaleDateString("cs-CZ", {timeZone: "Europe/Prague", year: 'numeric' })
+  const month = target.toLocaleDateString("cs-CZ", {timeZone: "Europe/Prague", month: '2-digit'})
+  const day = target.toLocaleDateString("cs-CZ", {timeZone: "Europe/Prague", day: '2-digit' })
+  const readableDate = `${year}-${month}-${day}`.replace('.', '')
+
+  return `${readableDate} ${dayData.from}-${dayData.to} ${dayData.event} ${dayData.employee} ${dayData.tariff} ${dayData.note}`
 }
