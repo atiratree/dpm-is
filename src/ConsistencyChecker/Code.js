@@ -76,6 +76,7 @@ const humanReadable = (file, data) => {
 }
 
 const dayDataToString = (file, dayData) => {
+  // expectation is that the script runs always under the same time zone, which is Europe/Prague
   const monday = new Date(file.weekStarts)
   const target = new Date(monday)
 

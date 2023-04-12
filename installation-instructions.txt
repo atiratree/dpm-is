@@ -11,7 +11,7 @@ Notes 2:
 	- "Source" will be called folder with Scripts (as in https://github.com/suomiy/dpm-is/tree/master/SourceCode)
 	
 	
-1. Create Google Calendar called "Rozpisy", set respective time-zone and set this calendar public
+1. Create Google Calendar called "Rozpisy", set respective time-zone (Europe/Prague) and set this calendar public
 
 2. Create Google Site (you can design it as you want later, here will be described only structure)
 
@@ -24,7 +24,8 @@ Notes 2:
 	Algorithm for creating scripts
 		1) add new script
 		2) name it as $FILENAME
-		3) copy all files from Source/$FILENAME/* to this script with same extensions		
+		3) copy all files from Source/$FILENAME/* to this script with same
+		4) set exactly the same time zone (Europe/Prague) for all scripts
 		5) "todo" specified in each script
 		
 	a) script "ObjDB" 
@@ -159,7 +160,7 @@ Notes 2:
 					['email', 'name', 'nick', 'color']
 			- sheet "Clients"
 				- cells A1:B1
-					['email', 'name']			
+					['name', 'email']
 			- sheet "Employees"
 				- cells A1:E1
 					['email', 'name', 'nick','permission', 'color']
@@ -179,8 +180,8 @@ Notes 2:
 				- cells A1:B1
 					['employeeEmail', 'group']
 			- sheet "Groups"
-				- cells A1
-					['group']
+				- cells A1:C1
+					['group', 'weekdayRows', 'weekendRows']
 			- sheet "Tariffs"
 				- cells A1:D1
 					['name', 'price', 'shortcut', 'default']
@@ -189,6 +190,9 @@ Notes 2:
 			- sheet "Triggers"
 				- cells A1:D1
 					['emailSequence', 'sheetId', 'type', 'email']
+			- sheet "KeyStore"
+				- cells A1:C1
+					['email', 'key', 'value']
 	d) folder "Storage"
 		- permissions
 			private

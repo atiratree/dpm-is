@@ -19,6 +19,7 @@ function refreshSpreadSheet(day, week, data) {
       group: group.group,
       owner: '',
       type: 'Rozpis',
+      // store in UTC, but rest of the code holds expectation that the scripts will always run under the same time zone, which is Europe/Prague
       weekStarts: day.toISOString()
     };
 

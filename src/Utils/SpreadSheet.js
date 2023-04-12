@@ -54,6 +54,7 @@ function extractAllSpreadsheetData(from, to) {
   }).forEach(function(item) {
     const ss = openSpreadsheet(item.id);
 
+    // expectation is that the script runs always under the same time zone, which is Europe/Prague
     const monday = new Date(item.weekStarts);
     const dayInfos = [];
 

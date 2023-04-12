@@ -51,7 +51,7 @@ visit "${REPO_DIR}/src"
               echo "coud not find deployment version"
               exit 1
             fi
-            echo -n "deploying: "
+            echo "deploying: "
             gclasp deploy --versionNumber "${DEPLOYMENT_VERSION}" --deploymentId "${DEPLOYMENT_ID}" --description="web app" # || true # has non fatal errors
           fi
         fi

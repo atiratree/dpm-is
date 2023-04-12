@@ -29,8 +29,10 @@ function processClients(formObject, opts) {
 
   // initialize main sheet
   payloadSheet.setName('Rozpis');
-  Utils.prepareSheet(payloadSheet, Utils.findFiles(['weekStarts'], {id:sheetId}, 1).pop()['weekStarts'],
-    ['Rozpis', 'týden č. ' +  opts.week, opts.year], 15, 15, true);
+
+  // expectation is that the script runs always under the same time zone, which is Europe/Prague
+  const weekStarts = Utils.findFiles(['weekStarts'], {id:sheetId}, 1).pop()['weekStarts'];
+  Utils.prepareSheet(payloadSheet, new Date(weekStarts), ['Rozpis', 'týden č. ' +  opts.week, opts.year], 15, 15, true);
 
   // initialize clients to manager and remember body of email
   initialize(opts);

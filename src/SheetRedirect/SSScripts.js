@@ -26,6 +26,7 @@ function refreshAssistantsSheets(spreadSheet, layoutAndData, actors, eventsNames
     }
     sheet.clear();
     var messages = ['Rozpis služeb ' + item.nick, 'týden č. ' + sheetRecord.week, sheetRecord.year];
+    // expectation is that the script runs always under the same time zone, which is Europe/Prague
     Utils.prepareSheet(sheet, new Date(sheetRecord.weekStarts), messages, layoutAndData.weekday.length, layoutAndData.weekend.length, false);
 
     var data = layoutAndData.data.filter(function(a) {
