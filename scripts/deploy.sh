@@ -17,7 +17,7 @@ SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 REPO_DIR="$(realpath "${SCRIPT_DIR}/..")"
 
 # Order of dependencies important!
-DEPENDENCY_NAMES=(ObjDB Utils)
+DEPENDENCY_NAMES=(ObjDB Utils SheetRedirect)
 
 declare -A DEPENDENCIES
 
@@ -38,12 +38,10 @@ visit "${REPO_DIR}/src"
             NEXT_DEP_ID=$((NEXT_DEP_IDX + 1))
           done
         fi
-        if ! git diff --quiet HEAD  -- .; then
-          if [ "${FORCE}" == 'true' ] || ! git diff --quiet  -- .; then
-            git add .
-            gclasp push -f
-            gclasp deploy || true # has non fatal errors
-          fi
+        if [ "${FORCE}" == 'true' ] || ! git diff --quiet  -- .; then
+          git add .
+          gclasp push -f
+          gclasp deploy || true # has non fatal errors
         fi
         # set new version to dependencies
         DEP_ID="$(jq -r ".scriptId" .clasp.json)"
