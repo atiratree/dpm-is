@@ -12,6 +12,7 @@ function leave() {
 
 
 FORCE=${FORCE:-false}
+PROCESS_SCRIPTS=${PROCESS_SCRIPTS:-}
 
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 REPO_DIR="$(realpath "${SCRIPT_DIR}/..")"
@@ -22,8 +23,13 @@ DEPENDENCY_NAMES=(ObjDB Utils)
 declare -A DEPENDENCIES
 
 visit "${REPO_DIR}/src"
+  if [[ -z "${PROCESS_SCRIPTS}" ]]; then
+    # shellcheck disable=SC2068
+    PROCESS_SCRIPTS="$(ls | grep -vE "$(echo ${DEPENDENCY_NAMES[@]} | sed 's/ /|/')")"
+  fi
+
   # Order of dependencies important!
-  for PROJECT in ${DEPENDENCY_NAMES[*]} $(ls | grep -vE "$(echo ${DEPENDENCY_NAMES[@]} | sed "s/ /|/")"); do
+  for PROJECT in ${DEPENDENCY_NAMES[*]} ${PROCESS_SCRIPTS}; do
     visit "${PROJECT}"
       if [ -f ".clasp.json" ] && [ -f "appsscript.json" ]; then
         echo "processing ${PROJECT}"
