@@ -32,6 +32,13 @@ function getResource(resource, opts) {
         default:
           return null;
       }
+    case 'group':
+      switch (resource) {
+        case 'form':
+          return includeAndEvaluate('group-form', opts);
+        default:
+          return null;
+      }
     default:
       return null;
   }

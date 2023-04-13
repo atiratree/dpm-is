@@ -7,11 +7,11 @@
  * @return {string} url of new spreadsheet
  */
 function createBilling(from, to, client) {
-  var spreadsheetData = Utils.getAllSpreadSheetData(from, to);
-  var ss = Utils.createSpreadsheet({
+  const spreadsheetData = Utils.extractAllSpreadsheetData(from, to);
+  const ss = Utils.createSpreadsheet({
     type: 'Fakturace'
   });
-  var sheet = ss.getActiveSheet();
+  const sheet = ss.getActiveSheet();
 
   sheet.setName('Fakturace');
   writeToCell(sheet, 1, 1, 'Fakturace pro:');
@@ -41,39 +41,40 @@ function createBilling(from, to, client) {
  * @param client name of client
  */
 function writeBilling(spreadsheetData, sheet, client) {
-  var result = {};
-  var tariffs = Utils.findTariffs();
-  var total = 0;
-  var i = 4;
+  const durationsForTarriffs = {};
+  const tariffs = Utils.findTariffs();
+  let total = 0;
+  let i = 4;
 
   spreadsheetData.forEach(function(item) {
-    if (item.tariff && item.event && item.event == client) {
-      if (!result[item.tariff]) {
-        result[item.tariff] = 0;
+    if (item.tariff && item.event && item.event === client) {
+      if (!durationsForTarriffs[item.tariff]) {
+        durationsForTarriffs[item.tariff] = 0;
       }
 
-      result[item.tariff] += item.duration;
+      durationsForTarriffs[item.tariff] += item.duration;
     }
   });
 
-  tariffs.forEach(function(item) {
-    if (result[item.shortcut]) {
-      var subtotal;
-      var hours = result[item.shortcut] / (60 * 60 * 1000);
+  tariffs.forEach(function(tariff) {
+    if (durationsForTarriffs[tariff.shortcut]) {
+      let subtotal;
+      let hours = durationsForTarriffs[tariff.shortcut] / (60 * 60 * 1000);
 
-      hours = (hours % 1 > 0.5 || hours % 1 == 0) ? Math.ceil(hours) : (Math.floor(hours) + 0.5); // zaokrouhli na nejblizsi pul hodinu
+      // TODO test
+      hours = (hours % 1 > 0.5 || hours % 1 === 0) ? Math.ceil(hours) : (Math.floor(hours) + 0.5); // zaokrouhli na nejblizsi pul hodinu
 
-      subtotal = item.price * hours;
+      subtotal = tariff.price * hours;
 
       total += subtotal;
 
-      writeToCell(sheet, i, 1, item.name);
-      writeToCell(sheet, i, 2, item.shortcut);
+      writeToCell(sheet, i, 1, tariff.name);
+      writeToCell(sheet, i, 2, tariff.shortcut);
       writeToCellSpec(sheet, i, 3, {
         value: hours,
         oneDigitFormat: true
       });
-      writeToCell(sheet, i, 4, item.price);
+      writeToCell(sheet, i, 4, tariff.price);
       writeToCellSpec(sheet, i, 5, {
         value: subtotal,
         roundPrice: true,
@@ -82,7 +83,7 @@ function writeBilling(spreadsheetData, sheet, client) {
       });
 
       i++;
-    };
+    }
   });
 
   writeToCell(sheet, ++i, 4, 'Součet');

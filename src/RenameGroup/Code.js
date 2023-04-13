@@ -11,7 +11,7 @@ function renameGroupAndAssociations(oldGroupName, newGroupName) {
   Utils.log(`renaming ${oldGroupName} group to ${newGroupName}`);
 
   // get group
-  const groupObjs = Utils.findGroups({
+  const groupObjs = Utils.findGroups([], {
     group: oldGroupName
   });
 

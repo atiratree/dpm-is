@@ -1,7 +1,7 @@
 function logException_(e) {
-  var errSheet = SpreadsheetApp.openById('1DBFMQfLfXl1aWIotXDcGvRJZAVP8DJeOMwiTvdkm5Ko').getSheetByName('errors');
-  var user = "null"
-  var scriptName = "null"
+  let errSheet = SpreadsheetApp.openById('1DBFMQfLfXl1aWIotXDcGvRJZAVP8DJeOMwiTvdkm5Ko').getSheetByName('errors');
+  let user = "Undefined"
+  let scriptName = "ObjDB (Undefined)"
 
   try {
     user = Session.getActiveUser().getEmail();
@@ -9,8 +9,8 @@ function logException_(e) {
   }
 
   try {
-    var scriptID = ScriptApp.getScriptId();
-    scriptName = DriveApp.getFileById(scriptID).getName();
+    const scriptID = ScriptApp.getScriptId();
+    scriptName = "ObjDB (" + DriveApp.getFileById(scriptID).getName() + ")";
   } catch(ignored) {
   }
 
@@ -20,8 +20,8 @@ function logException_(e) {
 }
 
 function logMessage_(sheet, user, scriptName, message) {
-  var date = new Date().toString().replace(/(.*\d{2}:\d{2}:\d{2}).*/, '$1')
-  var value = '[' + date + '] [' + user +  '] [' + scriptName + ']  ' + message;
+  const date = new Date().toString().replace(/(.*\d{2}:\d{2}:\d{2}).*/, '$1')
+  const value = '[' + date + '] [' + user +  '] [' + scriptName + ']  ' + message;
   sheet.appendRow([value]);
 }
 

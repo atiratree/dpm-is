@@ -3,7 +3,7 @@
  *
  * @param e event send from spreadsheet
  */
-function editMainSheet(e) {
+function editMainSheet (e) {
   var sheet = e.source.getActiveSheet();
 
   if (sheet.getName() === 'Rozpis') {
@@ -13,27 +13,38 @@ function editMainSheet(e) {
     var rows = e.range.getNumRows();
     var cols = e.range.getNumColumns();
 
-    if(rows > 5){ // don't check large quantities == slow
+    if (rows > 5) { // don't check large quantities == slow
+      return;
+    }
+
+    var layout = Utils.extractSpreadsheetData(sheet);
+    if (!layout.weekday.valid && !layout.weekend.valid) {
       return;
     }
 
     for (var j = 0; j < rows; j++) {
-      if ((row + j > 4 && row + j < 33) || (row + j > 36 && row + j < 57)) // select our specified area
-        for (var i = 0; i < cols; i++) { // we can delete more rows at once and keep formating, but we can insert only value to one cell
+      var targetRow = row + j;
 
-          if (((col + i + 2) % 6 == 0)) {
-            employeeChanged(sheet, row + j, col + i);
+      for (var i = 0; i < cols && i < 6 * 5 + 2; i++) { // we can delete more rows at once and keep formating, but we can insert only value to one cell
+        var targetCol = col + i;
+
+        if ((layout.weekday.valid && targetRow >= layout.weekday.from && targetRow <= layout.weekday.to && targetCol < 6 * 5 + 1) ||
+          (layout.weekend.valid && targetRow >= layout.weekend.from && targetRow <= layout.weekend.to && targetCol < 6 * 2 + 1)) { // select our specified area
+          if (((targetCol + 2) % 6 == 0)) {
+            employeeChanged(sheet, targetRow, targetCol);
           }
-          if (((col + i + 3) % 6 == 0)) {
-            mainEventChanged(e, sheet, row + j, col + i);
+          if (((targetCol + 3) % 6 == 0)) {
+            mainEventChanged(e, sheet, targetRow, targetCol);
           }
-          if (((col + i + 4) % 6 == 0)) {
-            dateChanged(sheet, row + j, col + i - 1);
+          if (((targetCol + 4) % 6 == 0)) {
+            dateChanged(sheet, targetRow, targetCol - 1);
           }
-          if (((col + i + 5) % 6 == 0)) {
-            dateChanged(sheet, row + j, col + i);
+          if (((targetCol + 5) % 6 == 0)) {
+            dateChanged(sheet, targetRow, targetCol);
           }
+        }
       }
+
     }
   }
 }
@@ -46,7 +57,7 @@ function editMainSheet(e) {
  * @param row row of event
  * @param col col of event
  */
-function mainEventChanged(e, sheet, row, col) {
+function mainEventChanged (e, sheet, row, col) {
   if (e.value && isSelectedMainEvent(e.value)) {
     sheet.getRange(row, col, 1, 3).setBackground('#ffffff');
     sheet.getRange(row, col + 1, 1, 2).setValue('');
@@ -60,13 +71,13 @@ function mainEventChanged(e, sheet, row, col) {
  * @param row row of event
  * @param col col of event
  */
-function dateChanged(sheet, row, col) {
+function dateChanged (sheet, row, col) {
   var from = sheet.getRange(row, col, 1, 1);
   var to = sheet.getRange(row, col + 1, 1, 1);
 
-  if (from.getValue() != '' && to.getValue() != '' && Utils.compareTimes(from.getValue(), to.getValue()) < 0) {
+  if (from.getValue() != '' && to.getValue() != '' && Utils.compareTimes(from.getValue(), to.getValue()) <= 0) {
     to.setValue('');
-    alertUi(to.getA1Notation() + ': Od je větší než Do !')
+    alertUi(to.getA1Notation() + ': Od musí být menší než Do !')
   }
 }
 
@@ -77,7 +88,7 @@ function dateChanged(sheet, row, col) {
  * @param row row of event
  * @param col col of event
  */
-function employeeChanged(sheet, row, col) {
+function employeeChanged (sheet, row, col) {
   var background = '#ffffff';
   var values = sheet.getRange(row, col - 1, 1, 3).getValues()
 
@@ -86,11 +97,11 @@ function employeeChanged(sheet, row, col) {
   var event = values[0][0];
 
   if (value) {
-    if(manager.colors == null)
+    if (manager.colors == null)
       manager.colors = getScriptData('colors');
-    if(manager.nicks == null)
+    if (manager.nicks == null)
       manager.nicks = getScriptData('nicks');
-    if(manager.defaultTariff == null)
+    if (manager.defaultTariff == null)
       manager.defaultTariff = getScriptData('defaultTariff');
 
     var colors = manager.colors;
@@ -112,7 +123,7 @@ function employeeChanged(sheet, row, col) {
     }
   }
 
-  if(tariff != values[0][2]){
+  if (tariff != values[0][2]) {
     sheet.getRange(row, col + 1).setValue(tariff);
   }
 
@@ -125,9 +136,10 @@ function employeeChanged(sheet, row, col) {
  * @param value value of selected field
  * @return {boolean} true if selected event is not a client
  */
-function isSelectedMainEvent(value) {
-  if(manager.events == null)
-      manager.events = getScriptData('events');
+function isSelectedMainEvent (value) {
+  if (manager.events == null) {
+    manager.events = getScriptData('events');
+  }
   var events = manager.events;
 
   return events.indexOf(value) > -1;

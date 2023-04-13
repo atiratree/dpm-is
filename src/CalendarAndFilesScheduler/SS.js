@@ -15,7 +15,7 @@ function correctProtections() {
   }), 'email');
 
   if (numberOfMonthsBackForRemovingRights < numberOfMonthsBackAllowedForEditing){
-   throw new "numberOfMonthsBackForRemovingRights must be at least as big as numberOfMonthsBackAllowedForEditing"
+    throw new Error("numberOfMonthsBackForRemovingRights must be at least as big as numberOfMonthsBackAllowedForEditing")
   }
 
   var day = new Date();
@@ -34,7 +34,8 @@ function correctProtections() {
   }).forEach(function(file) {
     var sheet;
     try {
-      sheet = Utils.openSpreadsheet(file.id).getSheetByName('Rozpis');
+      const ss = Utils.openSpreadsheet(file.id);
+      sheet = ss.getSheetByName('Rozpis') || ss.getSheets()[0];
 
       if (sheet == null) {
         return;

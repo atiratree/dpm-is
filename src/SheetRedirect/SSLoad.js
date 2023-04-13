@@ -2,9 +2,10 @@
  * Reloads and prepares spreadsheet for a user.
  *
  * @param spreadSheet object of a spreadSheet to update
+ * @param layoutAndData object contains data and layout
  * @param checkIntegrity if true checks color and data integrity
  */
-function updateSpreadSheet(spreadSheet, checkIntegrity) {
+function updateSpreadSheet(spreadSheet, layoutAndData, checkIntegrity) {
   var sheetRecord = Utils.findFiles(['group'], {
       id: spreadSheet.getId()
     },1)[0];
@@ -28,25 +29,31 @@ function updateSpreadSheet(spreadSheet, checkIntegrity) {
 
     var rules = makeRules(arrays);
     var width = 6; // num of columns per day
-    var sheet = spreadSheet.getSheetByName('Rozpis');
+    var sheet = spreadSheet.getSheetByName('Rozpis') || spreadSheet.getSheets()[0];
 
 
-    for (var i = 1; i < 6; i++) {
-      updateDayRange(sheet, 5, i, 28, rules, width, turnOffColors);
+    if (layoutAndData.weekday.valid) {
+      resetRowEffects(sheet, layoutAndData.weekday.from -1, width, false); // reset header
+      for (var i = 1; i < 6; i++) {
+        updateDayRange(sheet, layoutAndData.weekday.from, i, layoutAndData.weekday.length, rules, width, turnOffColors);
+      }
     }
 
-    for (var i = 1; i < 3; i++) {
-      updateDayRange(sheet, 37, i, 20, rules, width, turnOffColors);
+    if (layoutAndData.weekend.valid) {
+      resetRowEffects(sheet, layoutAndData.weekend.from -1, width, true); // reset header
+      for (var i = 1; i < 3; i++) {
+        updateDayRange(sheet, layoutAndData.weekend.from, i, layoutAndData.weekend.length, rules, width, turnOffColors);
+      }
     }
   }
 
   actors = actors.filter(function(actor){
-    return actor.email == assistUser;
+    return actor.email === assistUser;
   });
 
-  if(actors.length > 0){
+  if(actors.length > 0 && layoutAndData.valid){
     toast(spreadSheet, 'Tvorba vašeho listu');
-    refreshAssistantsSheets(spreadSheet,actors,Utils.convertObjectsToArrayByProperty(events, 'name'));
+    refreshAssistantsSheets(spreadSheet, layoutAndData, actors, Utils.convertObjectsToArrayByProperty(events, 'name'));
   }
 }
 
@@ -128,6 +135,15 @@ function updateDayRange(sheet, row, column, numberOfRows, rules, width, turnOffC
       update = false;
     }
   }
+}
+
+function resetRowEffects(sheet, row, width, isWeekend) {
+  var days = isWeekend ? 2 : 5;
+  var headerRange = sheet.getRange(row, 1, 1, days * width);
+
+  headerRange.clearDataValidations();
+  headerRange.clearFormat();
+  headerRange.setBackground(null);
 }
 
 /**

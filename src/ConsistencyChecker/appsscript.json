@@ -1,5 +1,7 @@
 {
   "timeZone": "Europe/Prague",
+  "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "V8",
   "dependencies": {
     "libraries": [
       {
@@ -8,11 +10,5 @@
         "version": 87
       }
     ]
-  },
-  "webapp": {
-    "access": "DOMAIN",
-    "executeAs": "USER_ACCESSING"
-  },
-  "exceptionLogging": "STACKDRIVER",
-  "runtimeVersion": "V8"
+  }
 }

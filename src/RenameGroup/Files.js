@@ -19,7 +19,7 @@ function renameFile(file, newGroupName) {
     return false;
   }
 
-  const sheet = spreadSheet.getSheetByName('Rozpis');
+  const sheet = spreadSheet.getSheetByName('Rozpis') || spreadSheet.getSheets()[0];
   if (sheet == null) {
     return false;
   }

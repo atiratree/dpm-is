@@ -62,14 +62,14 @@ function getMonday(day) {
   var retDay = new Date(day);
   var weekday = day.getDay();
 
-  if (weekday != 1) {
-    if (weekday == 0) {
+  if (weekday !== 1) { // not monday
+    if (weekday === 0) { // sunday
       retDay.setDate(day.getDate() - 6);
     } else {
       retDay.setDate(day.getDate() - weekday + 1);
     }
   }
-  retDay.setHours(0, 0, 0);
+  retDay.setHours(0, 0, 0, 0);
   return retDay;
 }
 
@@ -82,7 +82,7 @@ function getMonday(day) {
 function getNextMonday(monday) {
   var retDay = new Date(monday);
   retDay.setDate(monday.getDate() + 7);
-  retDay.setHours(0, 0, 0);
+  retDay.setHours(0, 0, 0, 0);
   return retDay;
 }
 
@@ -95,7 +95,7 @@ function getNextMonday(monday) {
 function getThisWeeksSunday(monday) {
   var retDay = new Date(monday);
   retDay.setDate(monday.getDate() + 6);
-  retDay.setHours(0, 0, 0);
+  retDay.setHours(0, 0, 0, 0);
   return retDay;
 }
 
@@ -172,18 +172,16 @@ function getNumberOfWeeksInYear_(year) {
  * @return true if weekToCompare in yearToCompare is in interval <from,to>
  */
 function isWeekWithinDates(from, to, yearToCompare, weekToCompare){
-  // TODO: refactor to use weekStarts property
-
   var fromWeek = getWeekNumber(from);
   var fromYear = getWeeksYear(from);
   var toWeek = getWeekNumber(to);
   var toYear = getWeeksYear(to);
 
-  if (yearToCompare < fromYear || (yearToCompare == fromYear && weekToCompare < fromWeek)) { // before
+  if (yearToCompare < fromYear || (yearToCompare === fromYear && weekToCompare < fromWeek)) { // before
     return false;
   }
 
-  if (toYear < yearToCompare || (yearToCompare == toYear && toWeek < weekToCompare)) { // after
+  if (toYear < yearToCompare || (yearToCompare === toYear && toWeek < weekToCompare)) { // after
     return false;
   }
   return true;

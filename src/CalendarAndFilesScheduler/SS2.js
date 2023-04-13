@@ -16,9 +16,10 @@ function refreshSpreadSheet(day, week, data) {
     var findObj = {
       year: Utils.getWeeksYear(day),
       week: week,
-      group: group,
+      group: group.group,
       owner: '',
       type: 'Rozpis',
+      // store in UTC, but rest of the code holds expectation that the scripts will always run under the same time zone, which is Europe/Prague
       weekStarts: day.toISOString()
     };
 
@@ -31,7 +32,7 @@ function refreshSpreadSheet(day, week, data) {
       file.setShareableByEditors(false);
 
       sheet.setName('Rozpis');
-      Utils.prepareSheet(sheet, day, ['Rozpis služeb tým ' + group, 'týden č. ' + week, findObj.year]);
+      Utils.prepareSheet(sheet, day, ['Rozpis služeb tým ' + group.group, 'týden č. ' + week, findObj.year], group.weekdayRows, group.weekendRows, false);
     }
   }
 }

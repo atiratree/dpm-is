@@ -29,6 +29,11 @@ function doGet(e) {
           shortcut: e.parameter.shortcut
         })[0];
         break;
+      case 'group':
+        opts.updateObj =  Utils.findGroups([], {
+          group: e.parameter.group
+        })[0];
+        break;
       default:
         return createPresentableHTML('<p>Authorizace...OK</p>', 'string');
         break;
@@ -59,6 +64,8 @@ function processForm(formObject) {
         return processClientObj(formObject, opts);
       case 'tariff':
         return processTariffObj(formObject, opts);
+      case 'group':
+        return processGroupObj(formObject, opts);
       default:
         return null;
     }

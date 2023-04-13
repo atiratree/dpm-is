@@ -46,7 +46,7 @@ function run_(updateCalendar) {
     var day = new Date();
     var data = {
       files: Utils.findFiles(),
-      groups: Utils.findGroupsAsArray()
+      groups: Utils.findGroups()
     };
     var numberOWeeksToRefresh = numberOfWeeksToAdd + 1; // 1 is this week
     var till;

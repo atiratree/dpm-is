@@ -115,6 +115,7 @@ function getMyAccessRights(type) {
     AccessEnums.EMPLOYEE,
     AccessEnums.EMPLOYEES_GROUPS,
     AccessEnums.GROUP,
+    AccessEnums.GROUP_UPDATE,
     AccessEnums.SCHEDULE,
     AccessEnums.CLIENT,
     AccessEnums.EVENT,

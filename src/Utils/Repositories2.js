@@ -34,12 +34,13 @@ function updateGroup(group, oldGroupName) {
 /**
  * Finds groups from database based on restrictions
  *
+ * @param fields fields is array of strings . It assigns these strings as properties to final objects
  * @param restrictions object of key/value pairs for selecting rows
  * @param limit maximum number of rows to be returned
  * @return {Array<Object>} array of groups
  */
-function findGroups(restrictions, limit) {
-  return repFind_(manager.groupsSh, [], restrictions, limit);
+function findGroups(fields, restrictions, limit) {
+  return repFind_(manager.groupsSh, fields, restrictions, limit);
 }
 
 /**
