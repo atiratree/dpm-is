@@ -10,7 +10,26 @@ validTimeSecondsRegex = re.compile("^((([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]:[
 validTimeMinutesRegex = re.compile("^((([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9])|24:00)$")
 
 
-def process_spreadsheet(filename, first_only, expr, check_missing_event):
+def record_to_str(start_time, end_time, event, employee, tariff, note):
+    result = ""
+
+    def add(val):
+        nonlocal result
+        if val.value:
+            result += " " + str(val.value)
+
+    add(start_time)
+    result += " -"
+    add(end_time)
+    add(event)
+    add(employee)
+    add(tariff)
+    add(note)
+
+    return result
+
+
+def process_spreadsheet(filename, first_only, expr, check_missing_event, check_missing_employee):
     wb = openpyxl.load_workbook(filename)
     if 'Rozpis' in wb.sheetnames:
         ws = wb['Rozpis']
@@ -36,7 +55,15 @@ def process_spreadsheet(filename, first_only, expr, check_missing_event):
 
             # # find filled records without an event
             if check_missing_event and has_start and has_end and employee.value and tariff.value and not event.value:
-                print(f'Found in {filename} at row {row}; day {day}')
+                print(
+                    f'Found in {filename} at row {row}; day {day}: {record_to_str(start_time, end_time, event, employee, tariff, note)}')
+                if first_only:
+                    return
+
+            # # find filled records without an employee
+            if check_missing_employee and has_start and has_end and event.value and tariff.value and not employee.value:
+                print(
+                    f'Found in {filename} at row {row}; day {day}: {record_to_str(start_time, end_time, event, employee, tariff, note)}')
                 if first_only:
                     return
 
@@ -49,13 +76,13 @@ def process_spreadsheet(filename, first_only, expr, check_missing_event):
                         return
 
 
-def process(path, first_only, expr, check_missing_event):
+def process(path, first_only, expr, check_missing_event, check_missing_employee):
     for root, dirs, files in os.walk(path):
         for file in files:
             filename = os.path.join(root, file)
 
             if filename.endswith('.xlsx'):
-                process_spreadsheet(filename, first_only, expr, check_missing_event)
+                process_spreadsheet(filename, first_only, expr, check_missing_event, check_missing_employee)
 
 
 if __name__ == "__main__":
@@ -67,10 +94,13 @@ if __name__ == "__main__":
     parser.add_argument("--check-missing-event", dest='check_missing_event', action='store_true', default=False,
                         required=False,
                         help="show valid records without an event")
+    parser.add_argument("--check-missing-employee", dest='check_missing_employee', action='store_true', default=False,
+                        required=False,
+                        help="show valid records without an employee")
     args = parser.parse_args()
 
-    if not args.expr and not args.check_missing_event:
-        print("--expr or --check-missing-event option should be specified")
+    if not args.expr and not args.check_missing_event and not args.check_missing_employee:
+        print("--expr or --check-missing-event or --check-missing-employee option should be specified")
         exit(1)
 
-    process(args.path, args.first_only, args.expr, args.check_missing_event)
+    process(args.path, args.first_only, args.expr, args.check_missing_event, args.check_missing_employee)
