@@ -14,7 +14,7 @@ function createSpreadsheet(obj) {
       break;
     case 'Statistika':
     case 'Fakturace':
-      filename = obj.type + '_' + getFormatedDate(new Date());
+      filename = obj.type + '_' + getFormatedDate(new Date()) + '_' + obj.details;
       break;
     default:
       return;
@@ -41,15 +41,19 @@ function createSpreadsheet(obj) {
  *
  * @param from from which date to start extracting
  * @param to to which date extract data
+ * @param groups to which groups to extract data from
  * @return {Array<Object>} array of extracted data
  */
-function extractAllSpreadsheetData(from, to) {
+function extractAllSpreadsheetData(from, to, groups) {
   const result = [];
   const stopTimer = measureTime();
 
   findFiles([], {
     type: 'Rozpis'
   }).filter(function(file) {
+    if (groups != null && !groups.has(file.group)) {
+      return false;
+    }
     return isWeekWithinDates(from, to, file.year, file.week);
   }).forEach(function(item) {
     const ss = openSpreadsheet(item.id);

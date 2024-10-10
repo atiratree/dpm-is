@@ -7,9 +7,12 @@
  * @return {string} url of new spreadsheet
  */
 function createBilling(from, to, client) {
-  const spreadsheetData = Utils.extractAllSpreadsheetData(from, to);
+  const groups = Utils.convertObjectsToArrayByProperty(Utils.findGroupClients(['group'], { name: client }), 'group');
+  const groupSet = new Set(groups);
+  const spreadsheetData = Utils.extractAllSpreadsheetData(from, to, groupSet);
   const ss = Utils.createSpreadsheet({
-    type: 'Fakturace'
+    type: 'Fakturace',
+    details: client
   });
   const sheet = ss.getActiveSheet();
 

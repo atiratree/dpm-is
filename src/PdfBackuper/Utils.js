@@ -9,6 +9,13 @@ function include(filename) {
 }
 
 /**
+ * @return {Array<Object>} array with name of all groups
+ */
+function getGroups() {
+  return Utils.sort(Utils.convertObjectsToArrayByProperty(Utils.findGroups(['group']), 'group'));
+}
+
+/**
  * Creates presentable HTML for a browser
  * *cannot be run from library, becaouse of filename
  *
