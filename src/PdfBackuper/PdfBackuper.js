@@ -1,8 +1,13 @@
-function backupToPdf (from, to) {
+function backupToPdf (from, to, group, groupHumanReadableName) {
+  groupSet = null;
+  if (group != '') {
+    groupSet = new Set([group])
+  }
+
   const time = new Date().toISOString();
   const ROZPIS = 'Rozpis'
 
-  const folder = DriveApp.createFolder('Záloha_' + time);
+  const folder = DriveApp.createFolder('Záloha_' + time + '_' + groupHumanReadableName);
 
   const tmpSS = SpreadsheetApp.create('Tmp');
   const tmpSSId = tmpSS.getId();
@@ -14,6 +19,9 @@ function backupToPdf (from, to) {
     Utils.findFiles([], {
       type: ROZPIS
     }).filter(function (file) {
+      if (groupSet != null && !groupSet.has(file.group)) {
+        return false;
+      }
       return Utils.isWeekWithinDates(from, to, file.year, file.week);
     }).forEach(function (file) {
 

@@ -31,7 +31,7 @@ function doGet(e) {
 function processForm(formObject) {
   try {
     var errorMsg = {fromErr:'',toErr:''};
-    var from,to;
+    var from, to, group, groupHumanReadableName;
 
     from = Utils.validate(errorMsg,formObject.fromBox,{
       actions:['validateDate',],
@@ -55,9 +55,24 @@ function processForm(formObject) {
       errorMsg.fromErr = '*datum od je větší než datum do';
     }
 
+    group = formObject.selectBox;
+    if (group == null) {
+      group = '';
+    }
+    if (group != '') {
+      group = Utils.validate(errorMsg,formObject.selectBox,{
+        actions:['notUnique'],
+        actionObjs:[{uniqueArray:getGroups()}],
+        actionErrors:[{selectErr:'*zadejte validní skupinu'}]
+      });
+      groupHumanReadableName = group;
+    } else {
+      groupHumanReadableName = "Všechny Skupiny";
+    }
+
     if (Utils.isObjErrorFree(errorMsg)) {
-      errorMsg.success = backupToPdf(from,to);
-      Utils.log('Backuped to pdf in time span ' + from + ' - ' + to );
+      errorMsg.success = backupToPdf(from,to, group, groupHumanReadableName);
+      Utils.log('Backuped to pdf for group ' + groupHumanReadableName + ' in time span ' + from + ' - ' + to);
     }
 
     return errorMsg;

@@ -2,13 +2,21 @@
  * Creates statistics spreadsheet in user's google drive and generates data into it
  *
  * @param from from which day stats are going to be created
- * @param to  to which day stats are going to be created
+ * @param to to which day stats are going to be created
+ * @param groups stats are going to be created only for this group if not empty
+ * @param groupHumanReadableName group name or an identifier for all groups
  * @return {string} url of new spreadsheet
  */
-function createStatistics(from, to) {
-  let spreadsheetData = Utils.extractAllSpreadsheetData(from, to); // can throw timeout
+function createStatistics(from, to, group, groupHumanReadableName) {
+  groupSet = null;
+  if (group != '') {
+    groupSet = new Set([group])
+  }
+
+  let spreadsheetData = Utils.extractAllSpreadsheetData(from, to, groupSet); // can throw timeout
   const ss = Utils.createSpreadsheet({
-    type: 'Statistika'
+    type: 'Statistika',
+    details: groupHumanReadableName
   });
   const clientsSheet = ss.getActiveSheet();
   const clientsSheet2 = ss.insertSheet('Klienti Počet návštěv');
@@ -25,9 +33,9 @@ function createStatistics(from, to) {
      return !eventsMap[item['event']];
   });
 
-  writeStats(spreadsheetData, clientsSheet, 'event', from, to, false);
-  writeStats(spreadsheetData, clientsSheet2, 'event', from, to, true);
-  writeStats(spreadsheetData, assistantsSheet, 'employee', from, to, false);
+  writeStats(spreadsheetData, clientsSheet, 'event', from, to, false, groupHumanReadableName);
+  writeStats(spreadsheetData, clientsSheet2, 'event', from, to, true, groupHumanReadableName);
+  writeStats(spreadsheetData, assistantsSheet, 'employee', from, to, false, groupHumanReadableName);
   return ss.getUrl();
 }
 
@@ -40,8 +48,9 @@ function createStatistics(from, to) {
  * @param from from which data to write stats
  * @param to to which data to write stats
  * @param onlyCount measure occurences count instead of duration
+ * @param groupHumanReadableName group name or an identifier for all groups
  */
-function writeStats(spreadsheetData, sheet, type, from, to, onlyCount) {
+function writeStats(spreadsheetData, sheet, type, from, to, onlyCount, groupHumanReadableName) {
   const months = Utils.getMonthsNames();
   // stats = {
   //   "John": {
@@ -133,7 +142,7 @@ function writeStats(spreadsheetData, sheet, type, from, to, onlyCount) {
       color: '#E2F3FF'
     });
   }
-  writeToCell(sheet, sortedFoundNames.length + 8, 1, '* Statistika v časovém období: ' + Utils.getFormatedDate(from, true) + ' - ' + Utils.getFormatedDate(
+  writeToCell(sheet, sortedFoundNames.length + 8, 1, '* Statistika pro ' + groupHumanReadableName + ' v časovém období: ' + Utils.getFormatedDate(from, true) + ' - ' + Utils.getFormatedDate(
     to, true));
 }
 

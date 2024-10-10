@@ -19,6 +19,14 @@
           <input id='toBox' type='date' name='toBox' min='1900-01-01' required='true' >
           <label id='toErr' class='error' for='toBox' hidden='true'></label>
         </p>
+        <p>
+          <label for='selectBox'>Skupina</label>
+          <br>
+          <select id='selectBox' name='selectBox'>
+            <option value="">Všechny Skupiny</option>
+          </select>
+          <label id='selectErr' class='error' for='selectBox'  hidden='true'></label>
+        </p>
         <p id='submit'>
           <input class='button' type='submit' value='Zálohuj do PDF'>
         </p>
@@ -38,3 +46,4 @@
   </div>
 </div>
 <?!= include('javascript'); ?>
+<?!= include('pdfbackuper-js'); ?>

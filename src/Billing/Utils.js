@@ -41,7 +41,7 @@ function include(filename) {
  * @return {Array<Object>} array with name of all clients
  */
 function getClients() {
-  return Utils.sort(Utils.convertObjectsToArrayByProperty(Utils.findClients(), 'name'));
+  return Utils.sort(Utils.convertObjectsToArrayByProperty(Utils.findClients(['name']), 'name'));
 }
 
 /**
