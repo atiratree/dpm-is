@@ -60,18 +60,16 @@ function checkCallbacksToRun() {
   $('#submit').hide();
   $('#loader').show();
 
-  $('#selectBox').on('change', function(e) {
-    var optionSelected = $('option:selected', this);
-
-    toogleGroupsVisibility(this.value);
-  });
-
   google.script.run.withSuccessHandler(function(obj) {
     var options = $('#selectBox');
 
     toogleGroupsVisibility(obj[0].permission);
     $.each(obj, function() {
       options.append($('<option />').val(this.permission).text(this.name));
+    });
+
+    $('#selectBox').on('change', function(e) {
+      toogleGroupsVisibility(this.value);
     });
     checkCallbacksToRun();
   }).getMyAccessRightsNames(getMetaOpts());
