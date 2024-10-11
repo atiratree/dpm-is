@@ -12,6 +12,7 @@ function leave() {
 
 
 FORCE=${FORCE:-false}
+FAST_WITHOUT_DEPS=${FAST_WITHOUT_DEPS:-false}
 PROCESS_SCRIPTS=${PROCESS_SCRIPTS:-}
 
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
@@ -33,16 +34,18 @@ visit "${REPO_DIR}/src"
     visit "${PROJECT}"
       if [ -f ".clasp.json" ] && [ -f "appsscript.json" ]; then
         echo "processing ${PROJECT}"
-        if [  "$(jq -r ".dependencies.libraries" appsscript.json)" != "null" ]; then
-          NEXT_DEP_IDX=0
-          for DEP_ID in $(jq -r ".dependencies.libraries[].libraryId" appsscript.json); do
-            DEP_VERSION="${DEPENDENCIES["${DEP_ID}"]}"
-            if [ -n "${DEP_VERSION}" ]; then
-              jq -r ".dependencies.libraries[${NEXT_DEP_IDX}].version = ${DEP_VERSION}" appsscript.json > appsscript.json.tmp
-              mv appsscript.json.tmp appsscript.json
-            fi
-            NEXT_DEP_ID=$((NEXT_DEP_IDX + 1))
-          done
+        if [ "${FAST_WITHOUT_DEPS}" != 'true' ]; then
+          if [  "$(jq -r ".dependencies.libraries" appsscript.json)" != "null" ]; then
+            NEXT_DEP_IDX=0
+            for DEP_ID in $(jq -r ".dependencies.libraries[].libraryId" appsscript.json); do
+              DEP_VERSION="${DEPENDENCIES["${DEP_ID}"]}"
+              if [ -n "${DEP_VERSION}" ]; then
+                jq -r ".dependencies.libraries[${NEXT_DEP_IDX}].version = ${DEP_VERSION}" appsscript.json > appsscript.json.tmp
+                mv appsscript.json.tmp appsscript.json
+              fi
+              NEXT_DEP_ID=$((NEXT_DEP_IDX + 1))
+            done
+          fi
         fi
         if [ "${FORCE}" == 'true' ] || ! git diff --quiet  -- .; then
           git add .
@@ -61,10 +64,12 @@ visit "${REPO_DIR}/src"
             gclasp deploy --versionNumber "${DEPLOYMENT_VERSION}" --deploymentId "${DEPLOYMENT_ID}" --description="web app" # || true # has non fatal errors
           fi
         fi
-        # set new version to dependencies
-        DEP_ID="$(jq -r ".scriptId" .clasp.json)"
-        DEP_VERSION="$(gclasp versions | grep -oE "^[0-9]+" | tail -1)"
-        DEPENDENCIES["${DEP_ID}"]="${DEP_VERSION}"
+        if [ "${FAST_WITHOUT_DEPS}" != 'true' ]; then
+          # set new version to dependencies
+          DEP_ID="$(jq -r ".scriptId" .clasp.json)"
+          DEP_VERSION="$(gclasp versions | grep -oE "^[0-9]+" | tail -1)"
+          DEPENDENCIES["${DEP_ID}"]="${DEP_VERSION}"
+        fi
       fi
     leave
   done
