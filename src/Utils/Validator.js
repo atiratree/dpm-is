@@ -50,6 +50,22 @@ function validate(errorResult, input, processObj) {
           }
         }
         break;
+      case 'notUnique':
+        var array = actionObjs[i].uniqueArray;
+        var prop = actionObjs[i].uniqueProp;
+
+        let found = false;
+        for (var j = 0; j < array.length; j++) {
+          var value = prop ? array[j][prop] : array[j]
+          if (input == value) {
+            found = true;
+            break;
+          }
+        }
+        if (!found) {
+          setError_(errorResult, actionErrors[i]);
+        }
+        break;
       case 'length':
         if (input.length > actionObjs[i].length) {
           setError_(errorResult, actionErrors[i]);
