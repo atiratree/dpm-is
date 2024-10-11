@@ -104,10 +104,26 @@ var PermissionTypes = {
 }
 
 /**
- * Gets User permissions neatly sorted and with Czech Transaltions
+ * Gets User permissions neatly sorted and with czech translations
  *
  * @return {Array<Object>} list of user roles and their names
  */
 function getUserRolesInCzech() {
   return [manager.admin, manager.leader, manager.administrative, manager.assistant];
+}
+
+/**
+ * Gets group status czech translations
+ *
+ * @return {Object} mapping of group status to czech translation
+ */
+function getGroupStatusToCzechTranslationMapping() {
+  return {
+    "active": "Aktivní",
+    "inactive": "Neaktivní"
+  };
+}
+
+function getGroupStatuses() {
+  return Object.keys(getGroupStatusToCzechTranslationMapping());
 }

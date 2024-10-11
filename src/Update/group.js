@@ -31,6 +31,15 @@ function processGroupObj(formObject, opts) {
       actionErrors:[{weekendRowsErr:'*vyplňte počet řádků'},{weekendRowsErr:'*počet řádků by měl být aspoň 5'}, {weekendRowsErr:'*počet řádků by neměl převyšovat 150'}]
     });
   }
+  if (formObject.selectStatusBox ==  oldGroup.status) {
+    group.status = oldGroup.status;
+  } else {
+    group.status = Utils.validate(errorMsg, formObject.selectStatusBox,{
+      actions:['notNull','notUnique'],
+      actionObjs:[{},{uniqueArray: Utils.getGroupStatuses()}],
+      actionErrors:[{selectStatusErr:'*vyplňte status skupiny'},{selectStatusErr:'*nevalidní status skupiny'}]
+    });
+  }
 
   Utils.validate(errorMsg,Utils.AccessEnums.GROUP_UPDATE,{
     actions:['canEdit'],

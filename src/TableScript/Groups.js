@@ -9,13 +9,24 @@
     return {};
   }
 
-  var groups = Utils.sort(Utils.findGroups(), 'group');
-  var canEdit = Utils.hasAccessTo(Utils.AccessEnums.GROUP_UPDATE, Utils.PermissionTypes.EDIT);
+  const groups = Utils.findGroups().sort(function(a,b) {
+    // we only care that active sorts before inactive
+    const cmp = a.status.toString().localeCompare(b.status.toString());
+    if (cmp != 0) {
+      return cmp
+    }
+    return a.group.toString().localeCompare(b.group.toString());
+  });
+
+
+  const canEdit = Utils.hasAccessTo(Utils.AccessEnums.GROUP_UPDATE, Utils.PermissionTypes.EDIT);
+  const statusTranslations = Utils.getGroupStatusToCzechTranslationMapping()
   var dt = {
     cols:[
       {id:0, label:'Skupina', type: 'string', stringFilter: 'true'},
       {id:1, label:'Počet řádků ve všední den', type: 'number'},
       {id:2, label:'Počet řádků o víkendu', type: 'number'},
+      {id:2, label:'Stav', type: 'string', categoryFilter: 'true'},
       {id:3, label:'' , type: 'string'},
     ],
     rows:[]
@@ -27,7 +38,8 @@
         {v: groups[i].group},
         {v: groups[i].weekdayRows},
         {v: groups[i].weekendRows},
-        {v: canEdit ? getEditButtonHtml({instance:'group', group: groups[i].group },500,300) : ''},
+        {v: statusTranslations[groups[i].status]},
+        {v: canEdit ? getEditButtonHtml({instance:'group', group: groups[i].group },500,500) : ''},
       ]
     });
   }
