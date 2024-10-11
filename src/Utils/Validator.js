@@ -163,7 +163,7 @@ function validateGroups(formObject, errorMsg, type, oldUser) {
     }).map(function(item) {
       return {
         group: item,
-        isInDb: false,
+        deactivate: false,
         isUpdatable: true
       }
     })
@@ -175,7 +175,7 @@ function validateGroups(formObject, errorMsg, type, oldUser) {
     }).map(function(item) {
       return {
         group: item,
-        isInDb: true,
+        deactivate: true,
         isUpdatable: true
       }
     })

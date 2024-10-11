@@ -91,7 +91,7 @@ function getMyAccessRightsNames() {
 /**
  * Wrapper function.
  */
-function findAllGroups(user) {
+function findAllGroups() {
   return Utils.getMyGroupsWithEditAtrs();
 }
 

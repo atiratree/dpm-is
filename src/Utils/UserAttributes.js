@@ -188,6 +188,7 @@ function getMyAccessRightsNames() {
 function getMyGroupsWithEditAtrs(user) {
   var groups, permission, myEmail, groupLeaders;
 
+  // permission attrs exists even for inactive groups
   groups = findGroups();
   permission = getUserPermission();
   myEmail = getUserEmail();

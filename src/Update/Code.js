@@ -22,7 +22,7 @@ function doGet(e) {
       case 'client':
         opts.updateObj = Utils.findClients(['name', 'email'], {
           name: e.parameter.name
-        })[0];
+        }, true)[0];
         break;
       case 'tariff':
         opts.updateObj =  Utils.findTariffs([], {

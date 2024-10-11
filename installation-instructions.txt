@@ -175,7 +175,7 @@ Notes 2:
 					['employeeEmail', 'group']
 			- sheet "GroupClients"
 				- cells A1:B1
-					['name', 'group']
+					['name', 'group', 'status']
 			- sheet "GroupLeaders"
 				- cells A1:B1
 					['employeeEmail', 'group']

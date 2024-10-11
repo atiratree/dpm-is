@@ -5,7 +5,9 @@
 function groups() {
   google.script.run.withSuccessHandler(function(obj) {
     $.each(obj, function() {
-      $('#isInGroupsOptions').append(getCheckboxDiv(this, 'isInGroup'));
+      if (this.status != 'inactive') {
+        $('#isInGroupsOptions').append(getCheckboxDiv(this, 'isInGroup'));
+      }
     });
 
     $('#loader').hide();

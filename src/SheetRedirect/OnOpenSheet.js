@@ -47,7 +47,7 @@ function onOpenSheet () {
  * @return "cached"(we don't have to get them from slow db) data for reusing
  */
 function initializeData () {
-  var clients, tariffs, actors, events, sheetRecord, group;
+  var tariffs, actors, events, sheetRecord, group;
   var spreadSheet = SpreadsheetApp.getActive();
   try {
     sheetRecord = Utils.findFiles(['group'], {
@@ -55,9 +55,7 @@ function initializeData () {
     }, 1)[0];
     group = sheetRecord.group;
 
-    clients = Utils.findGroupClients(['name'], { group: group });
     events = Utils.findEvents();
-    clients.push.apply(clients, events);
     tariffs = Utils.findTariffs();
 
     actors = getActors(group);

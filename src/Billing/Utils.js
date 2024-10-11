@@ -41,7 +41,11 @@ function include(filename) {
  * @return {Array<Object>} array with name of all clients
  */
 function getClients() {
-  return Utils.sort(Utils.convertObjectsToArrayByProperty(Utils.findClients(['name']), 'name'));
+  // Find existing clients.
+  const clients = Utils.convertObjectsToArrayByProperty(Utils.findClients(['name']), 'name')
+  // Find deleted clients that have been in a group before. So we can obtain Billing retroactively.
+  const clientsWithAGroup = Utils.convertObjectsToArrayByProperty(Utils.findGroupClients(['name'],{}), 'name');
+  return Utils.sort(Utils.toUniquePrimitiveArray([...clients,...clientsWithAGroup]));
 }
 
 /**

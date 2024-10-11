@@ -21,11 +21,14 @@ function updateSpreadSheet(spreadSheet, layoutAndData, checkIntegrity) {
     var turnOffColors = !checkIntegrity && firstRun;
     toast(spreadSheet, 'Obnova integrity dat' + (turnOffColors ? '' : ' a barev'));
     var tariffs = Utils.sort(Utils.findTariffs(), 'shortcut');
-    var clients = Utils.sort(Utils.findGroupClients(['name'], { group: group}), 'name')
+    // GroupClients selects only active associations
+    var clients = Utils.sort(Utils.findGroupClients(['name'], { group: group, status: 'active'}), 'name')
 
     clients.push.apply(clients, events);
 
-    var arrays = [{array: clients, convertProp: 'name'}, {array: actors, convertProp: 'nick'}, {array: tariffs, convertProp: 'shortcut'}];
+    // Note: clients could be invalid in case a client switched groups and was deleted from this one
+    //       so it might make sense to change allowInvalid to true for these
+    var arrays = [{array: clients, convertProp: 'name', allowInvalid: false}, {array: actors, convertProp: 'nick', allowInvalid: false}, {array: tariffs, convertProp: 'shortcut', allowInvalid: false}];
 
     var rules = makeRules(arrays);
     var width = 6; // num of columns per day
@@ -68,7 +71,7 @@ function makeRules(arrays) {
 
   for (var i = 0; i < arrays.length; i++) {
     var values = Utils.convertObjectsToArrayByProperty(arrays[i].array, arrays[i].convertProp);
-    result.push(SpreadsheetApp.newDataValidation().requireValueInList(values).setAllowInvalid(false).build());
+    result.push(SpreadsheetApp.newDataValidation().requireValueInList(values).setAllowInvalid(arrays[i].allowInvalid).build());
   }
 
   return result;
