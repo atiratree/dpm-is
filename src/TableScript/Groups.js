@@ -24,9 +24,9 @@
   var dt = {
     cols:[
       {id:0, label:'Skupina', type: 'string', stringFilter: 'true'},
+      {id:2, label:'Stav', type: 'string', categoryFilter: 'true'},
       {id:1, label:'Počet řádků ve všední den', type: 'number'},
       {id:2, label:'Počet řádků o víkendu', type: 'number'},
-      {id:2, label:'Stav', type: 'string', categoryFilter: 'true'},
       {id:3, label:'' , type: 'string'},
     ],
     rows:[]
@@ -36,9 +36,9 @@
     dt.rows.push({
       c:[
         {v: groups[i].group},
+        {v: statusTranslations[groups[i].status]},
         {v: groups[i].weekdayRows},
         {v: groups[i].weekendRows},
-        {v: statusTranslations[groups[i].status]},
         {v: canEdit ? getEditButtonHtml({instance:'group', group: groups[i].group },500,500) : ''},
       ]
     });
