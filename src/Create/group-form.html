@@ -17,3 +17,12 @@
   <input id='weekendRowsBox' name='weekendRowsBox' required='true' type='number' min='5' max='150' step='1' value='20' placeholder='Počet řádků'>
   <label id='weekendRowsErr' class='error' for='weekendRowsBox' hidden='true'></label>
 </p>
+<p>
+  <label for='selectStatusBox'>Stav</label>
+  <br>
+  <select id='selectStatusBox' name='selectStatusBox' required='true'>
+    <option value="active" selected>Aktivní</option>
+    <option value="inactive">Neaktivní</option>
+  </select>
+  <label id='selectStatusErr' class='error' for='selectStatusBox' hidden='true'></label>
+</p>

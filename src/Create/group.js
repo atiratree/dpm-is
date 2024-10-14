@@ -28,6 +28,12 @@ function processGroupObj(formObject) {
     actionErrors:[{weekendRowsErr:'*vyplňte počet řádků'},{weekendRowsErr:'*počet řádků by měl být aspoň 5'}, {weekendRowsErr:'*počet řádků by neměl převyšovat 150'}]
   });
 
+  group.status = Utils.validate(errorMsg, formObject.selectStatusBox,{
+    actions:['notNull','notUnique'],
+    actionObjs:[{},{uniqueArray: Utils.getGroupStatuses()}],
+    actionErrors:[{selectStatusErr:'*vyplňte status skupiny'},{selectStatusErr:'*nevalidní status skupiny'}]
+ });
+
   Utils.validate(errorMsg,Utils.AccessEnums.GROUP,{
      actions:['canEdit'],
      actionObjs:[{}],

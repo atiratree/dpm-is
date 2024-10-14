@@ -42,8 +42,6 @@ function del(opts) {
         return deleteUser(opts);
       case 'tariff':
         return deleteTariff(opts)
-      case 'group':
-        return deleteGroup(opts)
       default:
         return {
           err: 'Script nepovoluje smazání této instance'

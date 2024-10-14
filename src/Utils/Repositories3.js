@@ -95,17 +95,6 @@ function createGroupClient(groupClient) {
 }
 
 /**
- * Delete group Client/s from database based on its properties
- *
- * @param groupClient object
- * @param hasMoreInstances  if true turns off error logging if object has more instances
- * @return {boolean} indicating success or failure.
- */
-function deleteGroupClient(groupClient, hasMoreInstances) {
-  return repDelete_(manager.groupClsSh, groupClient, hasMoreInstances);
-}
-
-/**
  * Updates group Client/s from database based on its properties
  *
  * @param oldGroupClient to use for selection of an update

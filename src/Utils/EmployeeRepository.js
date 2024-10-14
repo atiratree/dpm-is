@@ -148,7 +148,7 @@ function refreshUserGroups_(groups, email, groupLeader) {
 
   for (var i = 0; i < groups.length; i++) {
     if (groups[i].isUpdatable) {
-      if (groups[i].isInDb) {
+      if (groups[i].deactivate) {
         if (groupLeader) {
           result = deleteGroupLeader({
             employeeEmail: email,

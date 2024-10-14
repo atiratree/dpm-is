@@ -52,7 +52,9 @@ function resolveDefault(obj) {
     $('#confirmation').text(obj.failMessage);
   }
 
-  $('#confirmation-content').show('slow');
+  $('#confirmation-content').show('slow', function(){
+    $(window).scrollTop($('#confirmation').position().top);
+  });
 }
 
 function changeAllCheckboxes(){

@@ -109,11 +109,16 @@ function createClient(client) {
  * @return {boolean} indicating success or failure.
  */
 function deleteClient(client) {
-  var result = repDelete_(manager.clientsSh, client);
+  let result = repDelete_(manager.clientsSh, client);
 
-  deleteGroupClient({
-    name: client.name
-  }, true);
+  const oldGroupClients = findGroupClients([],{
+    name: client.name,
+  })
+
+  for (var i = 0; i < oldGroupClients.length; i++) {
+    let groupClientUpdate = Object.assign({}, oldGroupClients[i], { status: 'inactive' });
+    result = result && updateGroupClient(oldGroupClients[i], groupClientUpdate);
+  }
 
   return result;
 }
@@ -140,36 +145,55 @@ function updateClient(client) {
 
 /**
  * Finds clients from database based on restrictions,
- * each client has attribute with his groups unless group specified
+ * each client has attribute with his groups if includeIsInGroups is true
+ *
+ * @param fields fields is array of strings . It assigns these strings as properties to final objects
+ * @param restrictions object of key/value pairs for selecting rows
+ * @param includeIsInGroups if true adds isInGroups attribute to each client
+ * @return {Array<Object>} array of clients
+ */
+function findClients(fields, restrictions, includeIsInGroups) {
+  let rows = repFind_(manager.clientsSh, fields, restrictions);
+  if (!includeIsInGroups) {
+    return rows;
+  }
+
+  // ignore inactive associations
+  const isInGroups = findGroupClients([], {status: 'active'});
+  const groups = findGroups(['group'], {status: 'active'});
+  const activeGroupSet = new Set([...convertObjectsToArrayByProperty(groups, 'group')]);
+  for (let i = 0; i < rows.length; i++) {
+    let isIn = isInGroups.filter(function(item) {
+      if (!activeGroupSet.has(item.group)) {
+        // the group is not active anymore -> filter out
+        return false;
+      }
+      return item.name === rows[i].name;
+    });
+
+    rows[i].isInGroups = convertObjectsToArrayByProperty(isIn, 'group');
+  }
+
+  return rows;
+}
+
+
+/**
+ * Finds clients from database based on restrictions and a group the clients belong to
  *
  * @param fields fields is array of strings . It assigns these strings as properties to final objects
  * @param restrictions object of key/value pairs for selecting rows
  * @param group group for selecting clients
  * @return {Array<Object>} array of clients
  */
-function findClients(fields, restrictions, group) {
-  var groupSearchCriteria = group ? {group: group} : {};
-  var isInGroups = findGroupClients([], groupSearchCriteria);
-  var rows;
+function findClientsByGroup(fields, restrictions, group) {
+  // Allow inactive associations, since this is called only from EmailSender. If the SS exists, we should be able to send an email
+  const clientsInGroup = findGroupClients([], {group: group});
+  const clientsInGroupSet = new Set([...convertObjectsToArrayByProperty(clientsInGroup, 'name')]);
 
-  rows = repFind_(manager.clientsSh, fields, restrictions);
-
-  if(group){
-    var clientsInGroup = convertObjectsToArrayByProperty(isInGroups, 'name');
-    rows = rows.filter(function(item) {
-        return clientsInGroup.indexOf(item.name) > -1;
-    })
-  }else{
-    for (var i = 0; i < rows.length; i++) {
-      var isIn = isInGroups.filter(function(item) {
-        return item.name === rows[i].name;
-      });
-
-      rows[i].isInGroups = convertObjectsToArrayByProperty(isIn, 'group');
-    }
-  }
-
-  return rows;
+  return repFind_(manager.clientsSh, fields, restrictions).filter(function(item) {
+    return clientsInGroupSet.has(item.name);
+  });
 }
 
 /**
@@ -219,20 +243,24 @@ function refreshClientGroups_(groups, name) {
   var result = true;
 
   for (var i = 0; i < groups.length; i++) {
-    if (groups[i].isUpdatable) {
-      if (groups[i].isInDb) {
-        result = result && deleteGroupClient({
-          name: name,
-          group: groups[i].group
-        });
-      } else {
-        result = result && createGroupClient({
-          name: name,
-          group: groups[i].group
-        });
-      }
+    if (!groups[i].isUpdatable) {
+      continue
     }
-
+    let oldGroupClients = findGroupClients([],{
+      name: name,
+      group: groups[i].group,
+    })
+    const status = groups[i].deactivate ? 'inactive' : 'active';
+    if (oldGroupClients.length > 0) {
+      const groupClientUpdate = Object.assign({}, oldGroupClients[0], { status: status });
+      result = result && updateGroupClient(oldGroupClients[0], groupClientUpdate);
+    } else {
+      result = result && createGroupClient({
+        name: name,
+        group: groups[i].group,
+        status: status
+      });
+    }
   }
   return result;
 }

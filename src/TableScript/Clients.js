@@ -9,7 +9,7 @@ function getClientsTable() {
     return {};
   }
 
-  var clients = Utils.sort(Utils.findClients(), 'name');
+  var clients = Utils.sort(Utils.findClients([], {}, true), 'name');
   var canEdit = Utils.hasAccessTo(Utils.AccessEnums.CLIENT,Utils.PermissionTypes.EDIT);
   var dt = {
     cols:[

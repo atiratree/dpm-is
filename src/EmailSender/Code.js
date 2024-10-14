@@ -41,7 +41,7 @@ function doGet(e) {
  */
 function initialize(opts){
   var map = {};
-  var clients = Utils.findClients([], {}, opts.group).filter(function(item){
+  var clients = Utils.findClientsByGroup([], {}, opts.group).filter(function(item){
     return item.email != null && item.email != '';
   });
 

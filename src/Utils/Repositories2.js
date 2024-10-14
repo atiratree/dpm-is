@@ -9,16 +9,6 @@ function createGroup(group) {
 }
 
 /**
- * Delete group/s from database based on its properties
- *
- * @param group object
- * @return {boolean} indicating success or failure.
- */
-function deleteGroup(group) {
-  return repDelete_(manager.groupsSh, group);
-}
-
-/**
  * Updates group/s from database based on its properties
  *
  * @param group object

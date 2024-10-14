@@ -13,6 +13,9 @@ function refreshSpreadSheet(day, week, data) {
 
   for (var i = 0; i < groups.length; i++) {
     var group = groups[i];
+    if (group.status != "active") {
+      continue
+    }
     var findObj = {
       year: Utils.getWeeksYear(day),
       week: week,
