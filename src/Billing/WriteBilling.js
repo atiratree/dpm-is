@@ -7,10 +7,13 @@
  * @return {string} url of new spreadsheet
  */
 function createBilling(from, to, client) {
-  // we need to select both status active and inactive to create a billing even for users that were removed from the group
-  const groups = Utils.convertObjectsToArrayByProperty(Utils.findGroupClients(['group'], { name: client }), 'group');
-  const groupSet = new Set(groups);
-  const spreadsheetData = Utils.extractAllSpreadsheetData(from, to, groupSet);
+  let groups = null;
+  // TODO: we can optimize the Billing generation as follows, once a sufficient time passes and we know the group history of all clients.
+  // // we need to select both status active and inactive to create a billing even for users that were removed from the group
+  // const groups = Utils.convertObjectsToArrayByProperty(Utils.findGroupClients(['group'], { name: client }), 'group');
+  // const groupSet = new Set(groups);
+  // const spreadsheetData = Utils.extractAllSpreadsheetData(from, to, groupSet);
+  const spreadsheetData = Utils.extractAllSpreadsheetData(from, to, null);
   const ss = Utils.createSpreadsheet({
     type: 'Fakturace',
     details: client
@@ -22,8 +25,10 @@ function createBilling(from, to, client) {
   writeToCell(sheet, 1, 2, client);
   writeToCell(sheet, 1, 4, 'Období:');
   writeToCell(sheet, 1, 5, Utils.getFormatedDate(from, true) + ' - ' + Utils.getFormatedDate(to, true));
-  writeToCell(sheet, 1, 7, 'Skupina/y:');
-  writeToCell(sheet, 1, 8, groups.join(", "));
+  if (groups != null) {
+    writeToCell(sheet, 1, 7, 'Skupina/y:');
+    writeToCell(sheet, 1, 8, groups.join(", "));
+  }
 
   writeToCell(sheet, 3, 1, 'Název cenového pásma');
   writeToCell(sheet, 3, 2, 'Zkratka');
